@@ -1,0 +1,367 @@
+這是一份針對**龜背芋水苔球（苔玉）產品推廣**的企劃案，以及相對應的單頁式 HTML/CSS 網頁設計程式碼。
+
+---
+
+## 📋 企劃案：【綠意微景】龜背芋水苔球品牌線上展示頁
+
+### 一、 專案背景與目標
+
+* **專案背景**：隨著都市生活節奏加快，居家植栽成為紓壓與提升居家質感的重要元素。龜背芋因其獨特的裂葉造型與強韌的生命力，成為極受歡迎的網美植物。結合日式水苔球工藝，搭配極簡透明玻璃器皿，打造乾淨、好照顧且具現代視覺感的室內綠植。
+* **專案目標**：
+1. 建立高質感的產品展示單頁網站（Landing Page），提升品牌形象。
+2. 清楚傳達產品特色、照顧方式與購買管道，提高轉換率。
+
+
+
+### 二、 目標受眾（Target Audience）
+
+* **都市上班族／居家辦公者**：喜愛居家佈置、追求質感生活，但缺乏傳統盆栽種植經驗。
+* **新手養植者**：偏好照顧簡易、不易弄髒室內環境的乾淨植栽。
+* **送禮需求者**：尋找質感開幕禮、生日禮物或新居落成禮物。
+
+### 三、 核心價值與亮點
+
+* **極簡日式美學**：水苔球圓潤造型，搭配透明玻璃容器，簡約優雅。
+* **乾淨好管理**：無土壤外露，不易滋生蚊蟲，極適合室內桌面與置物架。
+* **清晰新手指南**：提供耐陰、光照、澆水（浸泡法）的直覺養護說明。
+
+### 四、 網站架構規劃
+
+1. **主視覺區（Hero Section）**：高解析度圖片展示、簡潔標題與 CTA（立即購買／訊息諮詢）。
+2. **產品亮點（Features）**：網美裂葉、日式工藝、乾淨無土等三大特色。
+3. **養護指南（Care Instructions）**：散光需求、浸泡給水法、通風環境。
+4. **規格與注意事項（Specifications & Notice）**：尺寸、容器材質、運送須知。
+5. **頁尾（Footer）**：品牌資訊、社交媒體連結與版權聲明。
+
+---
+
+## 💻 網頁原始碼 (HTML + CSS)
+
+您可以將以下程式碼儲存為 `index.html`，並在瀏覽器中直接開啟查看成果：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龜背芋水苔球 | 綠意微景植栽美學</title>
+    <style>
+        /* 全局樣式重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            color: #2d3748;
+            background-color: #f7fafc;
+            line-height: 1.6;
+        }
+
+        /* 頁首導覽 */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #2f855a;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #2f855a;
+        }
+
+        /* Hero 區域 */
+        .hero {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #c6f6d5;
+            color: #22543d;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 2.25rem;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.05rem;
+            color: #718096;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #2f855a;
+            color: #ffffff;
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #276749;
+        }
+
+        /* 產品特色與照顧指南 */
+        .section-title {
+            text-align: center;
+            font-size: 1.75rem;
+            color: #2d3748;
+            margin: 4rem 0 2rem;
+        }
+
+        .grid {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        /* 規格說明區塊 */
+        .specs-section {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .specs-list {
+            list-style: none;
+        }
+
+        .specs-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .specs-list li:last-child {
+            border-bottom: none;
+        }
+
+        .specs-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .specs-value {
+            color: #718096;
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: #1a202c;
+            color: #a0aec0;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">GREEN SCAPE | 綠意微景</div>
+            <ul class="nav-links">
+                <li><a href="#features">商品特色</a></li>
+                <li><a href="#care">照顧指南</a></li>
+                <li><a href="#specs">規格說明</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-image">
+                <!-- 提示：可將 src 替換為實際的龜背芋水苔球圖片連結 -->
+                <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=600&q=80" alt="龜背芋水苔球">
+            </div>
+            <div class="hero-content">
+                <span class="tag">新手入門首選</span>
+                <h1>日式龜背芋水苔球<br><span style="font-size:1.5rem; color:#4a5568;">搭配簡約極簡玻璃容器</span></h1>
+                <p>將自然綠意濃縮於掌心大小的水苔球中。特選優雅裂葉龜背芋，兼具強韌生命力與淨化空氣能力，為您的居家與辦公空間注入一抹清爽綠意。</p>
+                <a href="#specs" class="cta-button">訊息諮詢購買</a>
+            </div>
+        </section>
+
+        <!-- 特色介紹 -->
+        <h2 id="features" class="section-title">商品特色</h2>
+        <section class="grid">
+            <div class="card">
+                <div class="card-icon">🌿</div>
+                <h3>獨特裂葉美樣</h3>
+                <p>翠綠圓潤且帶有自然裂紋的葉片，線條優雅，是經典的網美級室內綠植。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💧</div>
+                <h3>日式水苔工藝</h3>
+                <p>天然水苔緊密包覆根部，吸水保濕度佳，無土壤撒落問題，乾淨易整理。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">✨</div>
+                <h3>極簡玻璃透視</h3>
+                <p>附贈高品質透明玻璃容器，方便觀察水份狀態，極具現代簡約風格。</p>
+            </div>
+        </section>
+
+        <!-- 照顧指南 -->
+        <h2 id="care" class="section-title">養護指南</h2>
+        <section class="grid">
+            <div class="card">
+                <div class="card-icon">☀️</div>
+                <h3>光照需求</h3>
+                <p>喜好明亮散光環境（半日照）。請避免強烈陽光直射，以免葉片灼傷。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚿</div>
+                <h3>給水方式</h3>
+                <p>當水苔球摸起來微乾（約九分乾）且重量變輕時，將苔球浸泡水中約5-10分鐘吸飽水即可。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌬️</div>
+                <h3>環境通風</h3>
+                <p>維持良好的環境通風，尤其在夏季濕熱氣候，可有效預防病蟲害發生。</p>
+            </div>
+        </section>
+
+        <!-- 產品規格 -->
+        <h2 id="specs" class="section-title">詳細規格與訂購</h2>
+        <section class="specs-section">
+            <ul class="specs-list">
+                <li>
+                    <span class="specs-label">植物品名</span>
+                    <span class="specs-value">龜背芋（Monstera deliciosa）</span>
+                </li>
+                <li>
+                    <span class="specs-label">科屬分類</span>
+                    <span class="specs-value">天南星科 / 龜背芋屬</span>
+                </li>
+                <li>
+                    <span class="specs-label">產品規格</span>
+                    <span class="specs-value">水苔球 M 號（含植物全高約 35-45 cm）</span>
+                </li>
+                <li>
+                    <span class="specs-label">搭配容器</span>
+                    <span class="specs-value">高透光柱狀玻璃瓶</span>
+                </li>
+                <li>
+                    <span class="specs-label">配送方式</span>
+                    <span class="specs-value">快捷寄送 / 宅配通 / 店到店 / 門市自取</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 綠意微景植栽美學. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
+
+```
