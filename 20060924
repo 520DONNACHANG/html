@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>400小時課程進度計算器</title>
+  <style>
+    :root {
+      --primary-color: #2e7d32;
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+    }
+
+    body {
+      font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      padding: 30px;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-top: 0;
+      font-size: 1.5rem;
+    }
+
+    .info-box {
+      background: #e8f5e9;
+      border-left: 4px solid var(--primary-color);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-card .label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .stat-card .value {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .progress-container {
+      margin-top: 15px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background-color: #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary-color);
+      width: 0%;
+      transition: width 0.8s ease-in-out;
+    }
+
+    .date-picker-group {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    input[type="date"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>📚 課程時數進度追蹤</h2>
+  
+  <div class="info-box">
+    <b>課程設定：</b><br>
+    • 期間：9/17 - 12/1 (每週一至五)<br>
+    • 時段：09:15-12:45 / 14:15-17:45 (每日 7 小時)<br>
+    • 規則：國定假日（紅字）不計入
+  </div>
+
+  <div class="date-picker-group">
+    <label for="targetDate"><b>選擇計算基準日：</b></label>
+    <input type="date" id="targetDate">
+  </div>
+
+  <div class="stats-grid" style="margin-top: 20px;">
+    <div class="stat-card">
+      <div class="label">至今已上時數</div>
+      <div class="value" id="hoursDone">0 小時</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">還剩餘時數</div>
+      <div class="value" id="hoursLeft">400 小時</div>
+    </div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-label">
+      <span>完成進度</span>
+      <span id="progressPercent">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 總目標時數與每日時數設定
+  const TOTAL_HOURS = 400;
+  const DAILY_HOURS = 7;
+  const START_DATE = new Date('2026-09-17');
+  const END_DATE = new Date('2026-12-01');
+
+  // 不上課的紅字/國定假日清單 (YYYY-MM-DD)
+  const HOLIDAYS = [
+    '2026-09-25', // 中秋節
+    '2026-10-09'  // 國慶補假
+  ];
+
+  // 判斷是否為上課日 (週一至週五 且 非紅字)
+  function isClassDay(date) {
+    const dayOfWeek = date.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) return false; // 週六日不上課
+
+    const dateStr = date.toISOString().split('T')[0];
+    if (HOLIDAYS.includes(dateStr)) return false; // 紅字國定假日不上課
+
+    return true;
+  }
+
+  // 計算從開始日到指定日期的累積時數
+  function calculateHours(targetDate) {
+    let current = new Date(START_DATE);
+    let completedDays = 0;
+
+    while (current <= targetDate && current <= END_DATE) {
+      if (isClassDay(current)) {
+        completedDays++;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+
+    let hoursDone = Math.min(completedDays * DAILY_HOURS, TOTAL_HOURS);
+    let hoursLeft = Math.max(TOTAL_HOURS - hoursDone, 0);
+
+    return { hoursDone, hoursLeft };
+  }
+
+  // 頁面更新 DOM 控制
+  function updateUI() {
+    const dateInput = document.getElementById('targetDate');
+    const selectedDate = new Date(dateInput.value);
+
+    // 如果選擇日期早於開課日
+    if (selectedDate < START_DATE) {
+      document.getElementById('hoursDone').innerText = '0 小時';
+      document.getElementById('hoursLeft').innerText = TOTAL_HOURS + ' 小時';
+      document.getElementById('progressPercent').innerText = '0%';
+      document.getElementById('progressFill').style.width = '0%';
+      return;
+    }
+
+    const { hoursDone, hoursLeft } = calculateHours(selectedDate);
+    const percentage = ((hoursDone / TOTAL_HOURS) * 100).toFixed(1);
+
+    document.getElementById('hoursDone').innerText = hoursDone + ' 小時';
+    document.getElementById('hoursLeft').innerText = hoursLeft + ' 小時';
+    document.getElementById('progressPercent').innerText = percentage + '%';
+    document.getElementById('progressFill').style.width = percentage + '%';
+  }
+
+  // 初始化：預設為今天日期
+  const datePicker = document.getElementById('targetDate');
+  const today = new Date().toISOString().split('T')[0];
+  datePicker.value = today;
+
+  // 事件監聽
+  datePicker.addEventListener('change', updateUI);
+
+  // 初次執行
+  updateUI();
+</script>
+
+</body>
+</html>
