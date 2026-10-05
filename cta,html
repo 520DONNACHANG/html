@@ -1,0 +1,46 @@
+<style>
+  .cta-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+  }
+  .cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  /* CTA 顏色版本 */
+  .cta-report {
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+  }
+  .cta-report:hover {
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+  }
+
+  .cta-download {
+    background: linear-gradient(90deg, #10b981, #22c55e);
+  }
+  .cta-download:hover {
+    background: linear-gradient(90deg, #22c55e, #10b981);
+  }
+
+  .cta-next {
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+  }
+  .cta-next:hover {
+    background: linear-gradient(90deg, #ef4444, #f59e0b);
+  }
+</style>
+
+<!-- CTA 按鈕範例 -->
+<a href="#report" class="cta-button cta-report">📊 查看學習報告</a>
+<a href="#download" class="cta-button cta-download">⬇️ 下載課程紀錄</a>
+<a href="#next-course" class="cta-button cta-next">🚀 預約下一堂課</a>
