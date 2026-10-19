@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>極致品味 - 質感電子商務平台</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col justify-between">
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            getDoc, 
+            setDoc, 
+            addDoc, 
+            getDocs, 
+            onSnapshot, 
+            query, 
+            updateDoc, 
+            deleteDoc 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 使用者提供的 Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBl55LpSiXXXXXwbOaY0oSUSVXxiy4mM",
+            authDomain: "test-XXXXXX-1.firebaseapp.com",
+            projectId: "test-XXXXXX-1",
+            storageBucket: "test-XXXXXX-1.firebasestorage.app",
+            messagingSenderId: "1680XXXXX100",
+            appId: "1:1680XXX22100:web:a3f72435XXXXX8f6258ea1",
+            measurementId: "G-G2XXXXXL29"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'ecommerce-demo-app';
+
+        // 將重要物件掛載到全域供 UI 互動使用
+        window.firebaseAppInstance = {
+            auth, db, appId,
+            signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged,
+            collection, doc, getDoc, setDoc, addDoc, getDocs, onSnapshot, query, updateDoc, deleteDoc
+        };
+
+        // 觸發初始化完成事件
+        window.dispatchEvent(new Event('firebase-ready'));
+    </script>
+
+    <header class="sticky top-0 z-40 bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="#" onclick="switchTab('shop')" class="text-2xl font-bold tracking-wider text-indigo-600 flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping"></i> <span>極致品味</span>
+                </a>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <button onclick="switchTab('shop')" class="nav-btn text-indigo-600 hover:text-indigo-800 transition">首頁商品</button>
+                    <button onclick="switchTab('manage')" class="nav-btn text-gray-500 hover:text-indigo-800 transition">新增商品</button>
+                </nav>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- 購物車按鈕 -->
+                <button onclick="openCartModal()" class="relative p-2 text-gray-600 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+
+                <!-- 會員專區按鈕 / 狀態 -->
+                <div id="auth-nav-area">
+                    <button onclick="openAuthModal('login')" class="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">登入 / 註冊</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- 提示訊息 Toast 容器 -->
+        <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+        <!-- 1. 商品列表頁面 (Shop Tab) -->
+        <section id="tab-shop" class="tab-content fade-in">
+            <!-- 搜尋與篩選列 -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white p-4 rounded-xl shadow-sm">
+                <div class="relative w-full md:w-96">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="search-input" oninput="filterProducts()" placeholder="搜尋精選好物..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                </div>
+                <div class="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0" id="category-filters">
+                    <button onclick="filterCategory('all')" class="cat-btn px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white whitespace-nowrap transition">全部商品</button>
+                    <button onclick="filterCategory('3C')" class="cat-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap transition">3C 科技</button>
+                    <button onclick="filterCategory('lifestyle')" class="cat-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap transition">質感生活</button>
+                    <button onclick="filterCategory('fashion')" class="cat-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap transition">潮流服飾</button>
+                </div>
+            </div>
+
+            <!-- 產品列表格 -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- 動態載入商品 -->
+                <div class="col-span-full text-center py-12 text-gray-400">載入商品中...</div>
+            </div>
+        </section>
+
+        <!-- 2. 新增產品頁面 (Manage Tab) -->
+        <section id="tab-manage" class="tab-content fade-in hidden max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-circle-plus text-indigo-600"></i> 上架新產品
+            </h2>
+            <form id="add-product-form" onsubmit="handleCreateProduct(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">產品名稱</label>
+                    <input type="text" id="p-name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">價格 (NT$)</label>
+                        <input type="number" id="p-price" required min="1" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">庫存數量</label>
+                        <input type="number" id="p-stock" required min="1" value="10" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">分類</label>
+                    <select id="p-category" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                        <option value="3C">3C 科技</option>
+                        <option value="lifestyle">質感生活</option>
+                        <option value="fashion">潮流服飾</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">圖片網址 (URL)</label>
+                    <input type="url" id="p-image" placeholder="https://images.unsplash.com/..." required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">產品描述</label>
+                    <textarea id="p-desc" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm"></textarea>
+                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition shadow-md">確認上架</button>
+            </form>
+        </section>
+
+    </main>
+
+    
+    <!-- 產品詳情 Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl fade-in relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 bg-white/85 hover:bg-white p-2 rounded-full text-gray-600 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-product-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- 動態填入 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 購物車滑出側邊欄 / Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-end hidden">
+        <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl fade-in">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-indigo-600"></i> 您的購物車</h3>
+                <button onclick="closeCartModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4 divide-y">
+                <!-- 動態購物車項目 -->
+            </div>
+            <div class="p-6 border-t bg-gray-50">
+                <div class="flex justify-between items-center mb-4 text-lg font-bold">
+                    <span>總計金額：</span>
+                    <span id="cart-total-price" class="text-indigo-600">NT$ 0</span>
+                </div>
+                <button onclick="openCheckoutModal()" id="checkout-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed">前往結帳</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 結帳付款 Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">填寫收件與付款資訊</h3>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="handleCheckoutSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">收件人姓名</label>
+                    <input type="text" id="ship-name" required class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">聯絡電話</label>
+                    <input type="tel" id="ship-phone" required class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">收件地址</label>
+                    <input type="text" id="ship-address" required class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">付款方式</label>
+                    <select class="w-full px-4 py-2 border rounded-lg text-sm bg-white">
+                        <option value="credit">信用卡線上一次付清</option>
+                        <option value="cod">超商貨到付款</option>
+                        <option value="linepay">LINE Pay 行動支付</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition shadow-md">確認送出訂單</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 會員登入/註冊 Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl fade-in relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="flex border-b mb-6">
+                <button id="auth-tab-login" onclick="switchAuthMode('login')" class="flex-1 pb-3 font-bold text-indigo-600 border-b-2 border-indigo-600">登入</button>
+                <button id="auth-tab-register" onclick="switchAuthMode('register')" class="flex-1 pb-3 font-medium text-gray-400">註冊新帳號</button>
+            </div>
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
+                    <input type="email" id="auth-email" required class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">密碼 (至少 6 碼)</label>
+                    <input type="password" id="auth-password" required minlength="6" class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition shadow-md">登入帳號</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 會員資料維護 Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl fade-in relative">
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-user-gear text-indigo-600"></i> 會員資料維護
+            </h3>
+            <form onsubmit="handleSaveProfile(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">會員姓名</label>
+                    <input type="text" id="prof-name" class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">聯絡電話</label>
+                    <input type="tel" id="prof-phone" class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">預設收件地址</label>
+                    <input type="text" id="prof-address" class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition shadow-md">儲存變更</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t mt-16 py-8 text-center text-sm text-gray-500">
+        <p>&copy; 2026 極致品味電子商務平台. All Rights Reserved.Powered by Firebase & Tailwind CSS.</p>
+    </footer>
+
+    <script>
+        // 全域狀態變數
+        let currentUser = null;
+        let productsList = [];
+        let currentFilterCategory = 'all';
+        let currentSearchQuery = '';
+        let cart = [];
+        let authMode = 'login'; // 'login' or 'register'
+
+        // 監聽 Firebase 準備就緒事件
+        window.addEventListener('firebase-ready', () => {
+            const { auth, onAuthStateChanged } = window.firebaseAppInstance;
+            
+            // 監聽登入狀態
+            onAuthStateChanged(auth, async (user) => {
+                currentUser = user;
+                updateAuthNavUI();
+                if (user) {
+                    await loadUserProfile(user.uid);
+                }
+            });
+
+            // 初始化載入商品
+            fetchProducts();
+        });
+
+        // 提示訊息 Toast 函式
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-xl shadow-lg text-white text-sm font-medium flex items-center gap-2 transition transform translate-y-2 opacity-0 pointer-events-auto ${type === 'success' ? 'bg-emerald-600' : 'bg-red-600'}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i> ${message}`;
+            container.appendChild(toast);
+            
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 切換主要頁籤 (Tab)
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 從 Firestore 讀取商品列表
+        async function fetchProducts() {
+            const { db, appId, collection, getDocs } = window.firebaseAppInstance;
+            const grid = document.getElementById('product-grid');
+            
+            try {
+                const qRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+                const snapshot = await getDocs(qRef);
+                
+                productsList = [];
+                snapshot.forEach(docSnap => {
+                    productsList.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // 若資料庫無商品，自動植入幾筆預設範例商品
+                if (productsList.length === 0) {
+                    await seedSampleProducts();
+                    return;
+                }
+
+                renderProducts();
+            } catch (error) {
+                console.error("載入商品失敗:", error);
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-500">載入商品失敗，請檢查網路或 Firestore 規則。</div>`;
+            }
+        }
+
+        // 植入範例商品
+        async function seedSampleProducts() {
+            const { db, appId, collection, addDoc } = window.firebaseAppInstance;
+            const samples = [
+                { name: "ANC 降噪無線藍牙耳機", price: 3990, stock: 15, category: "3C", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600", desc: "沉浸式立體音效，主動降噪技術，給您純淨音樂體驗。" },
+                { name: "極簡設計金屬機械手錶", price: 6800, stock: 8, category: "fashion", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600", desc: "精工細作，不鏽鋼錶帶，展現卓越品味與自信。" },
+                { name: "多功能手沖咖啡壺組", price: 1880, stock: 20, category: "lifestyle", image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600", desc: "享受慢活時光，在家也能輕鬆手沖職人級精品咖啡。" },
+                { name: "智慧運動手環 Pro", price: 1490, stock: 25, category: "3C", image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=600", desc: "全天候心率血氧監測，多種運動模式，您的健康管家。" }
+            ];
+
+            for (let item of samples) {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), item);
+            }
+            fetchProducts();
+        }
+
+        // 渲染商品列表
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            
+            // 篩選分類與搜尋字串
+            const filtered = productsList.filter(p => {
+                const matchCat = currentFilterCategory === 'all' || p.category === currentFilterCategory;
+                const matchSearch = p.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) || p.desc.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">沒有找到相關商品。</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between border border-gray-100">
+                    <div class="cursor-pointer overflow-hidden relative group" onclick="openProductModal('${p.id}')">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-52 object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/400x300/f3f4f6/9ca3af?text=No+Image'">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-medium px-2.5 py-1 rounded-full text-indigo-600 shadow-sm">${getCategoryName(p.category)}</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-base mb-1 cursor-pointer hover:text-indigo-600 line-clamp-1" onclick="openProductModal('${p.id}')">${p.name}</h3>
+                            <p class="text-gray-500 text-xs line-clamp-2 mb-4">${p.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-lg font-bold text-indigo-600">NT$ ${p.price.toLocaleString()}</span>
+                            <button onclick="addToCart('${p.id}')" class="p-2.5 bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white rounded-xl transition shadow-sm">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryName(cat) {
+            const map = { '3C': '3C 科技', 'lifestyle': '質感生活', 'fashion': '潮流服飾' };
+            return map[cat] || cat;
+        }
+
+        function filterCategory(cat) {
+            currentFilterCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap transition";
+            });
+            event.target.className = "cat-btn px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white whitespace-nowrap transition";
+            renderProducts();
+        }
+
+        function filterProducts() {
+            currentSearchQuery = document.getElementById('search-input').value;
+            renderProducts();
+        }
+
+        // 商品詳情 Modal
+        function openProductModal(productId) {
+            const p = productsList.find(item => item.id === productId);
+            if (!p) return;
+
+            const content = document.getElementById('modal-product-content');
+            content.innerHTML = `
+                <div class="h-80 md:h-full bg-gray-100">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-600 rounded-full">${getCategoryName(p.category)}</span>
+                        <h2 class="text-2xl font-bold text-gray-800 mt-2 mb-2">${p.name}</h2>
+                        <div class="text-2xl font-bold text-indigo-600 mb-4">NT$ ${p.price.toLocaleString()}</div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">${p.desc}</p>
+                        <p class="text-xs text-gray-400 mb-6">庫存數量：${p.stock} 件</p>
+                    </div>
+                    <button onclick="addToCart('${p.id}'); closeProductModal();" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> 加入購物車
+                    </button>
+                </div>
+            `;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        // 購物車功能
+        function addToCart(productId) {
+            const p = productsList.find(item => item.id === productId);
+            if (!p) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                if (existing.qty < p.stock) {
+                    existing.qty++;
+                } else {
+                    showToast('已達庫存上限', 'error');
+                    return;
+                }
+            } else {
+                cart.push({ ...p, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`已將 ${p.name} 加入購物車`);
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (totalCount > 0) {
+                badge.innerText = totalCount;
+                badge.classList.remove('hidden');
+                checkoutBtn.removeAttribute('disabled');
+            } else {
+                badge.classList.add('hidden');
+                checkoutBtn.setAttribute('disabled', 'true');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-gray-400">購物車目前是空的</div>`;
+                totalPriceEl.innerText = `NT$ 0`;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="flex items-center justify-between py-4">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-xl border">
+                        <div class="flex-grow px-4">
+                            <h4 class="text-sm font-bold text-gray-800 line-clamp-1">${item.name}</h4>
+                            <div class="text-sm text-indigo-600 font-semibold">NT$ ${item.price.toLocaleString()}</div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 flex items-center justify-center font-bold">-</button>
+                            <span class="text-sm font-medium w-6 text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalPriceEl.innerText = `NT$ ${total.toLocaleString()}`;
+        }
+
+        function changeQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function openCartModal() {
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        // 新增商品表單提交
+        async function handleCreateProduct(e) {
+            e.preventDefault();
+            const { db, appId, collection, addDoc } = window.firebaseAppInstance;
+
+            const newProduct = {
+                name: document.getElementById('p-name').value,
+                price: Number(document.getElementById('p-price').value),
+                stock: Number(document.getElementById('p-stock').value),
+                category: document.getElementById('p-category').value,
+                image: document.getElementById('p-image').value,
+                desc: document.getElementById('p-desc').value,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), newProduct);
+                showToast('商品成功上架！');
+                document.getElementById('add-product-form').reset();
+                fetchProducts();
+                switchTab('shop');
+            } catch (err) {
+                console.error("上架失敗:", err);
+                showToast('上架失敗，請稍後再試', 'error');
+            }
+        }
+
+        // 會員身分導覽 UI 更新
+        function updateAuthNavUI() {
+            const area = document.getElementById('auth-nav-area');
+            if (currentUser) {
+                area.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <button onclick="openProfileModal()" class="text-xs font-medium text-gray-700 hover:text-indigo-600 flex items-center gap-1.5 bg-gray-100 px-3 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">${currentUser.email}</span>
+                        </button>
+                        <button onclick="handleLogout()" class="text-gray-500 hover:text-red-600 p-2 transition" title="登出">
+                            <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                area.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">登入 / 註冊</button>
+                `;
+            }
+        }
+
+        // 登入/註冊 Modal 控制
+        function openAuthModal(mode = 'login') {
+            switchAuthMode(mode);
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthMode(mode) {
+            authMode = mode;
+            const tabLogin = document.getElementById('auth-tab-login');
+            const tabRegister = document.getElementById('auth-tab-register');
+            const submitBtn = document.getElementById('auth-submit-btn');
+
+            if (mode === 'login') {
+                tabLogin.className = "flex-1 pb-3 font-bold text-indigo-600 border-b-2 border-indigo-600";
+                tabRegister.className = "flex-1 pb-3 font-medium text-gray-400";
+                submitBtn.innerText = "登入帳號";
+            } else {
+                tabRegister.className = "flex-1 pb-3 font-bold text-indigo-600 border-b-2 border-indigo-600";
+                tabLogin.className = "flex-1 pb-3 font-medium text-gray-400";
+                submitBtn.innerText = "立即註冊";
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword } = window.firebaseAppInstance;
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+
+            try {
+                if (authMode === 'login') {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showToast('登入成功！');
+                } else {
+                    const cred = await createUserWithEmailAndPassword(auth, email, password);
+                    // 初始化使用者資料文件
+                    await saveUserProfileData(cred.user.uid, { email, name: '', phone: '', address: '' });
+                    showToast('註冊成功並已自動登入！');
+                }
+                closeAuthModal();
+                document.getElementById('auth-form').reset();
+            } catch (err) {
+                console.error("認證錯誤:", err);
+                showToast(`操作失敗: ${err.message}`, 'error');
+            }
+        }
+
+        async function handleLogout() {
+            const { auth, signOut } = window.firebaseAppInstance;
+            try {
+                await signOut(auth);
+                showToast('已成功登出');
+            } catch (err) {
+                console.error("登出失敗:", err);
+            }
+        }
+
+        // 會員資料維護
+        async function loadUserProfile(uid) {
+            const { db, appId, doc, getDoc } = window.firebaseAppInstance;
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'users', uid, 'profile', 'info');
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('prof-name').value = data.name || '';
+                    document.getElementById('prof-phone').value = data.phone || '';
+                    document.getElementById('prof-address').value = data.address || '';
+                }
+            } catch (err) {
+                console.error("載入會員資料失敗:", err);
+            }
+        }
+
+        async function saveUserProfileData(uid, data) {
+            const { db, appId, doc, setDoc } = window.firebaseAppInstance;
+            const docRef = doc(db, 'artifacts', appId, 'users', uid, 'profile', 'info');
+            await setDoc(docRef, data, { merge: true });
+        }
+
+        function openProfileModal() {
+            if (!currentUser) return;
+            loadUserProfile(currentUser.uid);
+            document.getElementById('profile-modal').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+
+        async function handleSaveProfile(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const profileData = {
+                name: document.getElementById('prof-name').value,
+                phone: document.getElementById('prof-phone').value,
+                address: document.getElementById('prof-address').value,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                await saveUserProfileData(currentUser.uid, profileData);
+                showToast('會員資料更新成功！');
+                closeProfileModal();
+            } catch (err) {
+                console.error("更新失敗:", err);
+                showToast('更新失敗，請檢查權限', 'error');
+            }
+        }
+
+        // 結帳付款流程
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            if (!currentUser) {
+                showToast('請先登入會員以完成結帳', 'error');
+                openAuthModal('login');
+                return;
+            }
+
+            // 自動帶入會員預設資料
+            const { db, appId, doc, getDoc } = window.firebaseAppInstance;
+            const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'info');
+            getDoc(docRef).then(snap => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    document.getElementById('ship-name').value = data.name || '';
+                    document.getElementById('ship-phone').value = data.phone || '';
+                    document.getElementById('ship-address').value = data.address || '';
+                }
+            });
+
+            closeCartModal();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        async function handleCheckoutSubmit(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const { db, appId, collection, addDoc } = window.firebaseAppInstance;
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            const orderData = {
+                userId: currentUser.uid,
+                items: cart,
+                total: totalAmount,
+                shipping: {
+                    name: document.getElementById('ship-name').value,
+                    phone: document.getElementById('ship-phone').value,
+                    address: document.getElementById('ship-address').value
+                },
+                status: '已付款成立',
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                // 儲存訂單至用戶專屬的 orders 集合
+                await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'orders'), orderData);
+                
+                showToast('訂單已成立！付款成功！');
+                cart = [];
+                updateCartUI();
+                closeCheckoutModal();
+            } catch (err) {
+                console.error("成立訂單失敗:", err);
+                showToast('結帳失敗，請稍後再試', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
