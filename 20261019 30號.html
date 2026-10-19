@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藝想天開 | 植能香氛能量水苔球 Botanical & Aromatic Energy Kokedama</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        aura: {
+                            50: '#fbf9f5',
+                            100: '#f4efe4',
+                            200: '#e6d8be',
+                            500: '#b89768',
+                            600: '#9d7b4a',
+                            700: '#7e5f38',
+                            800: '#523f27',
+                            900: '#2c2215',
+                        },
+                        botanical: {
+                            50: '#f3f6f3',
+                            100: '#e1e8e1',
+                            500: '#587358',
+                            700: '#384d38',
+                            800: '#2a3b2a',
+                            900: '#172417',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        cinzel: ['"Cinzel"', 'serif'],
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .font-serif { font-family: 'Noto Serif TC', serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        
+        .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-aura-50 text-slate-800 min-h-screen flex flex-col justify-between antialiased">
+
+    <header class="sticky top-0 z-40 bg-aura-50/90 backdrop-blur-md border-b border-aura-200/50 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-botanical-800 to-aura-600 text-amber-200 flex items-center justify-center text-xl shadow-md group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold font-serif tracking-wider text-botanical-900 block leading-tight">藝想天開</span>
+                    <span class="text-[10px] tracking-widest text-aura-600 font-cinzel font-semibold uppercase">Aromatic Energy Kokedama</span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-slate-700">
+                <a href="#about" class="hover:text-aura-600 transition">植能概念</a>
+                <a href="#products" class="hover:text-aura-600 transition">能量苔球</a>
+                <a href="#create-product" class="hover:text-aura-600 transition text-amber-700 font-semibold" id="nav-add-product" style="display:none;">+ 新建商品</a>
+            </nav>
+
+            <!-- Actions (Auth & Cart) -->
+            <div class="flex items-center space-x-3">
+                <!-- User Profile / Auth State -->
+                <div id="auth-container" class="flex items-center space-x-2">
+                    <button onclick="openAuthModal('login')" id="btn-login-modal" class="px-4 py-2 rounded-full border border-aura-500 text-aura-800 hover:bg-aura-100 text-xs font-semibold transition">
+                        <i class="fa-regular fa-user mr-1"></i> 會員登入 / 註冊
+                    </button>
+
+                    <div id="user-menu" class="hidden relative group">
+                        <button onclick="toggleProfileModal()" class="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-900 hover:bg-botanical-200 text-xs font-semibold transition">
+                            <i class="fa-solid fa-circle-user text-base text-aura-600"></i>
+                            <span id="user-display-name">會員中心</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shopping Cart Toggle -->
+                <button onclick="toggleCartModal()" class="relative p-2.5 rounded-full text-botanical-900 hover:bg-aura-100 transition">
+                    <i class="fa-solid fa-basket-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute top-0 right-0 bg-amber-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Global Toast Alert Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3 pointer-events-none"></div>
+
+    <main class="flex-grow">
+        <section class="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-botanical-900 via-botanical-800 to-aura-900 text-white">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e6d8be_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-aura-500/20 text-aura-200 text-xs font-semibold tracking-widest border border-aura-500/40 uppercase">
+                            ✨ 植物能量 × 脈輪香氛 × 手作苔玉
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold leading-tight">
+                            喚醒身心和諧的 <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-aura-200 to-emerald-200">植能香氛能量苔球</span>
+                        </h1>
+                        <p class="text-aura-100 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            「藝想天開」將自然生命力凝結於綠意球體，結合精油香氛與礦石脈輪頻率。讓一株苔球，成為您空間中最靜謐溫潤的療癒結界。
+                        </p>
+                        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                            <a href="#products" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-botanical-900 font-bold text-center shadow-lg transition-all hover:scale-105">
+                                探索專屬能量品項
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <div class="absolute -inset-4 bg-aura-500/20 rounded-full blur-3xl -z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" alt="植能香氛能量苔球" class="w-full h-96 sm:h-[450px] object-cover rounded-3xl shadow-2xl border-2 border-aura-500/30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-white border-b border-aura-200/60">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-aura-600 font-cinzel text-xs font-bold tracking-widest block mb-2">OUR PHILOSOPHY</span>
+                    <h2 class="text-3xl font-serif font-bold text-botanical-900">藝想天開的三重療癒能量</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-8 rounded-2xl bg-aura-50 border border-aura-200/60 text-center space-y-4">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-botanical-800 text-amber-200 flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-botanical-900">植物綠能 (Plant Vitality)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            嚴選呼吸力強大的觀葉品種與天然水苔，透過活生生的植物頻率，為空間帶來純淨活力與空氣淨化。
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-aura-50 border border-aura-200/60 text-center space-y-4">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-botanical-800 text-amber-200 flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-spray-can-sparkles"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-botanical-900">脈輪香氛 (Aromatherapy)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            特調植萃單方與複方純精油滴入底座或苔球介質，經由擴香作用順暢對應身體脈輪，沉澱繁雜心思。
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-aura-50 border border-aura-200/60 text-center space-y-4">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-botanical-800 text-amber-200 flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-botanical-900">手作藝境 (Kokedama Craft)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            職人手作捏製，搭配天然水晶礦石盤或擴香木，將工藝美學與天地自然之美融合於一體。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-aura-600 font-cinzel text-xs font-bold tracking-widest block mb-1">COLLECTION</span>
+                    <h2 class="text-3xl font-serif font-bold text-botanical-900">植能香氛苔球系列</h2>
+                </div>
+                
+                <!-- Category / Chakra Filter Buttons -->
+                <div class="flex items-center space-x-2 overflow-x-auto pb-2 md:pb-0" id="category-filters">
+                    <button onclick="filterProducts('all')" class="cat-btn px-4 py-2 text-xs font-semibold rounded-full bg-botanical-800 text-amber-200 transition whitespace-nowrap shadow-sm" data-cat="all">全部能量品項</button>
+                    <button onclick="filterProducts('heart')" class="cat-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 hover:bg-aura-100 border border-slate-200 transition whitespace-nowrap" data-cat="heart">💚 心輪・敞開愛</button>
+                    <button onclick="filterProducts('root')" class="cat-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 hover:bg-aura-100 border border-slate-200 transition whitespace-nowrap" data-cat="root">🔴 海底輪・紮根安全</button>
+                    <button onclick="filterProducts('third-eye')" class="cat-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 hover:bg-aura-100 border border-slate-200 transition whitespace-nowrap" data-cat="third-eye">💜 眉心輪・直覺靈感</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamically Inserted -->
+            </div>
+        </section>
+
+        <section id="create-product" class="py-16 bg-aura-100/60 border-t border-aura-200 hidden">
+            <div class="max-w-3xl mx-auto px-4">
+                <div class="bg-white rounded-3xl p-8 border border-aura-200 shadow-xl">
+                    <h2 class="text-2xl font-serif font-bold text-botanical-900 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-aura-600"></i> 管理員：上架新香氛苔球商品
+                    </h2>
+                    <form onsubmit="handleCreateProduct(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">商品名稱</label>
+                                <input type="text" id="new-prod-name" required placeholder="例如：心輪玫瑰天竺葵苔球" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">對應能量分類</label>
+                                <select id="new-prod-cat" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-aura-500">
+                                    <option value="heart">💚 心輪・敞開愛</option>
+                                    <option value="root">🔴 海底輪・紮根安全</option>
+                                    <option value="third-eye">💜 眉心輪・直覺靈感</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">價格 (NT$)</label>
+                                <input type="number" id="new-prod-price" required placeholder="880" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">圖片連結 (URL)</label>
+                                <input type="url" id="new-prod-img" required placeholder="https://images.unsplash.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">能量香氛前中後調說明</label>
+                            <input type="text" id="new-prod-aroma" required placeholder="前調: 甜橙 | 中調: 大馬士革玫瑰 | 後調: 大西洋雪松" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">商品完整介紹</label>
+                            <textarea id="new-prod-desc" rows="3" required placeholder="詳細描述植能與靈性能量..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-3.5 bg-botanical-800 hover:bg-botanical-900 text-amber-200 font-bold rounded-xl transition shadow-md">
+                            發佈新能量商品至數據庫
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Member Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl fade-in relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-botanical-900 mb-2" id="auth-title">會員登入</h3>
+            <p class="text-xs text-slate-500 mb-6">登入「藝想天開」探索您的個人植能香氛能量紀錄</p>
+
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">電子郵件 (Email)</label>
+                    <input type="email" id="auth-email" required placeholder="user@example.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">密碼 (Password)</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+
+                <button type="submit" id="auth-submit-btn" class="w-full py-3.5 bg-botanical-800 hover:bg-botanical-900 text-amber-200 font-bold rounded-xl transition shadow-md">
+                    登入
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-xs text-slate-500 border-t border-slate-100 pt-4">
+                <span id="auth-switch-text">還沒有帳號嗎？</span>
+                <button onclick="switchAuthMode()" id="auth-switch-btn" class="text-aura-600 font-bold underline ml-1">立即註冊新會員</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl fade-in relative">
+            <button onclick="toggleProfileModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-botanical-900 mb-1">會員個人檔案資料</h3>
+            <p class="text-xs text-slate-500 mb-6">維護您的運送資訊與靈性脈輪偏好</p>
+
+            <form onsubmit="handleSaveProfile(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">帳號 Email</label>
+                    <input type="text" id="profile-email" readonly class="w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm text-slate-500 cursor-not-allowed">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">姓名 / 尊稱</label>
+                    <input type="text" id="profile-name" required placeholder="例如：林藝想" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">聯絡電話</label>
+                    <input type="tel" id="profile-phone" placeholder="0912345678" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">預設收件地址</label>
+                    <input type="text" id="profile-address" placeholder="台北市大安區..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button type="submit" class="flex-grow py-3 bg-botanical-800 hover:bg-botanical-900 text-amber-200 font-bold rounded-xl transition shadow-md text-sm">
+                        儲存修改
+                    </button>
+                    <button type="button" onclick="handleSignOut()" class="px-5 py-3 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-xl transition text-sm">
+                        登出帳號
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl fade-in relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 bg-white/80 hover:bg-white p-2 rounded-full text-slate-600 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-product-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-end hidden">
+        <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl fade-in">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-aura-50">
+                <h3 class="text-lg font-serif font-bold text-botanical-900 flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-aura-600"></i> 您的結界訂購清單
+                </h3>
+                <button onclick="toggleCartModal()" class="text-slate-400 hover:text-slate-600 p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4 divide-y divide-slate-100">
+                <!-- Cart Items -->
+            </div>
+
+            <div class="p-6 border-t border-slate-100 bg-slate-50">
+                <div class="flex justify-between items-center mb-4 text-lg font-bold text-slate-800">
+                    <span>總計金額</span>
+                    <span id="cart-total-price" class="text-botanical-800 font-serif">NT$ 0</span>
+                </div>
+                <button onclick="openCheckoutModal()" id="checkout-btn" class="w-full py-3.5 bg-botanical-800 hover:bg-botanical-900 text-amber-200 font-bold rounded-xl transition shadow-md disabled:bg-slate-300 disabled:cursor-not-allowed">
+                    前往結帳付款
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl fade-in relative">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-botanical-900 mb-6">確認訂單與付款配送</h3>
+
+            <form onsubmit="handleCheckout(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">訂購人姓名</label>
+                    <input type="text" id="checkout-name" required placeholder="林藝想" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">聯絡電話</label>
+                    <input type="tel" id="checkout-phone" required placeholder="0912345678" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">收件地址</label>
+                    <input type="text" id="checkout-address" required placeholder="請填寫配送地址" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aura-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">選擇付款方式</label>
+                    <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-aura-500">
+                        <option value="linepay">LINE Pay 快速支付</option>
+                        <option value="credit">信用卡一次付清</option>
+                        <option value="cod">超商取貨付款</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-botanical-800 hover:bg-botanical-900 text-amber-200 font-bold rounded-xl transition shadow-lg mt-2">
+                    送出訂單並完成付款
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-botanical-900 text-aura-100 py-12 border-t border-botanical-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-gem text-amber-300 text-xl"></i>
+                    <span class="text-xl font-serif font-bold text-white">藝想天開 植能香氛</span>
+                </div>
+                <p class="text-xs text-aura-200/80 leading-relaxed">
+                    以植物之名，點亮內心之光。結合生命綠意與香氛頻率的靈性美學提案。
+                </p>
+            </div>
+
+            <div class="space-y-2 text-sm">
+                <p class="font-bold text-white mb-2">藝想工坊據點</p>
+                <p><i class="fa-solid fa-location-dot w-5 text-amber-300"></i> 台北市大安區永康街 99 號 1 樓</p>
+                <p><i class="fa-solid fa-clock w-5 text-amber-300"></i> 週二至週日 12:00 - 20:00 (週一公休)</p>
+            </div>
+
+            <div class="space-y-2 text-sm">
+                <p class="font-bold text-white mb-2">關注藝想天開</p>
+                <div class="flex space-x-4 text-lg">
+                    <a href="#" class="w-10 h-10 rounded-full bg-botanical-800 flex items-center justify-center hover:bg-botanical-700 transition text-amber-200"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-botanical-800 flex items-center justify-center hover:bg-botanical-700 transition text-amber-200"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-botanical-800 flex items-center justify-center hover:bg-botanical-700 transition text-amber-200"><i class="fa-brands fa-line"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-botanical-800 text-center text-xs text-aura-200/50">
+            &copy; 2026 藝想天開 Botanical & Aromatic Energy. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            setDoc, 
+            collection, 
+            getDocs, 
+            addDoc 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // User's Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBl55LpSiXXXXXwbOaY0oSUSVXxiy4mM",
+            authDomain: "test-XXXXXX-1.firebaseapp.com",
+            projectId: "test-XXXXXX-1",
+            storageBucket: "test-XXXXXX-1.firebasestorage.app",
+            messagingSenderId: "1680XXXXX100",
+            appId: "1:1680XXX22100:web:a3f72435XXXXX8f6258ea1",
+            measurementId: "G-G2XXXXXL29"
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'artistic-energy-kokedama';
+
+        // Check if API key contains placeholder string "XXXXX" to enable Mock Mode
+        const isMock = firebaseConfig.apiKey.includes("XXXXX");
+
+        let app, auth, db;
+
+        if (!isMock) {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                console.log("Connected to Real Firebase Project");
+            } catch (err) {
+                console.warn("Firebase Init fallback to Mock Mode:", err);
+            }
+        }
+
+        // Default Energy Kokedama Products Dataset
+        const defaultProducts = [
+            {
+                id: 'k1',
+                name: '心輪・玫瑰天竺葵波浪山蘇苔球',
+                category: 'heart',
+                price: 880,
+                image: 'https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=600&q=80',
+                aroma: '前調: 甜橙 | 中調: 玫瑰天竺葵 | 後調: 檀香',
+                desc: '鮮綠波浪葉片揉合無條件愛的心輪頻率。天竺葵香氣能撫平情緒波動，舒緩心靈負擔。'
+            },
+            {
+                id: 'k2',
+                name: '海底輪・岩蘭草雪松積水鳳梨苔球',
+                category: 'root',
+                price: 980,
+                image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80',
+                desc: '帶有濃郁大地土香的岩蘭草與大西洋雪松精油，深層錨定海底輪能量，帶給您安穩的深根安全感。',
+                aroma: '前調: 佛手柑 | 中調: 大西洋雪松 | 後調: 岩蘭草'
+            },
+            {
+                id: 'k3',
+                name: '眉心輪・真實薰衣草銀後粗肋草苔球',
+                category: 'third-eye',
+                price: 920,
+                image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=600&q=80',
+                desc: '高雅銀白葉片搭配真薰衣草與乳香精油，開啟眉心輪直覺洞察力，極為適合靜心冥想空間。',
+                aroma: '前調: 歐薄荷 | 中調: 高山真實薰衣草 | 後調: 乳香'
+            },
+            {
+                id: 'k4',
+                name: '心輪・橙花廣藿香兔腳蕨苔球',
+                category: 'heart',
+                price: 850,
+                image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=600&q=80',
+                desc: '羽狀輕柔蕨葉象徵生命輕盈伸展，橙花精油溫暖撫慰，重拾生命喜悅。',
+                aroma: '前調: 苦橙葉 | 中調: 苦橙花 | 後調: 廣藿香'
+            }
+        ];
+
+        // Global State Management
+        window.currentUser = null;
+        window.userProfile = null;
+        window.cart = [];
+        window.productsList = [...defaultProducts];
+        window.authMode = 'login'; // 'login' | 'register'
+
+        // --- Auth & Firestore Logic ---
+        window.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+
+        async function initApp() {
+            if (!isMock && auth) {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        window.currentUser = user;
+                        await loadUserProfile(user.uid);
+                        updateUserUI(true);
+                    } else {
+                        window.currentUser = null;
+                        window.userProfile = null;
+                        updateUserUI(false);
+                    }
+                });
+            } else {
+                // Mock Auth state recovery
+                const mockUser = localStorage.getItem('mock_user');
+                if (mockUser) {
+                    window.currentUser = JSON.parse(mockUser);
+                    window.userProfile = JSON.parse(localStorage.getItem('mock_profile') || '{}');
+                    updateUserUI(true);
+                } else {
+                    updateUserUI(false);
+                }
+            }
+
+            await fetchProducts();
+            renderProducts(window.productsList);
+        }
+
+        async function fetchProducts() {
+            if (!isMock && db) {
+                try {
+                    const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+                    const snapshot = await getDocs(colRef);
+                    if (!snapshot.empty) {
+                        const fetched = [];
+                        snapshot.forEach(docSnap => {
+                            fetched.push({ id: docSnap.id, ...docSnap.data() });
+                        });
+                        window.productsList = fetched;
+                    }
+                } catch (e) {
+                    console.error("Fetch products error:", e);
+                }
+            }
+        }
+
+        async function loadUserProfile(uid) {
+            if (!isMock && db) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'users', uid, 'profile', 'info');
+                    const snap = await getDoc(docRef);
+                    if (snap.exists()) {
+                        window.userProfile = snap.data();
+                    }
+                } catch (e) {
+                    console.error("Load profile error:", e);
+                }
+            }
+        }
+
+        function updateUserUI(isLoggedIn) {
+            const loginBtn = document.getElementById('btn-login-modal');
+            const userMenu = document.getElementById('user-menu');
+            const navAddProd = document.getElementById('nav-add-product');
+            const createProdSec = document.getElementById('create-product');
+
+            if (isLoggedIn) {
+                if (loginBtn) loginBtn.classList.add('hidden');
+                if (userMenu) userMenu.classList.remove('hidden');
+                if (navAddProd) navAddProd.style.display = 'inline-block';
+                if (createProdSec) createProdSec.classList.remove('hidden');
+
+                const nameDisplay = document.getElementById('user-display-name');
+                if (nameDisplay) {
+                    nameDisplay.innerText = window.userProfile?.name || window.currentUser?.email || '尊貴會員';
+                }
+            } else {
+                if (loginBtn) loginBtn.classList.remove('hidden');
+                if (userMenu) userMenu.classList.add('hidden');
+                if (navAddProd) navAddProd.style.display = 'none';
+                if (createProdSec) createProdSec.classList.add('hidden');
+            }
+        }
+
+        // Auth Submit
+        window.handleAuthSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+
+            if (!isMock && auth) {
+                try {
+                    if (window.authMode === 'login') {
+                        await signInWithEmailAndPassword(auth, email, password);
+                        showToast("歡迎回到藝想天開！");
+                    } else {
+                        const res = await createUserWithEmailAndPassword(auth, email, password);
+                        window.currentUser = res.user;
+                        // Save initial profile
+                        await setDoc(doc(db, 'artifacts', appId, 'users', res.user.uid, 'profile', 'info'), {
+                            email: email,
+                            name: email.split('@')[0],
+                            createdAt: new Date().toISOString()
+                        });
+                        showToast("會員註冊成功！");
+                    }
+                    closeAuthModal();
+                } catch (err) {
+                    showToast("認證錯誤: " + err.message);
+                }
+            } else {
+                // Mock Mode Login/Register
+                const mockUid = 'mock_' + btoa(email).replace(/=/g, '');
+                window.currentUser = { uid: mockUid, email: email };
+                window.userProfile = { email: email, name: email.split('@')[0] };
+
+                localStorage.setItem('mock_user', JSON.stringify(window.currentUser));
+                localStorage.setItem('mock_profile', JSON.stringify(window.userProfile));
+
+                updateUserUI(true);
+                showToast(`[展示模式] ${window.authMode === 'login' ? '登入成功' : '註冊成功'}`);
+                closeAuthModal();
+            }
+        };
+
+        window.handleSignOut = async function() {
+            if (!isMock && auth) {
+                await signOut(auth);
+            } else {
+                localStorage.removeItem('mock_user');
+                localStorage.removeItem('mock_profile');
+                window.currentUser = null;
+                window.userProfile = null;
+                updateUserUI(false);
+            }
+            toggleProfileModal();
+            showToast("您已安全登出帳號");
+        };
+
+        window.handleSaveProfile = async function(e) {
+            e.preventDefault();
+            if (!window.currentUser) return;
+
+            const name = document.getElementById('profile-name').value;
+            const phone = document.getElementById('profile-phone').value;
+            const address = document.getElementById('profile-address').value;
+
+            const profileData = {
+                email: window.currentUser.email,
+                name,
+                phone,
+                address,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (!isMock && db) {
+                await setDoc(doc(db, 'artifacts', appId, 'users', window.currentUser.uid, 'profile', 'info'), profileData);
+            } else {
+                localStorage.setItem('mock_profile', JSON.stringify(profileData));
+            }
+
+            window.userProfile = profileData;
+            updateUserUI(true);
+            toggleProfileModal();
+            showToast("個人資料已更新成功");
+        };
+
+        window.handleCreateProduct = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-prod-name').value;
+            const category = document.getElementById('new-prod-cat').value;
+            const price = Number(document.getElementById('new-prod-price').value);
+            const image = document.getElementById('new-prod-img').value;
+            const aroma = document.getElementById('new-prod-aroma').value;
+            const desc = document.getElementById('new-prod-desc').value;
+
+            const newProd = { name, category, price, image, aroma, desc, createdAt: new Date().toISOString() };
+
+            if (!isMock && db) {
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+                const docRef = await addDoc(colRef, newProd);
+                newProd.id = docRef.id;
+            } else {
+                newProd.id = 'k_' + Date.now();
+            }
+
+            window.productsList.unshift(newProd);
+            renderProducts(window.productsList);
+            showToast("新能量香氛苔球上架成功！");
+            e.target.reset();
+        };
+
+        // UI & Render Functions
+        window.renderProducts = function(items) {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return;
+
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-2xl overflow-hidden border border-aura-200/80 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                    <div class="relative cursor-pointer overflow-hidden" onclick="openProductModal('${item.id}')">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-botanical-900/80 backdrop-blur-sm text-[11px] font-semibold text-amber-200 px-3 py-1 rounded-full shadow-sm">
+                            ${getCatBadge(item.category)}
+                        </span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-serif font-bold text-botanical-900 text-lg mb-1 cursor-pointer hover:text-aura-600 transition" onclick="openProductModal('${item.id}')">${item.name}</h3>
+                            <p class="text-aura-600 text-xs font-semibold mb-2"><i class="fa-solid fa-wind mr-1"></i>${item.aroma}</p>
+                            <p class="text-slate-500 text-xs line-clamp-2 mb-4 leading-relaxed">${item.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                            <span class="text-lg font-serif font-bold text-botanical-800">NT$ ${item.price}</span>
+                            <button onclick="addToCart('${item.id}')" class="p-2.5 bg-aura-100 hover:bg-botanical-800 text-botanical-900 hover:text-amber-200 rounded-xl transition shadow-sm">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        function getCatBadge(cat) {
+            const map = {
+                'heart': '💚 心輪能量',
+                'root': '🔴 海底輪能量',
+                'third-eye': '💜 眉心輪能量'
+            };
+            return map[cat] || '✨ 植能苔球';
+        }
+
+        window.filterProducts = function(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = "cat-btn px-4 py-2 text-xs font-semibold rounded-full bg-botanical-800 text-amber-200 transition whitespace-nowrap shadow-sm";
+                } else {
+                    btn.className = "cat-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 hover:bg-aura-100 border border-slate-200 transition whitespace-nowrap";
+                }
+            });
+
+            if (cat === 'all') {
+                renderProducts(window.productsList);
+            } else {
+                renderProducts(window.productsList.filter(p => p.category === cat));
+            }
+        };
+
+        // Cart Logic
+        window.addToCart = function(id) {
+            const prod = window.productsList.find(p => p.id === id);
+            if (!prod) return;
+
+            const exist = window.cart.find(item => item.id === id);
+            if (exist) {
+                exist.qty++;
+            } else {
+                window.cart.push({ ...prod, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`已將 ${prod.name} 加入購物車`);
+        };
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalQty = window.cart.reduce((sum, i) => sum + i.qty, 0);
+
+            if (totalQty > 0) {
+                badge.innerText = totalQty;
+                badge.classList.remove('hidden');
+                checkoutBtn.removeAttribute('disabled');
+            } else {
+                badge.classList.add('hidden');
+                checkoutBtn.setAttribute('disabled', 'true');
+            }
+
+            if (window.cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm">購物車目前是空的</div>`;
+                totalEl.innerText = `NT$ 0`;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = window.cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="flex items-center justify-between py-4">
+                        <img src="${item.image}" class="w-14 h-14 object-cover rounded-xl border border-slate-100">
+                        <div class="flex-grow px-4">
+                            <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${item.name}</h4>
+                            <div class="text-xs text-botanical-800 font-serif font-bold mt-1">NT$ ${item.price}</div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-600 text-xs font-bold">-</button>
+                            <span class="text-xs font-medium w-4 text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-600 text-xs font-bold">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalEl.innerText = `NT$ ${total}`;
+        }
+
+        window.changeQty = function(id, delta) {
+            const item = window.cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) {
+                window.cart = window.cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        };
+
+        window.handleCheckout = async function(e) {
+            e.preventDefault();
+            if (window.cart.length === 0) return;
+
+            const name = document.getElementById('checkout-name').value;
+            const phone = document.getElementById('checkout-phone').value;
+            const address = document.getElementById('checkout-address').value;
+
+            const orderData = {
+                items: window.cart,
+                buyerName: name,
+                buyerPhone: phone,
+                address: address,
+                status: 'paid',
+                createdAt: new Date().toISOString()
+            };
+
+            if (!isMock && db && window.currentUser) {
+                const colRef = collection(db, 'artifacts', appId, 'users', window.currentUser.uid, 'orders');
+                await addDoc(colRef, orderData);
+            }
+
+            showToast("感謝您的訂購！訂單付款成功，藝想天開將盡快為您製作配送。");
+            window.cart = [];
+            updateCartUI();
+            closeCheckoutModal();
+        };
+
+        // Modal Helpers
+        window.openAuthModal = function(mode) {
+            window.authMode = mode;
+            document.getElementById('auth-title').innerText = mode === 'login' ? '會員登入' : '註冊新會員';
+            document.getElementById('auth-submit-btn').innerText = mode === 'login' ? '登入' : '註冊帳號';
+            document.getElementById('auth-switch-text').innerText = mode === 'login' ? '還沒有帳號嗎？' : '已經有帳號？';
+            document.getElementById('auth-switch-btn').innerText = mode === 'login' ? '立即註冊新會員' : '回到登入';
+            document.getElementById('auth-modal').classList.remove('hidden');
+        };
+
+        window.closeAuthModal = function() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        };
+
+        window.switchAuthMode = function() {
+            openAuthModal(window.authMode === 'login' ? 'register' : 'login');
+        };
+
+        window.toggleProfileModal = function() {
+            const modal = document.getElementById('profile-modal');
+            if (modal.classList.contains('hidden')) {
+                if (window.userProfile) {
+                    document.getElementById('profile-email').value = window.currentUser?.email || '';
+                    document.getElementById('profile-name').value = window.userProfile.name || '';
+                    document.getElementById('profile-phone').value = window.userProfile.phone || '';
+                    document.getElementById('profile-address').value = window.userProfile.address || '';
+                }
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+
+        window.openProductModal = function(id) {
+            const p = window.productsList.find(i => i.id === id);
+            if (!p) return;
+
+            const content = document.getElementById('modal-product-content');
+            content.innerHTML = `
+                <div class="h-64 md:h-full">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 md:p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-botanical-900 bg-aura-100 px-3 py-1 rounded-full">${getCatBadge(p.category)}</span>
+                        <h2 class="text-2xl font-serif font-bold text-botanical-900 mt-3 mb-1">${p.name}</h2>
+                        <p class="text-aura-600 text-xs font-semibold mb-3"><i class="fa-solid fa-wind mr-1"></i>${p.aroma}</p>
+                        <p class="text-2xl font-serif font-bold text-botanical-800 mb-4">NT$ ${p.price}</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">${p.desc}</p>
+                    </div>
+                    <button onclick="addToCart('${p.id}'); closeProductModal();" class="w-full py-3.5 bg-botanical-800 hover:bg-botanical-900 text-amber-200 font-bold rounded-xl transition shadow-md flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <span>加入購物車</span>
+                    </button>
+                </div>
+            `;
+            document.getElementById('product-modal').classList.remove('hidden');
+        };
+
+        window.closeProductModal = function() {
+            document.getElementById('product-modal').classList.add('hidden');
+        };
+
+        window.toggleCartModal = function() {
+            document.getElementById('cart-modal').classList.toggle('hidden');
+        };
+
+        window.openCheckoutModal = function() {
+            if (window.cart.length === 0) return;
+            toggleCartModal();
+
+            if (window.userProfile) {
+                document.getElementById('checkout-name').value = window.userProfile.name || '';
+                document.getElementById('checkout-phone').value = window.userProfile.phone || '';
+                document.getElementById('checkout-address').value = window.userProfile.address || '';
+            }
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        };
+
+        window.closeCheckoutModal = function() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        };
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-xl shadow-lg bg-botanical-900 text-amber-200 text-xs font-semibold flex items-center gap-2 transition transform translate-y-2 opacity-0 pointer-events-auto border border-botanical-700`;
+            toast.innerHTML = `<i class="fa-solid fa-gem text-amber-300"></i> ${msg}`;
+            container.appendChild(toast);
+
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
