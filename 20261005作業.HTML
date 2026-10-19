@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>綠意苔球 Kokedama Studio | 質感手作植栽與植物生活提案</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        moss: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            200: '#c7d8c7',
+                            500: '#5a7a5a',
+                            600: '#486348',
+                            700: '#384e38',
+                            800: '#2d3f2d',
+                            900: '#1b291b',
+                        },
+                        earth: {
+                            100: '#f7f4f0',
+                            200: '#e8ded2',
+                            600: '#8c6d53',
+                            800: '#523e2e'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Noto Serif TC', serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#faf8f5] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- 導覽列 -->
+    <header class="sticky top-0 z-40 bg-[#faf8f5]/90 backdrop-blur-md border-b border-earth-200/60 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-full bg-moss-600 text-white flex items-center justify-center text-xl shadow-md group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold font-serif tracking-wider text-moss-900 block leading-tight">綠意苔球</span>
+                    <span class="text-[10px] tracking-widest text-earth-600 uppercase font-medium">Kokedama Studio</span>
+                </div>
+            </a>
+
+            <!-- 桌機選單 -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-slate-700">
+                <a href="#about" class="hover:text-moss-600 transition-colors">什麼是水苔球</a>
+                <a href="#shop" class="hover:text-moss-600 transition-colors">精選苔球</a>
+                <a href="#diy" class="hover:text-moss-600 transition-colors">客製選配</a>
+                <a href="#care" class="hover:text-moss-600 transition-colors">照顧指南</a>
+                <a href="#faq" class="hover:text-moss-600 transition-colors">常見問題</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <!-- 購物車按鈕 -->
+                <button onclick="toggleCartModal()" class="relative p-2.5 rounded-full text-slate-700 hover:bg-moss-100 hover:text-moss-700 transition">
+                    <i class="fa-solid fa-basket-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute top-0 right-0 bg-amber-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 提示 Toast 容器 -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3 pointer-events-none"></div>
+
+    <main class="flex-grow">
+        <!-- Hero 首頁主視覺 -->
+        <section class="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-moss-50/50 to-[#faf8f5]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <span class="inline-block px-3.5 py-1.5 rounded-full bg-moss-100 text-moss-800 text-xs font-semibold tracking-wider uppercase">
+                            🌿 日本傳統植栽藝品 × 綠色生活學
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-moss-900 leading-tight">
+                            把森林的溫潤捏入一顆 <span class="text-moss-600 italic">苔球</span> 裡
+                        </h1>
+                        <p class="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            擺脫繁複的花器束縛，以天然苔蘚與泥炭土裹住柔軟根系。讓療癒綠意輕盈點綴桌面，為日常空間帶入靜謐自然之美。
+                        </p>
+                        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                            <a href="#shop" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-moss-700 hover:bg-moss-800 text-white font-medium text-center shadow-lg shadow-moss-700/20 transition-all hover:scale-105">
+                                選購熱門水苔球
+                            </a>
+                            <a href="#diy" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-earth-200/70 hover:bg-earth-200 text-earth-800 font-medium text-center transition-all">
+                                體驗客製訂製 <i class="fa-solid fa-wand-magic-sparkles ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <div class="absolute -inset-4 bg-moss-200/50 rounded-full blur-2xl -z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" alt="質感手作水苔球" class="w-full h-96 sm:h-[450px] object-cover rounded-3xl shadow-2xl border-4 border-white">
+                            <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl border border-earth-100 hidden sm:flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-droplet"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-500">維護極為簡單</p>
+                                    <p class="text-sm font-bold text-slate-800">泡水 5 分鐘即可完成澆水</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 什麼是水苔球 / 特色說明 -->
+        <section id="about" class="py-16 bg-white border-y border-earth-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-serif font-bold text-moss-900 mb-3">什麼是苔玉（Kokedama）？</h2>
+                    <p class="text-slate-500 text-sm">起源於日本 Edo 時期的獨特植栽形式，被譽為「窮人的盆景」，如今成為現代室內極簡綠植趨勢。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-6 rounded-2xl bg-moss-50/50 border border-moss-100/80 text-center space-y-3">
+                        <div class="w-14 h-14 mx-auto rounded-full bg-moss-600 text-white flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-serif text-moss-900">天然呼吸根系</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            擺脫塑膠花盆限制，水苔與苔蘚包裹能給予植物根系極佳的通風與透氣度，不易引發爛根。
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-moss-50/50 border border-moss-100/80 text-center space-y-3">
+                        <div class="w-14 h-14 mx-auto rounded-full bg-moss-600 text-white flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-house-chimney-window"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-serif text-moss-900">多元空間佈置</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            無論是放在木盤、陶皿上，或是搭配麻繩懸掛於空中（Air Garden），都能創造獨特視覺焦點。
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-moss-50/50 border border-moss-100/80 text-center space-y-3">
+                        <div class="w-14 h-14 mx-auto rounded-full bg-moss-600 text-white flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-hands-holding-circle"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-serif text-moss-900">療癒手作感受</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            每一顆苔球皆為職人純手工捏製綑綁，保留植物原生的生命張力與溫暖的人手質感。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 商品展示區 (Shop) -->
+        <section id="shop" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-moss-600 text-xs font-bold tracking-widest uppercase block mb-1">SELECTED COLLECTION</span>
+                    <h2 class="text-3xl font-serif font-bold text-moss-900">精選水苔球品項</h2>
+                </div>
+                <!-- 分類篩選按鈕 -->
+                <div class="flex items-center space-x-2 overflow-x-auto pb-2 md:pb-0" id="category-filters">
+                    <button onclick="filterProducts('all')" class="cat-btn px-4 py-2 text-xs font-medium rounded-full bg-moss-700 text-white transition shadow-sm whitespace-nowrap" data-cat="all">全部植栽</button>
+                    <button onclick="filterProducts('easy')" class="cat-btn px-4 py-2 text-xs font-medium rounded-full bg-white text-slate-600 hover:bg-moss-100 border border-slate-200 transition whitespace-nowrap" data-cat="easy">新手好照顧</button>
+                    <button onclick="filterProducts('hanging')" class="cat-btn px-4 py-2 text-xs font-medium rounded-full bg-white text-slate-600 hover:bg-moss-100 border border-slate-200 transition whitespace-nowrap" data-cat="hanging">適合吊掛</button>
+                    <button onclick="filterProducts('shade')" class="cat-btn px-4 py-2 text-xs font-medium rounded-full bg-white text-slate-600 hover:bg-moss-100 border border-slate-200 transition whitespace-nowrap" data-cat="shade">耐陰室內植物</button>
+                </div>
+            </div>
+
+            <!-- 商品列表卡片網格 -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 動態注入商品 -->
+            </div>
+        </section>
+
+        <!-- DIY 客製化選配器 -->
+        <section id="diy" class="py-20 bg-moss-900 text-white relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-moss-200 text-xs font-bold tracking-widest uppercase">CREATE YOUR OWN</span>
+                    <h2 class="text-3xl font-serif font-bold text-white mt-1 mb-3">客製化您的專屬苔球</h2>
+                    <p class="text-moss-200 text-sm font-light">自由搭配植物品種、苔蘚包覆材質與專屬小底座，量身打造專屬於您的綠意生活。</p>
+                </div>
+
+                <div class="bg-moss-800/80 rounded-3xl p-6 lg:p-10 border border-moss-700 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 左側：客製化選項步驟 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- 步驟 1: 選擇植物 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-moss-200 mb-3"><i class="fa-solid fa-1 text-xs bg-moss-600 p-1 px-2 rounded-full mr-2"></i> 選擇主體植物</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="diy-plant-options">
+                                <!-- JS 動態生成選項 -->
+                            </div>
+                        </div>
+
+                        <!-- 步驟 2: 選擇苔球材質 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-moss-200 mb-3"><i class="fa-solid fa-2 text-xs bg-moss-600 p-1 px-2 rounded-full mr-2"></i> 選擇球體表層材質</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="diy-moss-options">
+                                <!-- JS 動態生成選項 -->
+                            </div>
+                        </div>
+
+                        <!-- 步驟 3: 選擇底座 / 配件 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-moss-200 mb-3"><i class="fa-solid fa-3 text-xs bg-moss-600 p-1 px-2 rounded-full mr-2"></i> 搭配擺設底座</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="diy-base-options">
+                                <!-- JS 動態生成選項 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右側：即時試算與預覽 -->
+                    <div class="lg:col-span-5 bg-moss-900/90 rounded-2xl p-6 border border-moss-700 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-serif font-bold text-white border-b border-moss-700 pb-3 mb-4 flex items-center justify-between">
+                                <span>客製化訂製清單</span>
+                                <span class="text-xs bg-amber-600/30 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-full">手作專屬款</span>
+                            </h3>
+
+                            <div class="space-y-4 text-sm" id="diy-summary">
+                                <!-- 動態更新試算摘要 -->
+                            </div>
+                        </div>
+
+                        <div class="mt-8 border-t border-moss-700 pt-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-sm text-moss-200">客製總計價格</span>
+                                <span class="text-2xl font-bold text-amber-400 font-serif" id="diy-total-price">NT$ 0</span>
+                            </div>
+                            <button onclick="addDiyToCart()" class="w-full py-3.5 bg-amber-600 hover:bg-amber-500 text-white font-medium rounded-xl transition shadow-lg shadow-amber-600/20 flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>將此客製款加入購物車</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 照顧指南與浸水教學 -->
+        <section id="care" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-moss-600 text-xs font-bold tracking-widest uppercase">CARE GUIDE</span>
+                <h2 class="text-3xl font-serif font-bold text-moss-900 mt-1 mb-3">簡單三步，照顧您的水苔球</h2>
+                <p class="text-slate-500 text-sm">苔球照顧比傳統盆栽更直覺！只要掌握「秤重感受乾溼」與「泡水沉浸」即可。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 步驟 1 -->
+                <div class="bg-white rounded-2xl p-8 border border-earth-200/80 shadow-sm relative group hover:shadow-md transition">
+                    <div class="text-5xl font-serif font-bold text-moss-200 absolute top-6 right-6 group-hover:text-moss-500 transition-colors">01</div>
+                    <div class="w-12 h-12 rounded-xl bg-moss-100 text-moss-700 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-moss-900 mb-2">掂重判斷缺水</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        拿起苔球感覺變得很輕、或觸摸苔蘚表面微乾變硬時，即代表植物需要補充水分了（約 5~7 天一次，視環境而定）。
+                    </p>
+                </div>
+
+                <!-- 步驟 2 -->
+                <div class="bg-white rounded-2xl p-8 border border-earth-200/80 shadow-sm relative group hover:shadow-md transition">
+                    <div class="text-5xl font-serif font-bold text-moss-200 absolute top-6 right-6 group-hover:text-moss-500 transition-colors">02</div>
+                    <div class="w-12 h-12 rounded-xl bg-moss-100 text-moss-700 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-water"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-moss-900 mb-2">泡水沉浸 5-10 分鐘</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        將苔球整體浸泡於裝滿水的容器中，讓球體吸飽水分。當苔球不再冒出細小氣泡，且重量明顯變沉時即可撈起。
+                    </p>
+                </div>
+
+                <!-- 步驟 3 -->
+                <div class="bg-white rounded-2xl p-8 border border-earth-200/80 shadow-sm relative group hover:shadow-md transition">
+                    <div class="text-5xl font-serif font-bold text-moss-200 absolute top-6 right-6 group-hover:text-moss-500 transition-colors">03</div>
+                    <div class="w-12 h-12 rounded-xl bg-moss-100 text-moss-700 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-wind"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold text-moss-900 mb-2">輕擠瀝乾，擺放通風處</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        雙手輕輕壓擠出多餘積水，放置於散光（明亮不直射）且通風良好的地方，讓苔球愉快呼吸成長。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常見問題 (FAQ) -->
+        <section id="faq" class="py-16 bg-earth-100/60 border-t border-earth-200/60">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl font-serif font-bold text-moss-900">常見問題 FAQ</h2>
+                </div>
+
+                <div class="space-y-4" id="faq-container">
+                    <div class="bg-white rounded-xl border border-earth-200 overflow-hidden">
+                        <button onclick="toggleFaq(this)" class="w-full text-left p-5 font-semibold text-moss-900 flex justify-between items-center hover:bg-moss-50/50 transition">
+                            <span>Q: 室內光線不足可以養水苔球嗎？</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed hidden">
+                            可以的！建議選擇像「山蘇」、「積水鳳梨」或「黃金葛」等耐陰品種，並放置於室內明亮通風處，或搭配植物生長燈輔助照射即可健康成長。
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-earth-200 overflow-hidden">
+                        <button onclick="toggleFaq(this)" class="w-full text-left p-5 font-semibold text-moss-900 flex justify-between items-center hover:bg-moss-50/50 transition">
+                            <span>Q: 水苔球可以維持多久？需要重新包裹嗎？</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed hidden">
+                            一顆水苔球通常可以維持 1 至 2 年。當植物長大、根系穿透水苔或棉線鬆脫時，可以進行換球手作，或是直接移栽入陶盆中。
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-earth-200 overflow-hidden">
+                        <button onclick="toggleFaq(this)" class="w-full text-left p-5 font-semibold text-moss-900 flex justify-between items-center hover:bg-moss-50/50 transition">
+                            <span>Q: 苔球表面發霉或長小飛蟲怎麼辦？</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed hidden">
+                            發霉或長蟲通常是因為「太濕」且「環境不通風」。請先將苔球移至通風良好的陽台半陰處，減少浸水頻率，並保持環境空氣對流即可改善。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 產品詳情 Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl fade-in relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 bg-white/80 hover:bg-white p-2 rounded-full text-slate-600 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-product-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- 動態填入產品詳情 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 購物車側邊欄 Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-end hidden">
+        <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl fade-in">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-moss-50/50">
+                <h3 class="text-lg font-serif font-bold text-moss-900 flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-moss-600"></i> 您的訂購清單
+                </h3>
+                <button onclick="toggleCartModal()" class="text-slate-400 hover:text-slate-600 p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4 divide-y divide-slate-100">
+                <!-- 動態購物車項目 -->
+            </div>
+
+            <div class="p-6 border-t border-slate-100 bg-slate-50">
+                <div class="flex justify-between items-center mb-4 text-lg font-bold text-slate-800">
+                    <span>訂單總計</span>
+                    <span id="cart-total-price" class="text-moss-700 font-serif">NT$ 0</span>
+                </div>
+                <button onclick="openCheckoutModal()" id="checkout-btn" class="w-full py-3.5 bg-moss-700 hover:bg-moss-800 text-white font-medium rounded-xl transition shadow-md disabled:bg-slate-300 disabled:cursor-not-allowed">
+                    前往結帳填寫資訊
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 結帳表單 Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl fade-in relative">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-moss-900 mb-6">訂購人與配送資訊</h3>
+
+            <form onsubmit="handleCheckout(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">訂購人姓名</label>
+                    <input type="text" required placeholder="例如：王小明" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-moss-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">聯絡電話</label>
+                    <input type="tel" required placeholder="0912345678" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-moss-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">收件地址 / 取件門市</label>
+                    <input type="text" required placeholder="請填寫完整配送地址" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-moss-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">付款方式</label>
+                    <select class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-moss-500 text-sm bg-white">
+                        <option value="linepay">LINE Pay 行動支付</option>
+                        <option value="credit">信用卡線上一次付清</option>
+                        <option value="cod">超商取貨付款</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-moss-700 hover:bg-moss-800 text-white font-medium rounded-xl transition shadow-lg shadow-moss-700/20 mt-2">
+                    確認送出訂單
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="bg-moss-900 text-moss-200 py-12 border-t border-moss-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-seedling text-moss-500 text-xl"></i>
+                    <span class="text-xl font-serif font-bold text-white">綠意苔球 Kokedama Studio</span>
+                </div>
+                <p class="text-xs text-moss-300 leading-relaxed">
+                    用心捏製每一顆綠色小星球，帶給現代忙碌生活中一份溫暖沉靜的自然相伴。
+                </p>
+            </div>
+
+            <div class="space-y-2 text-sm">
+                <p class="font-bold text-white mb-2">門市資訊與體驗工作坊</p>
+                <p><i class="fa-solid fa-location-dot w-5 text-moss-500"></i> 台北市大安區綠意路 88 號 1 樓</p>
+                <p><i class="fa-solid fa-clock w-5 text-moss-500"></i> 週二至週日 11:00 - 19:00 (週一公休)</p>
+            </div>
+
+            <div class="space-y-2 text-sm">
+                <p class="font-bold text-white mb-2">追蹤我們的植物生活</p>
+                <div class="flex space-x-4 text-lg">
+                    <a href="#" class="w-10 h-10 rounded-full bg-moss-800 flex items-center justify-center hover:bg-moss-700 transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-moss-800 flex items-center justify-center hover:bg-moss-700 transition"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-moss-800 flex items-center justify-center hover:bg-moss-700 transition"><i class="fa-brands fa-line"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-moss-800/80 text-center text-xs text-moss-400">
+            &copy; 2026 綠意苔球 Kokedama Studio. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // 商品資料庫
+        const products = [
+            {
+                id: 'p1',
+                name: '山蘇水苔球（波浪山蘇）',
+                category: 'easy',
+                price: 480,
+                image: 'https://images.unsplash.com/photo-1592150621744-aca64f48394a?auto=format&fit=crop&w=600&q=80',
+                desc: '鮮綠波浪葉片，極具熱帶生命力。極度耐陰且適應力強，是室內新手首選產品。',
+                waterFreq: '5-7 天浸水一次',
+                light: '耐陰，室內明亮通風處'
+            },
+            {
+                id: 'p2',
+                name: '積水鳳梨水苔球（彩葉）',
+                category: 'hanging',
+                price: 580,
+                image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80',
+                desc: '獨特的株型與漸層色澤，非常適合使用麻繩吊掛於窗邊或陽台半陰處。',
+                waterFreq: '7 天浸水一次，中心葉杯可留微量水',
+                light: '半日照，溫和散射光'
+            },
+            {
+                id: 'p3',
+                name: '銀後粗肋草苔球',
+                category: 'shade',
+                price: 520,
+                image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=600&q=80',
+                desc: '優雅銀白斑紋葉片，淨化空氣能力強，為居家桌面增添高雅自然質感。',
+                waterFreq: '5-7 天浸水一次',
+                light: '耐陰，避免陽光直射'
+            },
+            {
+                id: 'p4',
+                name: '狼尾蕨苔球（兔腳蕨）',
+                category: 'easy',
+                price: 450,
+                image: 'https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=600&q=80',
+                desc: '羽狀複葉羽翼輕盈，帶有可愛毛茸茸的走莖。觀賞性極高，手感治癒。',
+                waterFreq: '4-5 天浸水一次，保持微濕潤',
+                light: '喜好潮濕散射光環境'
+            }
+        ];
+
+        // DIY 客製化選配選項
+        const diyOptions = {
+            plants: [
+                { id: 'plant1', name: '波浪山蘇', price: 220 },
+                { id: 'plant2', name: '彩葉鳳梨', price: 280 },
+                { id: 'plant3', name: '銀後粗肋草', price: 250 },
+                { id: 'plant4', name: '兔腳蕨', price: 200 }
+            ],
+            mossTypes: [
+                { id: 'moss1', name: '天然智利水苔 (經典棕色)', price: 100 },
+                { id: 'moss2', name: '鮮活綠色青苔 (日式苔玉)', price: 150 },
+                { id: 'moss3', name: '椰纖包裹球 (簡約褐色)', price: 120 }
+            ],
+            bases: [
+                { id: 'base1', name: '溫潤原木切片盤', price: 120 },
+                { id: 'base2', name: '粗砂質感陶皿', price: 150 },
+                { id: 'base3', name: '手工草編麻繩吊掛組', price: 80 },
+                { id: 'base4', name: '不需底座 (純苔球)', price: 0 }
+            ]
+        };
+
+        // 狀態
+        let cart = [];
+        let selectedDiy = {
+            plant: diyOptions.plants[0],
+            moss: diyOptions.mossTypes[0],
+            base: diyOptions.bases[0]
+        };
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+            initDiyBuilder();
+        });
+
+        // 渲染商品
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-2xl overflow-hidden border border-earth-200/80 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                    <div class="relative cursor-pointer overflow-hidden" onclick="openProductModal('${item.id}')">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[11px] font-bold text-moss-800 px-2.5 py-1 rounded-full shadow-sm">
+                            ${getCatBadge(item.category)}
+                        </span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-serif font-bold text-moss-900 text-lg mb-1 cursor-pointer hover:text-moss-600 transition" onclick="openProductModal('${item.id}')">${item.name}</h3>
+                            <p class="text-slate-500 text-xs line-clamp-2 mb-4 leading-relaxed">${item.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span class="text-lg font-serif font-bold text-moss-700">NT$ ${item.price}</span>
+                            <button onclick="addToCart('${item.id}')" class="p-2.5 bg-moss-50 hover:bg-moss-600 text-moss-700 hover:text-white rounded-xl transition shadow-sm">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCatBadge(cat) {
+            const map = { easy: '新手好照顧', hanging: '適合吊掛', shade: '耐陰好養' };
+            return map[cat] || '精選苔球';
+        }
+
+        function filterProducts(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = "cat-btn px-4 py-2 text-xs font-medium rounded-full bg-moss-700 text-white transition shadow-sm whitespace-nowrap";
+                } else {
+                    btn.className = "cat-btn px-4 py-2 text-xs font-medium rounded-full bg-white text-slate-600 hover:bg-moss-100 border border-slate-200 transition whitespace-nowrap";
+                }
+            });
+
+            if (cat === 'all') {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === cat));
+            }
+        }
+
+        // 商品詳情 Modal
+        function openProductModal(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            const content = document.getElementById('modal-product-content');
+            content.innerHTML = `
+                <div class="h-64 md:h-full">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 md:p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-moss-700 bg-moss-100 px-2.5 py-1 rounded-full">${getCatBadge(p.category)}</span>
+                        <h2 class="text-2xl font-serif font-bold text-moss-900 mt-2 mb-2">${p.name}</h2>
+                        <p class="text-2xl font-serif font-bold text-moss-700 mb-4">NT$ ${p.price}</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">${p.desc}</p>
+                        
+                        <div class="space-y-2 bg-moss-50 p-3.5 rounded-xl text-xs text-moss-900 mb-6">
+                            <p><i class="fa-solid fa-droplet text-blue-500 w-5"></i> <strong>澆水頻率：</strong>${p.waterFreq}</p>
+                            <p><i class="fa-solid fa-sun text-amber-500 w-5"></i> <strong>日照需求：</strong>${p.light}</p>
+                        </div>
+                    </div>
+                    <button onclick="addToCart('${p.id}'); closeProductModal();" class="w-full py-3.5 bg-moss-700 hover:bg-moss-800 text-white font-medium rounded-xl transition shadow-md flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <span>加入購物車</span>
+                    </button>
+                </div>
+            `;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        // DIY 選配器邏輯
+        function initDiyBuilder() {
+            const plantContainer = document.getElementById('diy-plant-options');
+            const mossContainer = document.getElementById('diy-moss-options');
+            const baseContainer = document.getElementById('diy-base-options');
+
+            plantContainer.innerHTML = diyOptions.plants.map(item => `
+                <button onclick="selectDiyOption('plant', '${item.id}')" id="opt-plant-${item.id}" class="diy-opt p-3 text-left rounded-xl border border-moss-700 bg-moss-800/40 hover:bg-moss-700/50 transition">
+                    <p class="text-xs font-bold text-white">${item.name}</p>
+                    <p class="text-[11px] text-amber-400 font-serif">+NT$ ${item.price}</p>
+                </button>
+            `).join('');
+
+            mossContainer.innerHTML = diyOptions.mossTypes.map(item => `
+                <button onclick="selectDiyOption('moss', '${item.id}')" id="opt-moss-${item.id}" class="diy-opt p-3 text-left rounded-xl border border-moss-700 bg-moss-800/40 hover:bg-moss-700/50 transition">
+                    <p class="text-xs font-bold text-white">${item.name}</p>
+                    <p class="text-[11px] text-amber-400 font-serif">+NT$ ${item.price}</p>
+                </button>
+            `).join('');
+
+            baseContainer.innerHTML = diyOptions.bases.map(item => `
+                <button onclick="selectDiyOption('base', '${item.id}')" id="opt-base-${item.id}" class="diy-opt p-3 text-left rounded-xl border border-moss-700 bg-moss-800/40 hover:bg-moss-700/50 transition">
+                    <p class="text-xs font-bold text-white">${item.name}</p>
+                    <p class="text-[11px] text-amber-400 font-serif">+NT$ ${item.price}</p>
+                </button>
+            `).join('');
+
+            updateDiyUI();
+        }
+
+        function selectDiyOption(type, id) {
+            if (type === 'plant') selectedDiy.plant = diyOptions.plants.find(i => i.id === id);
+            if (type === 'moss') selectedDiy.moss = diyOptions.mossTypes.find(i => i.id === id);
+            if (type === 'base') selectedDiy.base = diyOptions.bases.find(i => i.id === id);
+            updateDiyUI();
+        }
+
+        function updateDiyUI() {
+            // 更新高亮狀態
+            document.querySelectorAll('.diy-opt').forEach(el => {
+                el.classList.remove('border-amber-500', 'bg-amber-600/20');
+                el.classList.add('border-moss-700', 'bg-moss-800/40');
+            });
+
+            const pBtn = document.getElementById(`opt-plant-${selectedDiy.plant.id}`);
+            const mBtn = document.getElementById(`opt-moss-${selectedDiy.moss.id}`);
+            const bBtn = document.getElementById(`opt-base-${selectedDiy.base.id}`);
+
+            if (pBtn) pBtn.className = "diy-opt p-3 text-left rounded-xl border-2 border-amber-500 bg-amber-600/20 transition";
+            if (mBtn) mBtn.className = "diy-opt p-3 text-left rounded-xl border-2 border-amber-500 bg-amber-600/20 transition";
+            if (bBtn) bBtn.className = "diy-opt p-3 text-left rounded-xl border-2 border-amber-500 bg-amber-600/20 transition";
+
+            // 更新摘要與總價
+            const summary = document.getElementById('diy-summary');
+            const totalEl = document.getElementById('diy-total-price');
+            const totalPrice = selectedDiy.plant.price + selectedDiy.moss.price + selectedDiy.base.price;
+
+            summary.innerHTML = `
+                <div class="flex justify-between items-center text-moss-200">
+                    <span>主植物：${selectedDiy.plant.name}</span>
+                    <span class="text-amber-400 font-serif">NT$ ${selectedDiy.plant.price}</span>
+                </div>
+                <div class="flex justify-between items-center text-moss-200">
+                    <span>表層材質：${selectedDiy.moss.name}</span>
+                    <span class="text-amber-400 font-serif">NT$ ${selectedDiy.moss.price}</span>
+                </div>
+                <div class="flex justify-between items-center text-moss-200">
+                    <span>擺設底座：${selectedDiy.base.name}</span>
+                    <span class="text-amber-400 font-serif">NT$ ${selectedDiy.base.price}</span>
+                </div>
+            `;
+
+            totalEl.innerText = `NT$ ${totalPrice}`;
+        }
+
+        function addDiyToCart() {
+            const diyPrice = selectedDiy.plant.price + selectedDiy.moss.price + selectedDiy.base.price;
+            const customItem = {
+                id: 'diy_' + Date.now(),
+                name: `[客製款] ${selectedDiy.plant.name}苔球`,
+                price: diyPrice,
+                image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=300&q=80',
+                qty: 1
+            };
+
+            cart.push(customItem);
+            updateCartUI();
+            showToast(`已將客製款 ${customItem.name} 加入購物車`);
+        }
+
+        // 購物車功能
+        function addToCart(productId) {
+            const p = products.find(item => item.id === productId);
+            if (!p) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...p, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`已將 ${p.name} 加入購物車`);
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            if (totalQty > 0) {
+                badge.innerText = totalQty;
+                badge.classList.remove('hidden');
+                checkoutBtn.removeAttribute('disabled');
+            } else {
+                badge.classList.add('hidden');
+                checkoutBtn.setAttribute('disabled', 'true');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm">購物車目前是空的</div>`;
+                totalPriceEl.innerText = `NT$ 0`;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="flex items-center justify-between py-4">
+                        <img src="${item.image}" class="w-14 h-14 object-cover rounded-xl border border-slate-100">
+                        <div class="flex-grow px-4">
+                            <h4 class="text-xs font-bold text-slate-800 line-clamp-1">${item.name}</h4>
+                            <div class="text-xs text-moss-700 font-serif font-bold mt-1">NT$ ${item.price}</div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-600 text-xs font-bold">-</button>
+                            <span class="text-xs font-medium w-4 text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-600 text-xs font-bold">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalPriceEl.innerText = `NT$ ${total}`;
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function toggleCartModal() {
+            document.getElementById('cart-modal').classList.toggle('hidden');
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            toggleCartModal();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function handleCheckout(e) {
+            e.preventDefault();
+            showToast('訂單已送出成功！感謝您的訂購。');
+            cart = [];
+            updateCartUI();
+            closeCheckoutModal();
+        }
+
+        // FAQ 折疊手風琴
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('i');
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Toast 訊息
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-xl shadow-lg bg-moss-800 text-white text-xs font-medium flex items-center gap-2 transition transform translate-y-2 opacity-0 pointer-events-auto border border-moss-700`;
+            toast.innerHTML = `<i class="fa-solid fa-leaf text-amber-400"></i> ${msg}`;
+            container.appendChild(toast);
+
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
