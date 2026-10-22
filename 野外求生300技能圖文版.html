@@ -201,7 +201,7 @@
     <!-- Footer -->
     <footer class="bg-forest-950 border-t border-forest-800/60 py-8 mt-12 text-center text-xs text-gray-500 space-y-2">
         <p class="text-emerald-400"><i class="fa-solid fa-leaf"></i> 尊崇自然 • 護生平安 • 300項完全純素求生圖解指南</p>
-        <p>© 2026 野外求生指南單頁系統 • 支援步驟與圖解查詢</p>
+        <p class="text-gray-300 font-medium">網頁設計師張秋霞 2026/10/22 製作</p>
     </footer>
 
     <!-- JavaScript Data & Logic -->
@@ -355,4 +355,134 @@
             empty.classList.add('hidden');
             grid.innerHTML = data.map(skill => {
                 const isFav = favorites.includes(skill.id);
-                const diffColor = skill.diff === '入門' ? 'bg-emer
+                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
+                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                                  'bg-rose-500/20 text-rose-300 border-rose-500/30';
+
+                return `
+                    <div class="bg-forest-800/40 border border-forest-600/30 hover:border-emerald-500/40 rounded-2xl p-5 transition duration-300 flex flex-col justify-between hover:shadow-2xl group">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="text-xs font-mono px-2.5 py-1 bg-forest-900/80 rounded-lg text-emerald-400 border border-emerald-500/20">
+                                    #${skill.id.toString().padStart(3, '0')}
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs px-2.5 py-1 rounded-full border ${diffColor}">${skill.diff}</span>
+                                    <button onclick="toggleFavorite(${skill.id})" class="text-gray-500 hover:text-rose-500 transition text-lg p-1">
+                                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart ${isFav ? 'text-rose-500' : ''}"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition">${skill.title}</h3>
+                                <p class="text-xs text-gray-400 font-mono italic">${skill.en}</p>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed font-light">${skill.desc}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-forest-600/20 flex justify-between items-center text-xs">
+                            <span class="text-gray-400"><i class="fa-solid fa-folder text-emerald-500/70 mr-1"></i>領域 ${skill.cat}</span>
+                            <button onclick="openDetail(${skill.id})" class="bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white px-3 py-1.5 rounded-lg border border-emerald-500/30 transition flex items-center gap-1.5 font-medium">
+                                <i class="fa-solid fa-image"></i> 圖解步驟與方法
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openDetail(id) {
+            const skill = skills.find(s => s.id === id);
+            document.getElementById('modalIdBadge').textContent = `#${skill.id.toString().padStart(3, '0')}`;
+            document.getElementById('modalTitle').textContent = skill.title;
+            document.getElementById('modalEn').textContent = skill.en;
+            document.getElementById('modalDesc').textContent = skill.desc;
+            
+            // 根據領域派發專屬 SVG 圖解
+            const imgContainer = document.getElementById('modalIllustration');
+            if (skill.cat === 1) imgContainer.innerHTML = illustrations.fire;
+            else if (skill.cat === 2) imgContainer.innerHTML = illustrations.water;
+            else if (skill.cat === 3) imgContainer.innerHTML = illustrations.shelter;
+            else if (skill.cat === 4) imgContainer.innerHTML = illustrations.compass;
+            else imgContainer.innerHTML = illustrations.default;
+
+            const diffBadge = document.getElementById('modalDiffBadge');
+            diffBadge.textContent = skill.diff;
+            diffBadge.className = `text-xs px-2.5 py-0.5 rounded-full border ${
+                skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
+                skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
+                skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                'bg-rose-500/20 text-rose-300 border-rose-500/30'
+            }`;
+
+            const stepsContainer = document.getElementById('modalSteps');
+            stepsContainer.innerHTML = skill.steps.map((step, index) => `
+                <div class="flex items-start gap-3 bg-forest-900/60 p-3 rounded-xl border border-forest-600/20">
+                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center shrink-0 font-bold">${index + 1}</span>
+                    <p class="text-xs sm:text-sm text-gray-200 leading-relaxed pt-0.5">${step.replace(/^[步驟\d]+[：:]\s*/, '')}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('modalNotice').textContent = skill.notice;
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('survival_favs', JSON.stringify(favorites));
+            updateFavoriteBadge();
+            filterData();
+        }
+
+        function updateFavoriteBadge() {
+            document.getElementById('favoriteCount').textContent = favorites.length;
+        }
+
+        function toggleFavoriteFilter() {
+            showFavoritesOnly = !showFavoritesOnly;
+            const btn = document.getElementById('favoriteToggleBtn');
+            btn.classList.toggle('bg-rose-500/20', showFavoritesOnly);
+            btn.classList.toggle('border-rose-500', showFavoritesOnly);
+            filterData();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            currentSearch = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterData();
+        }
+
+        function resetAllFilters() {
+            currentCategory = 'ALL';
+            document.getElementById('difficultySelect').value = 'ALL';
+            currentSearch = '';
+            showFavoritesOnly = false;
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderCategories();
+            filterData();
+        }
+
+        function updateBadgeState() {
+            const badge = document.getElementById('activeFilterBadge');
+            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly;
+            badge.classList.toggle('hidden', !hasFilter);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
