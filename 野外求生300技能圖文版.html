@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>野外求生 300 項技能完全指南 (絢麗多彩護生版)</title>
+    <title>野外求生 300 項技能完全指南 (純素護生/絢麗版)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 6 Icons CDN -->
@@ -68,7 +68,6 @@
 
             <!-- Stats & Actions -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <!-- 瀏覽人數與愛心按讚 -->
                 <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
                     <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
                     <span class="text-teal-700">|</span>
@@ -78,7 +77,6 @@
                     </button>
                 </div>
 
-                <!-- Favorite Toggle -->
                 <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 hover:from-forest-800 hover:to-forest-700 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
@@ -88,7 +86,7 @@
         </div>
     </header>
 
-    <!-- Hero Banner (色彩更豐富的漸層) -->
+    <!-- Hero Banner -->
     <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-12 px-4 border-b border-teal-500/20 text-center overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
         <div class="max-w-4xl mx-auto space-y-4 relative z-10">
@@ -101,7 +99,6 @@
             <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
                 結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
-            <!-- 手機版顯示的統計數據列 -->
             <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-forest-900/80 py-2.5 px-5 rounded-2xl border border-teal-500/30 max-w-xs mx-auto shadow-md">
                 <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-cyan-300">1,240</strong></span>
                 <span>|</span>
@@ -117,7 +114,6 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
         <div class="bg-gradient-to-br from-forest-900/90 to-forest-950/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
             
-            <!-- Search Bar -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-teal-400 text-lg"></i>
                 <input type="text" id="searchInput" placeholder="搜尋技能名稱、關鍵字（如：打火棒、水質過濾、天幕、止血帶）..." 
@@ -127,7 +123,6 @@
                 </button>
             </div>
 
-            <!-- Categories & Difficulty -->
             <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
                 <div class="w-full overflow-x-auto custom-scrollbar pb-2 md:pb-0">
                     <div class="flex gap-2 min-w-max" id="categoryContainer"></div>
@@ -173,7 +168,6 @@
     <!-- Detail Modal -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
-            <!-- Modal Header -->
             <div class="p-5 border-b border-teal-500/30 flex justify-between items-start bg-forest-950/80">
                 <div>
                     <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-teal-950 rounded-xl text-cyan-300 border border-teal-500/40 mr-2 shadow-inner">#001</span>
@@ -185,7 +179,6 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
                 <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group">
@@ -227,7 +220,6 @@
                     <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
                 </div>
             </div>
-            <!-- Modal Footer -->
             <div class="p-4 bg-forest-950/90 border-t border-teal-500/30 flex justify-end">
                 <button onclick="closeModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg transition">
                     關閉視窗
@@ -245,9 +237,9 @@
     <footer class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
         <p class="text-teal-400 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-400"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
         
-        <!-- 網頁設計師 張秋霞 115/10/22製作 (藍色粗體標楷體) -->
+        <!-- 網業設計師 張秋霞 115/10/22製作 (藍色粗體標楷體) -->
         <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-lg sm:text-xl drop-shadow">
-            網業設計師 張秋霞 115/10/22製作
+            網頁設計師 張秋霞 115/10/22製作
         </p>
 
         <p class="text-xs text-gray-500">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
@@ -343,224 +335,4 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderCategories();
             renderSkills(skills);
-            updateFavoriteBadge();
-            updateStatsUI();
-
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                currentSearch = e.target.value.trim().toLowerCase();
-                document.getElementById('clearSearchBtn').classList.toggle('hidden', !currentSearch);
-                filterData();
-            });
-
-            window.addEventListener('scroll', () => {
-                const btn = document.getElementById('backToTopBtn');
-                btn.classList.toggle('opacity-0', window.scrollY <= 300);
-                btn.classList.toggle('pointer-events-none', window.scrollY <= 300);
-            });
-        });
-
-        function updateStatsUI() {
-            document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
-            document.getElementById('visitorCountMob').textContent = visitorCount.toLocaleString();
-            document.getElementById('pageLikeCount').textContent = pageLikes;
-            document.getElementById('pageLikeCountMob').textContent = pageLikes;
-            
-            const heartIcon = document.getElementById('pageHeartIcon');
-            if (hasLikedPage) {
-                heartIcon.className = "fa-solid fa-heart text-rose-500 scale-125 transition transform";
-            } else {
-                heartIcon.className = "fa-regular fa-heart text-rose-500 transition";
-            }
-        }
-
-        function handlePageLike() {
-            if (!hasLikedPage) {
-                pageLikes++;
-                hasLikedPage = true;
-                localStorage.setItem('survival_pagelikes', pageLikes);
-                localStorage.setItem('survival_has_liked', 'true');
-            } else {
-                pageLikes--;
-                hasLikedPage = false;
-                localStorage.setItem('survival_pagelikes', pageLikes);
-                localStorage.setItem('survival_has_liked', 'false');
-            }
-            updateStatsUI();
-        }
-
-        function renderCategories() {
-            const container = document.getElementById('categoryContainer');
-            container.innerHTML = categories.map(cat => `
-                <button onclick="selectCategory('${cat.id}')"
-                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-900/50 scale-105' : 'bg-forest-900/80 text-teal-200 hover:bg-forest-800 border border-teal-500/30'}">
-                    <i class="fa-solid ${cat.icon}"></i>
-                    <span>${cat.name}</span>
-                </button>
-            `).join('');
-        }
-
-        function selectCategory(id) {
-            currentCategory = id === 'ALL' ? 'ALL' : parseInt(id);
-            showFavoritesOnly = false;
-            renderCategories();
-            filterData();
-        }
-
-        function filterData() {
-            const diff = document.getElementById('difficultySelect').value;
-            const filtered = skills.filter(item => {
-                const matchesCat = currentCategory === 'ALL' || item.cat === currentCategory;
-                const matchesDiff = diff === 'ALL' || item.diff === diff;
-                const matchesSearch = !currentSearch || 
-                    item.title.toLowerCase().includes(currentSearch) || 
-                    item.en.toLowerCase().includes(currentSearch) || 
-                    item.desc.toLowerCase().includes(currentSearch) ||
-                    item.id.toString() === currentSearch;
-                const matchesFav = !showFavoritesOnly || favorites.includes(item.id);
-
-                return matchesCat && matchesDiff && matchesSearch && matchesFav;
-            });
-
-            renderSkills(filtered);
-            updateBadgeState();
-        }
-
-        function renderSkills(data) {
-            const grid = document.getElementById('skillsGrid');
-            const empty = document.getElementById('emptyState');
-            document.getElementById('resultCount').textContent = data.length;
-
-            if (data.length === 0) {
-                grid.innerHTML = '';
-                empty.classList.remove('hidden');
-                return;
-            }
-
-            empty.classList.add('hidden');
-            grid.innerHTML = data.map(skill => {
-                const isFav = favorites.includes(skill.id);
-                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                                  'bg-rose-500/20 text-rose-300 border-rose-500/40';
-
-                return `
-                    <div class="bg-gradient-to-br from-forest-900/80 to-forest-950 border border-teal-500/30 hover:border-cyan-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between hover:shadow-2xl hover:shadow-teal-950 hover:-translate-y-1 group">
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-start">
-                                <span class="text-xs font-mono px-3 py-1 bg-teal-950/80 rounded-xl text-cyan-300 border border-teal-500/30 shadow-inner">
-                                    #${skill.id.toString().padStart(3, '0')}
-                                </span>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs px-3 py-1 rounded-full border font-bold ${diffColor}">${skill.diff}</span>
-                                    <button onclick="toggleFavorite(${skill.id})" class="text-gray-400 hover:text-rose-500 transition text-lg p-1">
-                                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart ${isFav ? 'text-rose-500 scale-110' : ''} transition"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">${skill.title}</h3>
-                                <p class="text-xs text-teal-400/80 font-mono italic">${skill.en}</p>
-                            </div>
-                            <p class="text-sm text-gray-300 leading-relaxed font-light">${skill.desc}</p>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-teal-500/20 flex justify-between items-center text-xs">
-                            <span class="text-teal-400"><i class="fa-solid fa-folder text-emerald-400 mr-1"></i>領域 ${skill.cat}</span>
-                            <button onclick="openDetail(${skill.id})" class="bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600 hover:to-teal-600 text-teal-200 hover:text-white px-3.5 py-2 rounded-xl border border-teal-500/40 transition flex items-center gap-1.5 font-bold shadow">
-                                <i class="fa-solid fa-image text-cyan-400"></i> 詳細圖解與影片
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function openDetail(id) {
-            const skill = skills.find(s => s.id === id);
-            document.getElementById('modalIdBadge').textContent = `#${skill.id.toString().padStart(3, '0')}`;
-            document.getElementById('modalTitle').textContent = skill.title;
-            document.getElementById('modalEn').textContent = skill.en;
-            document.getElementById('modalDesc').textContent = skill.desc;
-            document.getElementById('modalImg').src = skill.imgUrl;
-            document.getElementById('modalVideoBtn').href = skill.videoUrl;
-
-            const diffBadge = document.getElementById('modalDiffBadge');
-            diffBadge.textContent = skill.diff;
-            diffBadge.className = `text-xs px-2.5 py-0.5 rounded-full border font-bold ${
-                skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                'bg-rose-500/20 text-rose-300 border-rose-500/40'
-            }`;
-
-            const stepsContainer = document.getElementById('modalSteps');
-            stepsContainer.innerHTML = skill.steps.map((step, index) => `
-                <div class="flex items-start gap-3 bg-forest-950/80 p-3.5 rounded-2xl border border-teal-500/30 shadow-sm">
-                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-forest-950 text-xs flex items-center justify-center shrink-0 font-black shadow">${index + 1}</span>
-                    <p class="text-xs sm:text-sm text-gray-200 leading-relaxed pt-0.5">${step.replace(/^[步驟\d]+[：:]\s*/, '')}</p>
-                </div>
-            `).join('');
-
-            document.getElementById('modalNotice').textContent = skill.notice;
-            document.getElementById('detailModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        function toggleFavorite(id) {
-            if (favorites.includes(id)) {
-                favorites = favorites.filter(favId => favId !== id);
-            } else {
-                favorites.push(id);
-            }
-            localStorage.setItem('survival_favs', JSON.stringify(favorites));
-            updateFavoriteBadge();
-            filterData();
-        }
-
-        function updateFavoriteBadge() {
-            document.getElementById('favoriteCount').textContent = favorites.length;
-        }
-
-        function toggleFavoriteFilter() {
-            showFavoritesOnly = !showFavoritesOnly;
-            const btn = document.getElementById('favoriteToggleBtn');
-            btn.classList.toggle('bg-rose-500/20', showFavoritesOnly);
-            btn.classList.toggle('border-rose-500', showFavoritesOnly);
-            filterData();
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            currentSearch = '';
-            document.getElementById('clearSearchBtn').classList.add('hidden');
-            filterData();
-        }
-
-        function resetAllFilters() {
-            currentCategory = 'ALL';
-            document.getElementById('difficultySelect').value = 'ALL';
-            currentSearch = '';
-            showFavoritesOnly = false;
-            document.getElementById('searchInput').value = '';
-            document.getElementById('clearSearchBtn').classList.add('hidden');
-            renderCategories();
-            filterData();
-        }
-
-        function updateBadgeState() {
-            const badge = document.getElementById('activeFilterBadge');
-            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly;
-            badge.classList.toggle('hidden', !hasFilter);
-        }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+         
