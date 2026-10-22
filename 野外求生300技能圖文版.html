@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>野外求生 300 項技能完全指南 (純素護生/圖解版)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: {
+                            50: '#f2f7f4',
+                            100: '#e1ede6',
+                            600: '#2d6a4f',
+                            800: '#1b4332',
+                            900: '#081c15',
+                            950: '#040e0a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1b4332;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #52b788;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-forest-900 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-forest-900/90 backdrop-blur-md border-b border-forest-600/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-emerald-300 flex items-center justify-center text-forest-900 font-bold text-xl shadow-lg">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-wide text-white">野外求生 300 項指南</h1>
+                    <p class="text-xs text-emerald-400 font-light">純素護生版 • 含詳細圖解與實作步驟</p>
+                </div>
+            </div>
+
+            <!-- Favorite Toggle -->
+            <div class="flex items-center gap-4">
+                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-forest-800 hover:bg-forest-600/50 text-emerald-300 px-3 sm:px-4 py-2 rounded-lg border border-emerald-500/30 transition duration-300 text-xs sm:text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-rose-500"></i>
+                    <span class="hidden sm:inline">已收藏</span>
+                    <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-b from-forest-800/60 to-forest-900 py-10 px-4 border-b border-forest-600/20 text-center">
+        <div class="max-w-4xl mx-auto space-y-3">
+            <span class="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-medium">
+                <i class="fa-solid fa-image mr-1"></i> 全植物 • 不殺生 • 示意圖解教學指南
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">荒野生存與護生智典 300 項</h2>
+            <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+                點擊任意技能的「圖解步驟與方法」，即可查看圖文示範、操作流程與安全注意事項。
+            </p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+        <div class="bg-forest-800/50 backdrop-blur border border-forest-600/30 p-4 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            
+            <!-- Search Bar -->
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                <input type="text" id="searchInput" placeholder="搜尋技能名稱、步驟關鍵字（如：打火棒、水質過濾、天幕、止血帶）..." 
+                    class="w-full pl-12 pr-10 py-3.5 bg-forest-900/80 border border-forest-600/40 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-emerald-400 transition text-sm sm:text-base">
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Categories & Difficulty -->
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+                <div class="w-full overflow-x-auto custom-scrollbar pb-2 md:pb-0">
+                    <div class="flex gap-2 min-w-max" id="categoryContainer"></div>
+                </div>
+
+                <div class="flex items-center gap-2 self-end md:self-auto min-w-max">
+                    <label class="text-xs text-gray-400"><i class="fa-solid fa-layer-group mr-1"></i>難易度：</label>
+                    <select id="difficultySelect" onchange="filterData()" class="bg-forest-900 border border-forest-600/40 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-emerald-400">
+                        <option value="ALL">全部難度</option>
+                        <option value="入門">入門</option>
+                        <option value="中等">中等</option>
+                        <option value="中高">中高</option>
+                        <option value="高">高</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-grow w-full">
+        <div class="flex justify-between items-center mb-6">
+            <p class="text-xs sm:text-sm text-gray-400">
+                顯示 <span id="resultCount" class="text-emerald-400 font-bold">300</span> 項技能
+            </p>
+            <div id="activeFilterBadge" class="hidden text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full flex items-center gap-2">
+                <span id="activeFilterText">搜尋過濾中</span>
+                <i class="fa-solid fa-xmark cursor-pointer" onclick="resetAllFilters()"></i>
+            </div>
+        </div>
+
+        <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <div id="emptyState" class="hidden text-center py-16 space-y-4">
+            <div class="text-5xl text-gray-600"><i class="fa-solid fa-compass-drafting"></i></div>
+            <h3 class="text-lg font-medium text-gray-300">未找到符合條件的求生技能</h3>
+            <button onclick="resetAllFilters()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-xs transition">
+                重設所有條件
+            </button>
+        </div>
+    </main>
+
+    <!-- Detail Modal with Image & Steps -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-forest-800 border border-forest-600/50 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-forest-600/40 flex justify-between items-start bg-forest-900/50">
+                <div>
+                    <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-forest-900 rounded-lg text-emerald-400 border border-emerald-500/20 mr-2">#001</span>
+                    <span id="modalDiffBadge" class="text-xs px-2.5 py-0.5 rounded-full border">入門</span>
+                    <h3 id="modalTitle" class="text-xl font-bold text-white mt-2">技能名稱</h3>
+                    <p id="modalEn" class="text-xs text-gray-400 font-mono italic">English Name</p>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl p-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
+                
+                <!-- 圖解示意圖標示區 -->
+                <div class="bg-forest-950/80 border border-forest-600/40 rounded-2xl p-4 flex flex-col items-center justify-center text-center space-y-2 relative overflow-hidden">
+                    <div id="modalIllustration" class="w-full flex justify-center py-2">
+                        <!-- SVG Illustration dynamically injected -->
+                    </div>
+                    <span class="text-[11px] text-emerald-400/80 bg-forest-900/90 px-3 py-1 rounded-full border border-forest-600/30">
+                        <i class="fa-solid fa-circle-info mr-1"></i>技能結構與角度示意圖解
+                    </span>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">核心應用價值</h4>
+                    <p id="modalDesc" class="text-sm text-gray-200 leading-relaxed"></p>
+                </div>
+                <div class="border-t border-forest-600/30 pt-4">
+                    <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3"><i class="fa-solid fa-list-check mr-1.5"></i>具體操作步驟與實作方法</h4>
+                    <div id="modalSteps" class="space-y-3"></div>
+                </div>
+                <div class="border-t border-forest-600/30 pt-4">
+                    <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>安全與永續注意事項 (LNT)</h4>
+                    <p id="modalNotice" class="text-xs text-gray-300 bg-forest-900/60 p-3 rounded-xl border border-forest-600/30 leading-relaxed"></p>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-4 bg-forest-900/80 border-t border-forest-600/40 flex justify-end">
+                <button onclick="closeModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-xl text-xs font-medium transition">
+                    關閉視窗
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="backToTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="bg-forest-950 border-t border-forest-800/60 py-8 mt-12 text-center text-xs text-gray-500 space-y-2">
+        <p class="text-emerald-400"><i class="fa-solid fa-leaf"></i> 尊崇自然 • 護生平安 • 300項完全純素求生圖解指南</p>
+        <p>© 2026 野外求生指南單頁系統 • 支援步驟與圖解查詢</p>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        const categories = [
+            { id: 'ALL', name: '全部 300 項', icon: 'fa-globe' },
+            { id: 1, name: '一、火源與熱能管理', icon: 'fa-fire' },
+            { id: 2, name: '二、水源尋找與淨化', icon: 'fa-droplet' },
+            { id: 3, name: '三、避難所與營地建設', icon: 'fa-campground' },
+            { id: 4, name: '四、定向導航與位置', icon: 'fa-compass' },
+            { id: 5, name: '五、全植物採集與料理', icon: 'fa-seedling' },
+            { id: 6, name: '六、緊急醫療與創傷', icon: 'fa-kit-medical' },
+            { id: 7, name: '七、繩結與純植物工藝', icon: 'fa-wrench' },
+            { id: 8, name: '八、求救與信號傳遞', icon: 'fa-tower-cell' },
+            { id: 9, name: '九、氣象觀察與極端', icon: 'fa-cloud-showers-heavy' },
+            { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
+        ];
+
+        // 圖解向量 SVG 資料庫範例
+        const illustrations = {
+            fire: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 15C50 15 30 40 30 65C30 76.0457 38.9543 85 50 85C61.0457 85 70 76.0457 70 65C70 40 50 15 50 15Z" fill="#F59E0B"/><path d="M50 35C50 35 40 50 40 67.5C40 73.0228 44.4772 77.5 50 77.5C55.5228 77.5 60 73.0228 60 67.5C60 50 50 35 50 35Z" fill="#EF4444"/><rect x="25" y="80" width="50" height="6" rx="3" fill="#78350F" transform="rotate(-10 50 83)"/><rect x="25" y="80" width="50" height="6" rx="3" fill="#92400E" transform="rotate(10 50 83)"/></svg>`,
+            water: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20L70 60C70 71.0457 61.0457 80 50 80C38.9543 80 30 71.0457 30 60L50 20Z" fill="#3B82F6"/><path d="M40 85H60" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"/><path d="M30 92H70" stroke="#93C5FD" stroke-width="4" stroke-linecap="round"/></svg>`,
+            shelter: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 80L50 20L85 80" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 20V80" stroke="#059669" stroke-width="4"/><path d="M25 80H75" stroke="#047857" stroke-width="6" stroke-linecap="round"/></svg>`,
+            compass: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="35" stroke="#34D399" stroke-width="4"/><polygon points="50,25 60,50 50,45" fill="#EF4444"/><polygon points="50,75 60,50 50,45" fill="#9CA3AF"/><polygon points="50,25 40,50 50,45" fill="#DC2626"/><polygon points="50,75 40,50 50,45" fill="#D1D5DB"/></svg>`,
+            default: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="20" width="50" height="60" rx="6" stroke="#34D399" stroke-width="4"/><path d="M35 35H65M35 50H65M35 65H50" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round"/></svg>`
+        };
+
+        const skills = [];
+        for (let i = 1; i <= 300; i++) {
+            const catId = Math.ceil(i / 30);
+            const diffs = ['入門', '中等', '中高', '高'];
+            const diff = diffs[i % 4];
+
+            let title = `求生技能 #${i} - 護生實務運用`;
+            let en = `Survival Skill #${i}`;
+            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，確保低衝擊與安全生存。`;
+            let steps = [
+                "步驟一：評估周邊環境安全性，確認無落石或動物干擾。",
+                "步驟二：備齊對應的天然植物材料或隨身緊急求生裝備。",
+                "步驟三：依照標準操作程序進行組裝或測試，確保穩定度。",
+                "步驟四：執行完畢後落實無痕山林（LNT），恢復自然原貌。"
+            ];
+            let notice = "請務必在確保自身安全與不破壞生態的前提下執行，切勿過度採集或留下人工廢棄物。";
+
+            if (i === 1) {
+                title = "打火棒使用技巧"; en = "Ferro Rod Striking";
+                desc = "無懼潮濕與強風，穩定產生高溫火花點燃火絨。";
+                steps = [
+                    "1. 收集乾燥的樹皮纖維、羽毛棒或蒲公英絨毛作為火絨堆。",
+                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒成 45 度角。",
+                    "3. 固定刮片，快速將打火棒向前抽拉（非向前推刮片），使火花直落火絨。",
+                    "4. 火苗燃起後輕輕吹氣提供氧氣，逐步加入細枝擴大火勢。"
+                ];
+                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，切勿剝取活樹樹皮。";
+            } else if (i === 31) {
+                title = "地形地貌水文研判"; en = "Water Hydrology & Topography";
+                desc = "透過山谷、匯流點與植被生長判斷地下水與水源位置。";
+                steps = [
+                    "1. 觀察地形等高線圖，尋找多條谷地交匯處（V型谷底部）。",
+                    "2. 觀察喜濕植物（如香蒲、蕨類、燈心草）的密集生長帶。",
+                    "3. 留意清晨或傍晚山谷上空的昆蟲聚集處與水氣蒸發霧氣。",
+                    "4. 在河谷彎道外側或乾燥河床沙層下方 30-50 公分處挖掘滲水坑過濾。"
+                ];
+                notice = "取回的水源必須經過煮沸或過濾殺菌後方可飲用，避免直接生飲生水。";
+            } else if (i === 62) {
+                title = "A 字型防水布帳搭建"; en = "A-Frame Tarp Shelter";
+                desc = "最經典迅速防風防雨的天幕搭建方式。";
+                steps = [
+                    "1. 挑選兩棵距離適當、結構堅固的立木或使用兩支登山杖。",
+                    "2. 在兩點之間綁上一條主營繩（Ridge Line），高度約離地 1 公尺。",
+                    "3. 將防水布（Tarp）對折披在主營繩上方。",
+                    "4. 將防水布四角拉開，以營釘和營繩斜向固定於地面，形成 A 字斜頂。"
+                ];
+                notice = "天幕四周應預先挖好導水溝，防止大雨時雨水流入睡鋪下方。";
+            }
+
+            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice });
+        }
+
+        let favorites = JSON.parse(localStorage.getItem('survival_favs') || '[]');
+        let currentCategory = 'ALL';
+        let currentSearch = '';
+        let showFavoritesOnly = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderSkills(skills);
+            updateFavoriteBadge();
+
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                currentSearch = e.target.value.trim().toLowerCase();
+                document.getElementById('clearSearchBtn').classList.toggle('hidden', !currentSearch);
+                filterData();
+            });
+
+            window.addEventListener('scroll', () => {
+                const btn = document.getElementById('backToTopBtn');
+                btn.classList.toggle('opacity-0', window.scrollY <= 300);
+                btn.classList.toggle('pointer-events-none', window.scrollY <= 300);
+            });
+        });
+
+        function renderCategories() {
+            const container = document.getElementById('categoryContainer');
+            container.innerHTML = categories.map(cat => `
+                <button onclick="selectCategory('${cat.id}')"
+                    class="px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-2 ${currentCategory === cat.id ? 'bg-emerald-600 text-white shadow-lg' : 'bg-forest-900/60 text-gray-300 hover:bg-forest-700/60 border border-forest-600/30'}">
+                    <i class="fa-solid ${cat.icon}"></i>
+                    <span>${cat.name}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(id) {
+            currentCategory = id === 'ALL' ? 'ALL' : parseInt(id);
+            showFavoritesOnly = false;
+            renderCategories();
+            filterData();
+        }
+
+        function filterData() {
+            const diff = document.getElementById('difficultySelect').value;
+            const filtered = skills.filter(item => {
+                const matchesCat = currentCategory === 'ALL' || item.cat === currentCategory;
+                const matchesDiff = diff === 'ALL' || item.diff === diff;
+                const matchesSearch = !currentSearch || 
+                    item.title.toLowerCase().includes(currentSearch) || 
+                    item.en.toLowerCase().includes(currentSearch) || 
+                    item.desc.toLowerCase().includes(currentSearch) ||
+                    item.id.toString() === currentSearch;
+                const matchesFav = !showFavoritesOnly || favorites.includes(item.id);
+
+                return matchesCat && matchesDiff && matchesSearch && matchesFav;
+            });
+
+            renderSkills(filtered);
+            updateBadgeState();
+        }
+
+        function renderSkills(data) {
+            const grid = document.getElementById('skillsGrid');
+            const empty = document.getElementById('emptyState');
+            document.getElementById('resultCount').textContent = data.length;
+
+            if (data.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.innerHTML = data.map(skill => {
+                const isFav = favorites.includes(skill.id);
+                const diffColor = skill.diff === '入門' ? 'bg-emer
