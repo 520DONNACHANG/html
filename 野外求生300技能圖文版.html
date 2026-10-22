@@ -28,6 +28,7 @@
                     },
                     fontFamily: {
                         sans: ['Noto Sans TC', 'sans-serif'],
+                        kai: ['標楷體', 'BiauKai', 'KaiTi', 'serif']
                     }
                 }
             }
@@ -199,9 +200,13 @@
     </button>
 
     <!-- Footer -->
-    <footer class="bg-forest-950 border-t border-forest-800/60 py-8 mt-12 text-center text-xs text-gray-500 space-y-2">
-        <p class="text-emerald-400"><i class="fa-solid fa-leaf"></i> 尊崇自然 • 護生平安 • 300項完全純素求生圖解指南</p>
-        <p class="text-gray-300 font-medium">網頁設計師張秋霞 2026/10/22 製作</p>
+    <footer class="bg-forest-950 border-t border-forest-800/60 py-8 mt-12 text-center space-y-3">
+        <p class="text-emerald-400 text-xs"><i class="fa-solid fa-leaf"></i> 尊崇自然 • 護生平安 • 300項完全純素求生圖解指南</p>
+        <!-- 要求新增的設計師署名：藍色粗體標楷體 -->
+        <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-base sm:text-lg">
+            網業設計師 張秋霞 115/10/22製作
+        </p>
+        <p class="text-xs text-gray-500">© 2026 野外求生指南單頁系統 • 支援步驟與圖解查詢</p>
     </footer>
 
     <!-- JavaScript Data & Logic -->
@@ -220,7 +225,6 @@
             { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        // 圖解向量 SVG 資料庫範例
         const illustrations = {
             fire: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 15C50 15 30 40 30 65C30 76.0457 38.9543 85 50 85C61.0457 85 70 76.0457 70 65C70 40 50 15 50 15Z" fill="#F59E0B"/><path d="M50 35C50 35 40 50 40 67.5C40 73.0228 44.4772 77.5 50 77.5C55.5228 77.5 60 73.0228 60 67.5C60 50 50 35 50 35Z" fill="#EF4444"/><rect x="25" y="80" width="50" height="6" rx="3" fill="#78350F" transform="rotate(-10 50 83)"/><rect x="25" y="80" width="50" height="6" rx="3" fill="#92400E" transform="rotate(10 50 83)"/></svg>`,
             water: `<svg width="120" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20L70 60C70 71.0457 61.0457 80 50 80C38.9543 80 30 71.0457 30 60L50 20Z" fill="#3B82F6"/><path d="M40 85H60" stroke="#60A5FA" stroke-width="4" stroke-linecap="round"/><path d="M30 92H70" stroke="#93C5FD" stroke-width="4" stroke-linecap="round"/></svg>`,
@@ -398,7 +402,6 @@
             document.getElementById('modalEn').textContent = skill.en;
             document.getElementById('modalDesc').textContent = skill.desc;
             
-            // 根據領域派發專屬 SVG 圖解
             const imgContainer = document.getElementById('modalIllustration');
             if (skill.cat === 1) imgContainer.innerHTML = illustrations.fire;
             else if (skill.cat === 2) imgContainer.innerHTML = illustrations.water;
