@@ -73,12 +73,12 @@
 
             <!-- Header 右側功能按鈕區 -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <!-- 外部圖文版連結按鈕 -->
+                <!-- 網頁設計切換申請版按鈕 -->
                 <a href="https://520donnachang.github.io/html/%E9%87%8E%E5%A4%96%E6%B1%82%E7%94%9F300%E6%8A%80%E8%83%BD%E5%9C%96%E6%96%87%E7%89%88.html" target="_blank" 
-                   title="前往專屬圖文版網頁"
+                   title="前往網頁設計切換申請版"
                    class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md transition transform hover:scale-105 shrink-0">
-                    <i class="fa-solid fa-globe"></i>
-                    <span class="hidden md:inline">切換</span>圖文版指南
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    <span>網頁設計切換申請版</span>
                 </a>
 
                 <!-- 深色 / 淺色主題切換按鈕 -->
@@ -318,14 +318,16 @@
         </div>
     </div>
 
-    <!-- 右下角雙向導覽浮動鈕 -->
+    <!-- 右下角雙向導覽浮動鈕（包含向上回到頁首▲按鈕） -->
     <div class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-40">
+        <!-- 向上回到頁首箭頭按鈕 -->
         <button id="backToTopBtn" onclick="scrollToTop()" title="回到頁面頂端"
-            class="w-11 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 font-bold text-lg">
+            class="w-11 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 font-black text-lg border border-emerald-400">
             <i class="fa-solid fa-arrow-up"></i>
         </button>
+        <!-- 快速前往頁底留言區按鈕 -->
         <button id="scrollToBottomBtn" onclick="scrollToBottom()" title="快速前往頁底留言區"
-            class="w-11 h-11 bg-teal-600 hover:bg-teal-500 text-white rounded-2xl shadow-lg flex items-center justify-center transition-all duration-300 font-bold text-lg border border-teal-400">
+            class="w-11 h-11 bg-teal-600 hover:bg-teal-500 text-white rounded-2xl shadow-xl flex items-center justify-center transition-all duration-300 font-black text-lg border border-teal-400">
             <i class="fa-solid fa-arrow-down"></i>
         </button>
     </div>
@@ -508,18 +510,12 @@
         let showFavoritesOnly = false;
         let currentRangeSegment = 'ALL';
         let currentActiveSkillId = null;
-        
-        let visitorCount = parseInt(localStorage.getItem('survival_visitors') || '1240') + 1;
-        localStorage.setItem('survival_visitors', visitorCount);
-        let pageLikes = parseInt(localStorage.getItem('survival_pagelikes') || '96');
-        let hasLikedPage = localStorage.getItem('survival_has_liked') === 'true';
 
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             renderCategories();
             renderSkills(skills);
             updateFavoriteBadge();
-            updateStatsUI();
 
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 currentSearch = e.target.value.trim().toLowerCase();
@@ -527,10 +523,16 @@
                 filterData();
             });
 
+            // 滾動監聽：超過 300px 時自動顯示「回到頁首箭頭」
             window.addEventListener('scroll', () => {
                 const btn = document.getElementById('backToTopBtn');
-                btn.classList.toggle('opacity-0', window.scrollY <= 300);
-                btn.classList.toggle('pointer-events-none', window.scrollY <= 300);
+                if (window.scrollY > 300) {
+                    btn.classList.remove('opacity-0', 'pointer-events-none');
+                    btn.classList.add('opacity-100');
+                } else {
+                    btn.classList.add('opacity-0', 'pointer-events-none');
+                    btn.classList.remove('opacity-100');
+                }
             });
         });
 
@@ -707,33 +709,6 @@
                     </div>
                 </div>
             `).join('');
-        }
-
-        function updateStatsUI() {
-            document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
-            document.getElementById('pageLikeCount').textContent = pageLikes;
-            
-            const heartIcon = document.getElementById('pageHeartIcon');
-            if (hasLikedPage) {
-                heartIcon.className = "fa-solid fa-heart text-rose-500 scale-125 transition transform";
-            } else {
-                heartIcon.className = "fa-regular fa-heart text-rose-500 transition";
-            }
-        }
-
-        function handlePageLike() {
-            if (!hasLikedPage) {
-                pageLikes++;
-                hasLikedPage = true;
-                localStorage.setItem('survival_pagelikes', pageLikes);
-                localStorage.setItem('survival_has_liked', 'true');
-            } else {
-                pageLikes--;
-                hasLikedPage = false;
-                localStorage.setItem('survival_pagelikes', pageLikes);
-                localStorage.setItem('survival_has_liked', 'false');
-            }
-            updateStatsUI();
         }
 
         function renderCategories() {
@@ -923,17 +898,4 @@
 
         function updateBadgeState() {
             const badge = document.getElementById('activeFilterBadge');
-            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly || currentRangeSegment !== 'ALL';
-            badge.classList.toggle('hidden', !hasFilter);
-        }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function scrollToBottom() {
-            document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
-</body>
-</html>
+            const hasFilter = currentCategory !== 'ALL
