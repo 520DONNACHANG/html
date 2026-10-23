@@ -12,18 +12,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 引入 Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         forest: {
-                            50: '#f2f7f4',
-                            100: '#e1ede6',
-                            600: '#059669',
-                            800: '#064e3b',
-                            900: '#022c22',
-                            950: '#011c14',
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
                         }
                     },
                     fontFamily: {
@@ -40,44 +46,46 @@
             height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #022c22;
+            background: #e2e8f0;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #10b981;
             border-radius: 4px;
         }
-        .glow-effect {
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+        .glow-effect-light {
+            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.15);
         }
     </style>
 </head>
-<body class="bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
+<body id="pageTop" class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col custom-scrollbar">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-forest-950/95 backdrop-blur-md border-b border-emerald-500/20">
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-emerald-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-400 via-teal-500 to-cyan-400 flex items-center justify-center text-forest-950 font-black text-2xl shadow-lg shadow-emerald-500/30">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-2xl shadow-md shadow-emerald-200">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-black tracking-wide bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">野外求生 300 項指南</h1>
-                    <p class="text-xs text-teal-400 font-medium">純素護生豪華版 • 全方位荒野智典</p>
+                    <h1 class="text-lg sm:text-xl font-black tracking-wide text-emerald-950">野外求生 300 項指南</h1>
+                    <p class="text-xs text-emerald-600 font-medium">純素護生亮彩版 • 全方位荒野智典</p>
                 </div>
             </div>
 
             <!-- Stats & Actions -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
-                    <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
-                    <span class="text-teal-700">|</span>
-                    <button onclick="handlePageLike()" class="flex items-center gap-1 hover:text-rose-400 transition cursor-pointer">
+                <!-- 瀏覽人數與愛心按讚 -->
+                <div class="hidden md:flex items-center gap-3 text-xs bg-emerald-50/80 px-3.5 py-2 rounded-xl border border-emerald-200 text-slate-700 shadow-inner">
+                    <span><i class="fa-solid fa-eye text-emerald-600 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-teal-700">1,240</strong> 人</span>
+                    <span class="text-emerald-300">|</span>
+                    <button onclick="handlePageLike()" class="flex items-center gap-1 hover:text-rose-600 transition cursor-pointer">
                         <i id="pageHeartIcon" class="fa-regular fa-heart text-rose-500"></i>
-                        <strong id="pageLikeCount" class="text-rose-300">96</strong>
+                        <strong id="pageLikeCount" class="text-rose-600">96</strong>
                     </button>
                 </div>
 
-                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 hover:from-forest-800 hover:to-forest-700 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
+                <!-- Favorite Toggle -->
+                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-white hover:bg-rose-50 text-slate-700 px-3.5 py-2 rounded-xl border border-rose-200 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-sm">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
                     <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow">0</span>
@@ -87,29 +95,32 @@
     </header>
 
     <!-- 頂部網頁設計服務招攬列 -->
-    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 py-2.5 px-4 text-center text-white text-xs sm:text-sm font-bold shadow-md tracking-wide">
+    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 py-2.5 px-4 text-center text-white text-xs sm:text-sm font-bold shadow-sm tracking-wide">
         <span>✨ 專業網頁設計服務：<strong>如需網頁設計可以找我</strong>！歡迎洽詢或於下方留言與我聯繫 ✉️</span>
     </div>
 
     <!-- Hero Banner -->
-    <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-12 px-4 border-b border-teal-500/20 text-center overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+    <section class="relative bg-gradient-to-b from-emerald-100/60 via-teal-50/40 to-slate-50 py-10 px-4 border-b border-emerald-100 text-center overflow-hidden">
         <div class="max-w-4xl mx-auto space-y-4 relative z-10">
-            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 rounded-full text-xs font-bold shadow-lg">
-                <i class="fa-solid fa-fire-flame-curved text-amber-400"></i> 全植物 • 不殺生 • 絢麗圖影互動指南
+            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-white text-emerald-800 border border-emerald-200 rounded-full text-xs font-bold shadow-sm">
+                <i class="fa-solid fa-fire-flame-curved text-amber-500"></i> 全植物 • 不殺生 • 明亮清新互動指南
             </span>
-            <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                荒野生存與護生智典 <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">300 項</span>
-            </h2>
-            <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+            
+            <div class="w-full overflow-x-auto custom-scrollbar py-1">
+                <h2 class="text-xl sm:text-3xl md:text-5xl font-black text-emerald-950 tracking-tight leading-normal whitespace-nowrap drop-shadow-sm">
+                    荒野生存與護生智典 <span class="text-emerald-600">300 項</span>
+                </h2>
+            </div>
+
+            <p class="text-slate-600 text-xs sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
                 結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
-            <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-forest-900/80 py-2.5 px-5 rounded-2xl border border-teal-500/30 max-w-xs mx-auto shadow-md">
-                <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-cyan-300">1,240</strong></span>
+            <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-white/80 py-2.5 px-5 rounded-2xl border border-emerald-200 max-w-xs mx-auto shadow-sm">
+                <span><i class="fa-solid fa-eye text-emerald-600 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-teal-700">1,240</strong></span>
                 <span>|</span>
-                <button onclick="handlePageLike()" class="flex items-center gap-1 text-rose-400">
+                <button onclick="handlePageLike()" class="flex items-center gap-1 text-rose-600">
                     <i class="fa-solid fa-heart"></i>
-                    <strong id="pageLikeCountMob" class="text-rose-300">96</strong> 讚
+                    <strong id="pageLikeCountMob" class="text-rose-600">96</strong> 讚
                 </button>
             </div>
         </div>
@@ -117,36 +128,33 @@
 
     <!-- Search and Filter Section -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
-        <div class="bg-gradient-to-br from-forest-900/90 to-forest-950/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
+        <div class="bg-white border border-emerald-200/80 p-4 sm:p-6 rounded-3xl shadow-xl glow-effect-light space-y-4">
             
-            <!-- Search Bar -->
             <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-teal-400 text-lg"></i>
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg"></i>
                 <input type="text" id="searchInput" placeholder="搜尋技能名稱、關鍵字（如：打火棒、水質過濾、天幕、止血帶）..." 
-                    class="w-full pl-12 pr-10 py-3.5 bg-forest-950/90 border border-teal-500/40 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition text-sm sm:text-base shadow-inner">
-                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+                    class="w-full pl-12 pr-10 py-3.5 bg-slate-50 border border-emerald-200 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-200 transition text-sm sm:text-base">
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- 100則區段快速切換分頁 (100 * 3) -->
-            <div class="flex flex-wrap gap-2 pt-2 border-t border-teal-500/20">
-                <span class="text-xs text-teal-300 self-center font-medium mr-1"><i class="fa-solid fa-layer-group"></i> 區段分頁：</span>
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100">
+                <span class="text-xs text-slate-600 self-center font-bold mr-1"><i class="fa-solid fa-layer-group text-emerald-600"></i> 區段分頁：</span>
                 <button onclick="setRangeSegment('ALL')" id="segBtn_ALL" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow">全部顯示 (300)</button>
-                <button onclick="setRangeSegment(1)" id="segBtn_1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 1-100 項</button>
-                <button onclick="setRangeSegment(2)" id="segBtn_2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 101-200 項</button>
-                <button onclick="setRangeSegment(3)" id="segBtn_3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 201-300 項</button>
+                <button onclick="setRangeSegment(1)" id="segBtn_1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50">第 1-100 項</button>
+                <button onclick="setRangeSegment(2)" id="segBtn_2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50">第 101-200 項</button>
+                <button onclick="setRangeSegment(3)" id="segBtn_3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50">第 201-300 項</button>
             </div>
 
-            <!-- Categories & Difficulty -->
             <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center pt-2">
                 <div class="w-full overflow-x-auto custom-scrollbar pb-2 md:pb-0">
                     <div class="flex gap-2 min-w-max" id="categoryContainer"></div>
                 </div>
 
                 <div class="flex items-center gap-2 self-end md:self-auto min-w-max">
-                    <label class="text-xs text-teal-300 font-medium"><i class="fa-solid fa-filter mr-1"></i>難易度：</label>
-                    <select id="difficultySelect" onchange="filterData()" class="bg-forest-950 border border-teal-500/40 rounded-xl px-3.5 py-2 text-xs text-cyan-200 focus:outline-none focus:border-cyan-400 shadow">
+                    <label class="text-xs text-slate-600 font-bold"><i class="fa-solid fa-filter text-emerald-600 mr-1"></i>難易度：</label>
+                    <select id="difficultySelect" onchange="filterData()" class="bg-slate-50 border border-emerald-200 rounded-xl px-3.5 py-2 text-xs text-slate-700 focus:outline-none focus:border-emerald-500 shadow-sm">
                         <option value="ALL">全部難度</option>
                         <option value="入門">入門</option>
                         <option value="中等">中等</option>
@@ -161,10 +169,10 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-grow w-full">
         <div class="flex justify-between items-center mb-6">
-            <p class="text-xs sm:text-sm text-gray-300 font-medium">
-                已載入 <span id="resultCount" class="text-cyan-400 font-bold">300</span> 項技能
+            <p class="text-xs sm:text-sm text-slate-600 font-medium">
+                已載入 <span id="resultCount" class="text-emerald-700 font-bold">300</span> 項技能
             </p>
-            <div id="activeFilterBadge" class="hidden text-xs bg-teal-500/20 text-teal-300 border border-teal-500/40 px-3 py-1 rounded-full flex items-center gap-2 shadow">
+            <div id="activeFilterBadge" class="hidden text-xs bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1 rounded-full flex items-center gap-2 shadow-sm">
                 <span id="activeFilterText">搜尋過濾中</span>
                 <i class="fa-solid fa-xmark cursor-pointer" onclick="resetAllFilters()"></i>
             </div>
@@ -173,48 +181,48 @@
         <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
         <div id="emptyState" class="hidden text-center py-16 space-y-4">
-            <div class="text-5xl text-teal-600"><i class="fa-solid fa-compass-drafting animate-spin"></i></div>
-            <h3 class="text-lg font-medium text-gray-300">未找到符合條件的求生技能</h3>
-            <button onclick="resetAllFilters()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-lg transition">
+            <div class="text-5xl text-emerald-500"><i class="fa-solid fa-compass-drafting animate-spin"></i></div>
+            <h3 class="text-lg font-medium text-slate-700">未找到符合條件的求生技能</h3>
+            <button onclick="resetAllFilters()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md transition">
                 重設所有條件
             </button>
         </div>
     </main>
 
-    <!-- 底部訪客留言與聯絡表單區 (畫面絕對不顯示任何 Email) -->
-    <section class="max-w-4xl mx-auto px-4 py-12 w-full">
-        <div class="bg-gradient-to-br from-forest-900 to-forest-950 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
+    <!-- 底部訪客留言與聯絡表單區 -->
+    <section id="contactSection" class="max-w-4xl mx-auto px-4 py-12 w-full">
+        <div class="bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 glow-effect-light">
             <div class="text-center space-y-2">
-                <span class="inline-block px-3.5 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-bold border border-teal-500/30">
+                <span class="inline-block px-3.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold border border-emerald-300">
                     <i class="fa-solid fa-envelope-open-text mr-1"></i> 網頁設計與意見交流
                 </span>
-                <h3 class="text-2xl sm:text-3xl font-black text-white">與設計師聯繫 / 訪客留言</h3>
-                <p class="text-xs sm:text-sm text-teal-300">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
-                <p class="text-[11px] text-cyan-400 font-medium bg-forest-950/60 py-1.5 px-3 rounded-xl inline-block border border-cyan-500/30">
-                    🔒 <strong>電子信箱絕對保密不外流</strong>，表單送出後將直接安全傳送至設計師信箱。
+                <h3 class="text-2xl sm:text-3xl font-black text-emerald-950">與設計師聯繫 / 訪客留言</h3>
+                <p class="text-xs sm:text-sm text-slate-600">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
+                <p class="text-[11px] text-teal-800 font-medium bg-emerald-50 py-1.5 px-3 rounded-xl inline-block border border-emerald-200">
+                    🔒 <strong>電子信箱保密不外流</strong>，表單送出後將直接安全傳送至設計師專屬信箱。
                 </p>
             </div>
 
             <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-xs text-teal-300 font-medium">您的姓名 / 稱呼 *</label>
+                        <label class="text-xs text-slate-700 font-bold">您的姓名 / 稱呼 *</label>
                         <input type="text" id="senderName" required placeholder="例如：林先生 / 王小姐" 
-                            class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-xs text-teal-300 font-medium">您的電子信箱 (絕對保密) *</label>
+                        <label class="text-xs text-slate-700 font-bold">您的電子信箱 (絕對保密) *</label>
                         <input type="email" id="senderEmail" required placeholder="name@example.com" 
-                            class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
                     </div>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs text-teal-300 font-medium">留言內容 / 網頁設計需求 *</label>
+                    <label class="text-xs text-slate-700 font-bold">留言內容 / 網頁設計需求 *</label>
                     <textarea id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." 
-                        class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400 resize-none"></textarea>
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white resize-none"></textarea>
                 </div>
                 <div class="text-center pt-2">
-                    <button type="submit" class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-forest-950 font-black px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto">
+                    <button type="submit" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto">
                         <i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱
                     </button>
                 </div>
@@ -223,111 +231,146 @@
     </section>
 
     <!-- Detail Modal -->
-    <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
+    <div id="detailModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white border border-emerald-200 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
-            <div class="p-5 border-b border-teal-500/30 flex justify-between items-start bg-forest-950/80">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-start bg-emerald-50/50">
                 <div>
-                    <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-teal-950 rounded-xl text-cyan-300 border border-teal-500/40 mr-2 shadow-inner">#001</span>
-                    <span id="modalDiffBadge" class="text-xs px-2.5 py-0.5 rounded-full border">入門</span>
-                    <h3 id="modalTitle" class="text-xl font-black text-white mt-2">技能名稱</h3>
-                    <p id="modalEn" class="text-xs text-teal-400 font-mono italic">English Name</p>
+                    <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-xl border border-emerald-200 mr-2 shadow-inner font-bold">#001</span>
+                    <span id="modalDiffBadge" class="text-xs px-2.5 py-0.5 rounded-full border font-bold">入門</span>
+                    <h3 id="modalTitle" class="text-xl font-black text-emerald-950 mt-2">技能名稱</h3>
+                    <p id="modalEn" class="text-xs text-emerald-600 font-mono italic">English Name</p>
                 </div>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl p-2 bg-forest-900/80 rounded-full w-9 h-9 flex items-center justify-center border border-teal-500/20">
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl p-2 bg-white rounded-full w-9 h-9 flex items-center justify-center border border-slate-200 shadow-sm">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
-                <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group">
-                    <img id="modalImg" src="https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop" alt="情境圖" class="w-full h-48 sm:h-56 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-transparent to-transparent flex items-end p-4">
-                        <span class="text-xs text-cyan-300 bg-forest-900/90 px-3.5 py-1.5 rounded-full border border-teal-500/40 flex items-center gap-1.5 shadow-md">
-                            <i class="fa-solid fa-camera text-emerald-400"></i> 實地情境模擬圖示
-                        </span>
+                <div class="relative rounded-2xl overflow-hidden border border-emerald-200 shadow-md bg-gradient-to-tr from-emerald-100 via-teal-50 to-cyan-50 p-6 flex flex-col items-center justify-center text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-white border border-emerald-300 flex items-center justify-center text-emerald-600 text-3xl mb-3 shadow-md animate-pulse relative z-10">
+                        <i id="modalVisualIcon" class="fa-solid fa-fire"></i>
                     </div>
+                    <h4 id="modalVisualTitle" class="text-emerald-950 font-black text-base sm:text-lg tracking-wide relative z-10">技能圖解標題</h4>
+                    <span class="text-xs text-emerald-800 bg-white/90 px-3.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-sm mt-2 relative z-10 font-medium">
+                        <i class="fa-solid fa-shield-halved text-emerald-600"></i> 純植物永續求生 • 實地情境模擬圖解
+                    </span>
                 </div>
 
                 <div>
-                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-400"></i> 核心應用價值</h4>
-                    <p id="modalDesc" class="text-sm text-gray-200 leading-relaxed font-light"></p>
+                    <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-600"></i> 核心應用價值</h4>
+                    <p id="modalDesc" class="text-sm text-slate-700 leading-relaxed font-normal"></p>
                 </div>
 
-                <div class="bg-gradient-to-r from-forest-900 to-forest-950 border border-rose-500/30 rounded-2xl p-4 flex items-center justify-between shadow-md">
+                <div class="bg-rose-50/50 border border-rose-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-rose-600/20 text-rose-400 flex items-center justify-center text-xl shrink-0 border border-rose-500/30">
+                        <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl shrink-0 border border-rose-200">
                             <i class="fa-brands fa-youtube"></i>
                         </div>
                         <div>
-                            <h5 class="text-xs font-bold text-white">YouTube 實作教學影片參考</h5>
-                            <p class="text-[11px] text-gray-400">點擊按鈕直接前往觀看相關技能示範與教學</p>
+                            <h5 class="text-xs font-bold text-slate-800">YouTube 實作教學影片參考</h5>
+                            <p class="text-[11px] text-slate-500">點擊按鈕直接前往觀看相關技能示範與教學</p>
                         </div>
                     </div>
-                    <a id="modalVideoBtn" href="#" target="_blank" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs px-4 py-2.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 shadow-lg shadow-rose-900/40">
+                    <a id="modalVideoBtn" href="#" target="_blank" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-4 py-2.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 shadow-md">
                         <i class="fa-solid fa-play"></i> 觀看影片
                     </a>
                 </div>
 
-                <div class="border-t border-teal-500/20 pt-4">
-                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-cyan-400"></i> 具體 DIY 操作步驟與實作方法</h4>
+                <div class="border-t border-slate-100 pt-4">
+                    <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-teal-600"></i> 具體 DIY 操作步驟與實作方法</h4>
                     <div id="modalSteps" class="space-y-3"></div>
                 </div>
 
-                <div class="border-t border-teal-500/20 pt-4">
-                    <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> 安全與永續注意事項 (LNT)</h4>
-                    <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
+                <div class="border-t border-slate-100 pt-4">
+                    <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 安全與永續注意事項 (LNT)</h4>
+                    <p id="modalNotice" class="text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200 leading-relaxed"></p>
                 </div>
 
-                <!-- 訪客心得交流留言區 (支援按讚互動顯示) -->
-                <div class="border-t border-teal-500/20 pt-6 space-y-4">
-                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-comments text-cyan-400"></i> 觀看心得與實作分享區
+                <!-- 訪客心得交流留言區 -->
+                <div class="border-t border-slate-100 pt-6 space-y-4">
+                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-teal-600"></i> 觀看心得與實作分享區
                     </h4>
-                    <div id="commentList" class="space-y-2.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
-                        <!-- 動態載入留言與讚數 -->
-                    </div>
+                    <div id="commentList" class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
+                    
                     <form id="commentForm" onsubmit="submitComment(event)" class="space-y-2 pt-2">
                         <input type="text" id="commenterName" required placeholder="您的稱呼 / 暱稱" 
-                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-400">
+                            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs focus:outline-none focus:border-emerald-500 focus:bg-white">
                         <textarea id="commentBody" rows="2" required placeholder="分享您的觀看心得或實作經驗..." 
-                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs resize-none focus:outline-none focus:border-cyan-400"></textarea>
-                        <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
-                            發表心得分享
-                        </button>
+                            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs resize-none focus:outline-none focus:border-emerald-500 focus:bg-white"></textarea>
+                        
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm transition">
+                                發表心得分享 (停留此頁)
+                            </button>
+                            <button type="button" onclick="sendCommentToEmail()" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-paper-plane"></i> 寄送此心得給設計師
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
             <!-- Modal Footer -->
-            <div class="p-4 bg-forest-950/90 border-t border-teal-500/30 flex justify-end">
-                <button onclick="closeModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg transition">
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="closeModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-md transition">
                     關閉視窗
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Back to Top -->
-    <button id="backToTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-tr from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
+    <!-- 右下角雙向導覽浮動鈕 -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-40">
+        <button id="backToTopBtn" onclick="scrollToTop()" title="回到頁面頂端"
+            class="w-11 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 font-bold text-lg">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <button id="scrollToBottomBtn" onclick="scrollToBottom()" title="快速前往頁底留言區"
+            class="w-11 h-11 bg-teal-600 hover:bg-teal-500 text-white rounded-2xl shadow-lg flex items-center justify-center transition-all duration-300 font-bold text-lg border border-teal-400">
+            <i class="fa-solid fa-arrow-down"></i>
+        </button>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
-        <p class="text-teal-400 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-400"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
+    <footer id="pageBottom" class="bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner">
+        <p class="text-emerald-700 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-600"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
         
-        <!-- 網頁設計師署名：標楷體單行顯示 -->
-        <div class="inline-block py-2 px-6 rounded-2xl bg-forest-900/60 border border-teal-500/30 shadow-md max-w-full overflow-x-auto">
-            <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow">
-                網頁設計師：張秋霞 <span class="text-xs font-mono ml-2 text-cyan-400 font-normal">115/10/22 製作</span>
+        <div class="inline-block py-2 px-6 rounded-2xl bg-emerald-50/80 border border-emerald-200 shadow-sm max-w-full overflow-x-auto">
+            <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #1d4ed8;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow-sm">
+                網頁設計師：張秋霞 <span class="text-xs font-mono ml-2 text-emerald-700 font-normal">115/10/22 製作</span>
             </p>
         </div>
 
-        <p class="text-xs text-gray-500 pt-1">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
+        <p class="text-xs text-slate-400 pt-1">© 2026 野外求生指南單頁系統 • 明亮極簡互動版</p>
     </footer>
 
-    <!-- JavaScript Data & Logic -->
+    <!-- JavaScript Logic -->
     <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        let isFirebaseActive = false;
+        let database = null;
+
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                database = firebase.database();
+                isFirebaseActive = true;
+            }
+        } catch (e) {
+            console.log("Firebase 尚未配置，啟動 LocalStorage 本地儲存模式。");
+        }
+
         const categories = [
             { id: 'ALL', name: '全部 300 項', icon: 'fa-globe' },
             { id: 1, name: '一、火源與熱能管理', icon: 'fa-fire' },
@@ -342,12 +385,18 @@
             { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        const sampleImages = [
-            "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop"
-        ];
+        const categoryIcons = {
+            1: 'fa-fire',
+            2: 'fa-droplet',
+            3: 'fa-campground',
+            4: 'fa-compass',
+            5: 'fa-seedling',
+            6: 'fa-kit-medical',
+            7: 'fa-wrench',
+            8: 'fa-tower-cell',
+            9: 'fa-cloud-sun',
+            10: 'fa-brain'
+        };
 
         const skills = [];
         for (let i = 1; i <= 300; i++) {
@@ -357,29 +406,29 @@
 
             let title = `求生技能 #${i} - 護生實務運用`;
             let en = `Survival Skill #${i}`;
-            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，確保低衝擊與安全生存。`;
+            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，進行全植物與低衝擊之永續生存。`;
             let steps = [
-                "步驟一：評估周邊環境安全性，確認無落石或動物干擾。",
-                "步驟二：備齊對應的天然植物材料或隨身緊急求生裝備。",
-                "步驟三：依照標準操作程序進行組裝或測試，確保穩定度。",
-                "步驟四：執行完畢後落實無痕山林（LNT），恢復自然原貌。"
+                "步驟一：環境與生態評估，確認周邊資源豐富且無破壞性干擾。",
+                "步驟二：準備對應的天然植物材料或隨身環保求生工具。",
+                "步驟三：依照標準 DIY 護生程序進行組合、測試與應用。",
+                "步驟四：執行完畢後落實無痕山林（LNT），完整恢復自然原貌。"
             ];
-            let notice = "請務必在確保自身安全與不破壞生態的前提下執行，切勿過度採集或留下人工廢棄物。";
+            let notice = "請務必在確保自身安全與絕對不破壞生態的前提下執行，切勿過度採集植物或留下任何人工廢棄物。";
             let videoQuery = encodeURIComponent(`野外求生 ${title}`);
 
             if (i === 1) {
                 title = "打火棒使用技巧"; en = "Ferro Rod Striking";
-                desc = "無懼潮濕與強風，穩定產生高溫火花點燃火絨。";
+                desc = "無懼潮濕與強風，穩定產生高溫火花點燃天然火絨。";
                 steps = [
-                    "1. 收集乾燥的樹皮纖維、羽毛棒或蒲公英絨毛作為火絨堆。",
-                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒成 45 度角。",
-                    "3. 固定刮片，快速將打火棒向前抽拉，使火花直落火絨。",
+                    "1. 收集乾燥的樹皮纖維、枯草或蒲公英絨毛作為乾淨的火絨堆。",
+                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒保持 45 度夾角。",
+                    "3. 固定刮片位置，快速將打火棒向前抽拉，使高溫火花直落火絨。",
                     "4. 火苗燃起後輕輕吹氣提供氧氣，逐步加入細枝擴大火勢。"
                 ];
-                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，切勿剝取活樹樹皮。";
+                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，嚴禁剝取活樹樹皮。";
             } else if (i === 31) {
                 title = "地形地貌水文研判"; en = "Water Hydrology & Topography";
-                desc = "透過山谷、匯流點與植被生長判斷地下水與水源位置。";
+                desc = "透過山谷、匯流點與喜濕植被生長判斷地下水與純淨水源位置。";
                 steps = [
                     "1. 觀察地形等高線圖，尋找多條谷地交匯處（V型谷底部）。",
                     "2. 觀察喜濕植物（如香蒲、蕨類、燈心草）的密集生長帶。",
@@ -389,25 +438,24 @@
                 notice = "取回的水源必須經過煮沸或過濾殺菌後方可飲用，避免直接生飲生水。";
             } else if (i === 62) {
                 title = "A 字型防水布帳搭建"; en = "A-Frame Tarp Shelter";
-                desc = "最經典迅速防風防雨的天幕搭建方式。";
+                desc = "最經典迅速防風防雨的野外天幕搭建與固定方式。";
                 steps = [
                     "1. 挑選兩棵距離適當、結構堅固的立木或使用兩支登山杖。",
                     "2. 在兩點之間綁上一條主營繩（Ridge Line），高度約離地 1 公尺。",
-                    "3. 將防水布（Tarp）對折披在主營繩上方。",
+                    "3. 將防水布（Tarp）對折披在主營繩上方，拉開兩側。",
                     "4. 將防水布四角拉開，以營釘和營繩斜向固定於地面，形成 A 字斜頂。"
                 ];
                 notice = "天幕四周應預先挖好導水溝，防止大雨時雨水流入睡鋪下方。";
             }
 
-            const imgUrl = sampleImages[(i - 1) % sampleImages.length];
-            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice, imgUrl, videoUrl: `https://www.youtube.com/results?search_query=${videoQuery}` });
+            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice, videoUrl: `https://www.youtube.com/results?search_query=${videoQuery}` });
         }
 
         let favorites = JSON.parse(localStorage.getItem('survival_favs') || '[]');
         let currentCategory = 'ALL';
         let currentSearch = '';
         let showFavoritesOnly = false;
-        let currentRangeSegment = 'ALL'; // 'ALL', 1 (1-100), 2 (101-200), 3 (201-300)
+        let currentRangeSegment = 'ALL';
         let currentActiveSkillId = null;
         
         let visitorCount = parseInt(localStorage.getItem('survival_visitors') || '1240') + 1;
@@ -434,7 +482,6 @@
             });
         });
 
-        // 設定 100 則區段分頁 (100 * 3)
         function setRangeSegment(seg) {
             currentRangeSegment = seg;
             ['ALL', 1, 2, 3].forEach(s => {
@@ -443,14 +490,13 @@
                     if (s === seg) {
                         btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow";
                     } else {
-                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800";
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50";
                     }
                 }
             });
             filterData();
         }
 
-        // 聯絡表單送出（信箱在背景隱藏傳送至 wesley_joyce@yahoo.com.tw，畫面上絕不顯示）
         function submitContactForm(event) {
             event.preventDefault();
             const name = document.getElementById('senderName').value;
@@ -463,11 +509,10 @@
 
             window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
             
-            alert("感謝您的留言！系統已為您準備好郵件，將發送至設計師信箱。");
+            alert("感謝您的留言！系統已為您準備好郵件，將發送至張秋霞設計師信箱。");
             document.getElementById('contactForm').reset();
         }
 
-        // 發表心得分享
         function submitComment(event) {
             event.preventDefault();
             if (!currentActiveSkillId) return;
@@ -476,45 +521,133 @@
             const body = document.getElementById('commentBody').value;
             const date = new Date().toLocaleDateString();
 
-            const storageKey = `skill_comments_${currentActiveSkillId}`;
-            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
-            comments.push({ name, body, date, likes: 0 });
-            localStorage.setItem(storageKey, JSON.stringify(comments));
+            if (isFirebaseActive) {
+                database.ref('comments/' + currentActiveSkillId).push({
+                    name: name,
+                    body: body,
+                    date: date,
+                    likes: 0
+                });
+            } else {
+                const storageKey = `skill_comments_${currentActiveSkillId}`;
+                let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                comments.push({ id: Date.now().toString(), name, body, date, likes: 0 });
+                localStorage.setItem(storageKey, JSON.stringify(comments));
+                loadComments(currentActiveSkillId);
+            }
 
-            document.getElementById('commentForm').reset();
-            loadComments(currentActiveSkillId);
+            document.getElementById('commentBody').value = '';
+            alert("心得已發表！視窗保持開啟，您可以繼續查看或分享。");
         }
 
-        // 留言按讚功能
-        function likeComment(skillId, index) {
-            const storageKey = `skill_comments_${skillId}`;
-            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
-            if (comments[index]) {
-                comments[index].likes = (comments[index].likes || 0) + 1;
-                localStorage.setItem(storageKey, JSON.stringify(comments));
-                loadComments(skillId);
+        function sendCommentToEmail() {
+            if (!currentActiveSkillId) return;
+            const skill = skills.find(s => s.id === currentActiveSkillId);
+            const name = document.getElementById('commenterName').value || '熱心訪客';
+            const body = document.getElementById('commentBody').value;
+
+            if (!body) {
+                alert("請先輸入您的心得內容再點擊寄送喔！");
+                return;
+            }
+
+            const targetEmail = "wesley_joyce@yahoo.com.tw";
+            const subject = encodeURIComponent(`【求生技能 #${skill.id} 心得分享】來自 ${name}`);
+            const mailBody = encodeURIComponent(`求生技能：#${skill.id} - ${skill.title}\n訪客暱稱：${name}\n\n心得經驗分享：\n${body}\n\n-----------------------------\n(此郵件由野外求生指南單頁系統自動發送)`);
+
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${mailBody}`;
+        }
+
+        function editComment(commentId, currentBody) {
+            const newBody = prompt("請修改您的留言內容：", currentBody);
+            if (newBody !== null && newBody.trim() !== "") {
+                if (isFirebaseActive) {
+                    database.ref(`comments/${currentActiveSkillId}/${commentId}`).update({ body: newBody.trim() });
+                } else {
+                    const storageKey = `skill_comments_${currentActiveSkillId}`;
+                    let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    const idx = comments.findIndex(c => c.id === commentId);
+                    if (idx !== -1) {
+                        comments[idx].body = newBody.trim();
+                        localStorage.setItem(storageKey, JSON.stringify(comments));
+                        loadComments(currentActiveSkillId);
+                    }
+                }
+            }
+        }
+
+        function deleteComment(commentId) {
+            if (confirm("確定要刪除這則心得分享嗎？")) {
+                if (isFirebaseActive) {
+                    database.ref(`comments/${currentActiveSkillId}/${commentId}`).remove();
+                } else {
+                    const storageKey = `skill_comments_${currentActiveSkillId}`;
+                    let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    comments = comments.filter(c => c.id !== commentId);
+                    localStorage.setItem(storageKey, JSON.stringify(comments));
+                    loadComments(currentActiveSkillId);
+                }
+            }
+        }
+
+        function likeComment(commentId, currentLikes) {
+            if (isFirebaseActive) {
+                database.ref(`comments/${currentActiveSkillId}/${commentId}`).update({ likes: (currentLikes || 0) + 1 });
+            } else {
+                const storageKey = `skill_comments_${currentActiveSkillId}`;
+                let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                const idx = comments.findIndex(c => c.id === commentId);
+                if (idx !== -1) {
+                    comments[idx].likes = (comments[idx].likes || 0) + 1;
+                    localStorage.setItem(storageKey, JSON.stringify(comments));
+                    loadComments(currentActiveSkillId);
+                }
             }
         }
 
         function loadComments(skillId) {
             const container = document.getElementById('commentList');
-            const storageKey = `skill_comments_${skillId}`;
-            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
 
-            if (comments.length === 0) {
-                container.innerHTML = `<p class="text-xs text-gray-500 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
-                return;
+            if (isFirebaseActive) {
+                database.ref('comments/' + skillId).on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) {
+                        container.innerHTML = `<p class="text-xs text-slate-400 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
+                        return;
+                    }
+
+                    const commentsArray = Object.entries(data).map(([key, val]) => ({ id: key, ...val }));
+                    renderCommentCards(container, commentsArray);
+                });
+            } else {
+                const storageKey = `skill_comments_${skillId}`;
+                let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                if (comments.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-400 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
+                    return;
+                }
+                renderCommentCards(container, comments);
             }
+        }
 
-            container.innerHTML = comments.map((c, index) => `
-                <div class="bg-forest-950/80 p-3 rounded-xl border border-teal-500/20 shadow-sm space-y-1.5">
+        function renderCommentCards(container, comments) {
+            container.innerHTML = comments.map(c => `
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-sm space-y-1.5">
                     <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-cyan-300"><i class="fa-solid fa-user-circle mr-1"></i>${c.name}</span>
-                        <span class="text-[10px] text-gray-500 font-mono">${c.date}</span>
+                        <span class="text-xs font-bold text-emerald-800"><i class="fa-solid fa-user-circle mr-1 text-emerald-600"></i>${c.name}</span>
+                        <span class="text-[10px] text-slate-400 font-mono">${c.date}</span>
                     </div>
-                    <p class="text-xs text-gray-200 leading-relaxed">${c.body}</p>
-                    <div class="flex justify-end pt-1">
-                        <button onclick="likeComment(${skillId}, ${index})" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/20 transition cursor-pointer">
+                    <p class="text-xs text-slate-700 leading-relaxed">${c.body}</p>
+                    <div class="flex justify-between items-center pt-1 border-t border-slate-200/60 mt-1">
+                        <div class="flex gap-2">
+                            <button onclick="editComment('${c.id}', '${c.body.replace(/'/g, "\\'")}')" class="text-[11px] text-teal-700 hover:text-teal-900 transition flex items-center gap-1 font-medium">
+                                <i class="fa-solid fa-pen-to-square"></i> 編輯
+                            </button>
+                            <button onclick="deleteComment('${c.id}')" class="text-[11px] text-rose-600 hover:text-rose-800 transition flex items-center gap-1 font-medium">
+                                <i class="fa-solid fa-trash-can"></i> 刪除
+                            </button>
+                        </div>
+                        <button onclick="likeComment('${c.id}', ${c.likes || 0})" class="text-xs text-rose-600 hover:text-rose-700 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-50 border border-rose-200 transition cursor-pointer font-bold">
                             <i class="fa-solid fa-heart"></i> <span>${c.likes || 0} 讚</span>
                         </button>
                     </div>
@@ -555,7 +688,7 @@
             const container = document.getElementById('categoryContainer');
             container.innerHTML = categories.map(cat => `
                 <button onclick="selectCategory('${cat.id}')"
-                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-900/50 scale-105' : 'bg-forest-900/80 text-teal-200 hover:bg-forest-800 border border-teal-500/30'}">
+                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-emerald-600 text-white shadow-md scale-105' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 border border-slate-200'}">
                     <i class="fa-solid ${cat.icon}"></i>
                     <span>${cat.name}</span>
                 </button>
@@ -605,37 +738,38 @@
             }
 
             empty.classList.add('hidden');
+
             grid.innerHTML = data.map(skill => {
                 const isFav = favorites.includes(skill.id);
-                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                                  'bg-rose-500/20 text-rose-300 border-rose-500/40';
+                const diffColor = skill.diff === '入門' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                                  skill.diff === '中等' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                                  skill.diff === '中高' ? 'bg-amber-100 text-amber-800 border-amber-300' :
+                                  'bg-rose-100 text-rose-800 border-rose-300';
 
                 return `
-                    <div class="bg-gradient-to-br from-forest-900/80 to-forest-950 border border-teal-500/30 hover:border-cyan-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between hover:shadow-2xl hover:shadow-teal-950 hover:-translate-y-1 group">
+                    <div class="bg-white border border-emerald-100 hover:border-emerald-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 group">
                         <div class="space-y-3">
                             <div class="flex justify-between items-start">
-                                <span class="text-xs font-mono px-3 py-1 bg-teal-950/80 rounded-xl text-cyan-300 border border-teal-500/30 shadow-inner">
+                                <span class="text-xs font-mono px-3 py-1 bg-emerald-50 rounded-xl text-emerald-800 border border-emerald-200 font-bold shadow-inner">
                                     #${skill.id.toString().padStart(3, '0')}
                                 </span>
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs px-3 py-1 rounded-full border font-bold ${diffColor}">${skill.diff}</span>
-                                    <button onclick="toggleFavorite(${skill.id})" class="text-gray-400 hover:text-rose-500 transition text-lg p-1">
+                                    <button onclick="toggleFavorite(${skill.id})" class="text-slate-300 hover:text-rose-500 transition text-lg p-1">
                                         <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart ${isFav ? 'text-rose-500 scale-110' : ''} transition"></i>
                                     </button>
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">${skill.title}</h3>
-                                <p class="text-xs text-teal-400/80 font-mono italic">${skill.en}</p>
+                                <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-700 transition">${skill.title}</h3>
+                                <p class="text-xs text-emerald-600 font-mono italic">${skill.en}</p>
                             </div>
-                            <p class="text-sm text-gray-300 leading-relaxed font-light">${skill.desc}</p>
+                            <p class="text-sm text-slate-600 leading-relaxed font-normal">${skill.desc}</p>
                         </div>
-                        <div class="mt-5 pt-4 border-t border-teal-500/20 flex justify-between items-center text-xs">
-                            <span class="text-teal-400"><i class="fa-solid fa-folder text-emerald-400 mr-1"></i>領域 ${skill.cat}</span>
-                            <button onclick="openDetail(${skill.id})" class="bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600 hover:to-teal-600 text-teal-200 hover:text-white px-3.5 py-2 rounded-xl border border-teal-500/40 transition flex items-center gap-1.5 font-bold shadow">
-                                <i class="fa-solid fa-image text-cyan-400"></i> 詳細圖解與影片
+                        <div class="mt-5 pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+                            <span class="text-emerald-800 font-medium"><i class="fa-solid fa-folder text-emerald-600 mr-1"></i>領域 ${skill.cat}</span>
+                            <button onclick="openDetail(${skill.id})" class="bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white px-3.5 py-2 rounded-xl border border-emerald-200 hover:border-emerald-600 transition flex items-center gap-1.5 font-bold shadow-sm">
+                                <i class="fa-solid fa-image text-emerald-600 group-hover:text-white"></i> 詳細圖解與影片
                             </button>
                         </div>
                     </div>
@@ -650,23 +784,27 @@
             document.getElementById('modalTitle').textContent = skill.title;
             document.getElementById('modalEn').textContent = skill.en;
             document.getElementById('modalDesc').textContent = skill.desc;
-            document.getElementById('modalImg').src = skill.imgUrl;
+
+            const visualIcon = document.getElementById('modalVisualIcon');
+            visualIcon.className = `fa-solid ${categoryIcons[skill.cat] || 'fa-fire'}`;
+            document.getElementById('modalVisualTitle').textContent = skill.title;
+
             document.getElementById('modalVideoBtn').href = skill.videoUrl;
 
             const diffBadge = document.getElementById('modalDiffBadge');
             diffBadge.textContent = skill.diff;
             diffBadge.className = `text-xs px-2.5 py-0.5 rounded-full border font-bold ${
-                skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                skill.diff === '入門' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                skill.diff === '中等' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                skill.diff === '中高' ? 'bg-amber-100 text-amber-800 border-amber-300' :
+                'bg-rose-100 text-rose-800 border-rose-300'
             }`;
 
             const stepsContainer = document.getElementById('modalSteps');
             stepsContainer.innerHTML = skill.steps.map((step, index) => `
-                <div class="flex items-start gap-3 bg-forest-950/80 p-3.5 rounded-2xl border border-teal-500/30 shadow-sm">
-                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-forest-950 text-xs flex items-center justify-center shrink-0 font-black shadow">${index + 1}</span>
-                    <p class="text-xs sm:text-sm text-gray-200 leading-relaxed pt-0.5">${step.replace(/^[步驟\d]+[：:]\s*/, '')}</p>
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center shrink-0 font-black shadow-sm">${index + 1}</span>
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pt-0.5">${step.replace(/^[步驟\d]+[：:]\s*/, '')}</p>
                 </div>
             `).join('');
 
@@ -700,8 +838,8 @@
         function toggleFavoriteFilter() {
             showFavoritesOnly = !showFavoritesOnly;
             const btn = document.getElementById('favoriteToggleBtn');
-            btn.classList.toggle('bg-rose-500/20', showFavoritesOnly);
-            btn.classList.toggle('border-rose-500', showFavoritesOnly);
+            btn.classList.toggle('bg-rose-100', showFavoritesOnly);
+            btn.classList.toggle('border-rose-400', showFavoritesOnly);
             filterData();
         }
 
@@ -733,6 +871,10 @@
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToBottom() {
+            document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
