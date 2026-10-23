@@ -73,12 +73,12 @@
 
             <!-- Header 右側功能按鈕區 -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <!-- 網頁設計切換申請版按鈕 -->
+                <!-- 網頁設計切換深淺版連結按鈕 -->
                 <a href="https://520donnachang.github.io/html/%E9%87%8E%E5%A4%96%E6%B1%82%E7%94%9F300%E6%8A%80%E8%83%BD%E5%9C%96%E6%96%87%E7%89%88.html" target="_blank" 
-                   title="前往網頁設計切換申請版"
+                   title="網頁設計切換深淺版"
                    class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md transition transform hover:scale-105 shrink-0">
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                    <span>網頁設計切換申請版</span>
+                    <i class="fa-solid fa-globe"></i>
+                    <span>網頁設計切換深淺版</span>
                 </a>
 
                 <!-- 深色 / 淺色主題切換按鈕 -->
@@ -135,7 +135,7 @@
                 </button>
             </div>
 
-            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100 dark:border-teal-500/20">
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100">
                 <span id="rangeLabel" class="text-xs text-slate-600 font-bold self-center mr-1"><i class="fa-solid fa-layer-group text-emerald-600"></i> 區段分頁：</span>
                 <button onclick="setRangeSegment('ALL')" id="segBtn_ALL" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow">全部顯示 (300)</button>
                 <button onclick="setRangeSegment(1)" id="segBtn_1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50">第 1-100 項</button>
@@ -318,23 +318,26 @@
         </div>
     </div>
 
-    <!-- 右下角雙向導覽浮動鈕（包含向上回到頁首▲按鈕） -->
+    <!-- 右下角雙向導覽浮動鈕（改為永久固定顯示，確保上下按鈕皆清晰可見） -->
     <div class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-40">
-        <!-- 向上回到頁首箭頭按鈕 -->
         <button id="backToTopBtn" onclick="scrollToTop()" title="回到頁面頂端"
-            class="w-11 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 font-black text-lg border border-emerald-400">
+            class="w-11 h-11 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl shadow-lg flex items-center justify-center transition-all duration-300 font-bold text-lg cursor-pointer border border-emerald-400">
             <i class="fa-solid fa-arrow-up"></i>
         </button>
-        <!-- 快速前往頁底留言區按鈕 -->
         <button id="scrollToBottomBtn" onclick="scrollToBottom()" title="快速前往頁底留言區"
-            class="w-11 h-11 bg-teal-600 hover:bg-teal-500 text-white rounded-2xl shadow-xl flex items-center justify-center transition-all duration-300 font-black text-lg border border-teal-400">
+            class="w-11 h-11 bg-teal-600 hover:bg-teal-500 text-white rounded-2xl shadow-lg flex items-center justify-center transition-all duration-300 font-bold text-lg border border-teal-400 cursor-pointer">
             <i class="fa-solid fa-arrow-down"></i>
         </button>
     </div>
 
     <!-- Footer -->
     <footer id="pageBottom" class="bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner transition-colors duration-300">
-        <p class="text-emerald-700 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-600"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
+        <!-- 同行顯示標語 (whitespace-nowrap) -->
+        <div class="overflow-x-auto custom-scrollbar py-1 px-4">
+            <p id="footerSlogan" class="text-emerald-700 text-xs sm:text-sm font-medium whitespace-nowrap inline-block">
+                <i class="fa-solid fa-leaf text-emerald-600 mr-1"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南
+            </p>
+        </div>
         
         <div class="inline-block py-2 px-6 rounded-2xl bg-emerald-50/80 border border-emerald-200 shadow-sm max-w-full overflow-x-auto">
             <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #1d4ed8;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow-sm">
@@ -347,7 +350,6 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // 深色 / 淺色主題開關
         let isDarkMode = localStorage.getItem('theme_mode') === 'dark';
 
         function initTheme() {
@@ -359,6 +361,7 @@
             const filterCard = document.getElementById('filterCard');
             const contactCard = document.getElementById('contactCard');
             const footer = document.getElementById('pageBottom');
+            const footerSlogan = document.getElementById('footerSlogan');
             const themeBtn = document.getElementById('themeToggleBtn');
             const themeIcon = document.getElementById('themeIcon');
             const themeText = document.getElementById('themeText');
@@ -372,6 +375,7 @@
                 filterCard.className = "bg-forest-900/90 border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-4 transition-colors duration-300";
                 contactCard.className = "bg-forest-900 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 transition-colors duration-300";
                 footer.className = "bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4 transition-colors duration-300";
+                footerSlogan.className = "text-teal-300 text-xs sm:text-sm font-medium whitespace-nowrap inline-block";
                 
                 themeBtn.className = "bg-forest-800 hover:bg-forest-700 text-amber-300 px-3 py-2 rounded-xl border border-teal-500/40 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition shrink-0";
                 themeIcon.className = "fa-solid fa-moon text-amber-300";
@@ -385,6 +389,7 @@
                 filterCard.className = "bg-white border border-emerald-200/80 p-4 sm:p-6 rounded-3xl shadow-xl space-y-4 transition-colors duration-300";
                 contactCard.className = "bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 transition-colors duration-300";
                 footer.className = "bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner transition-colors duration-300";
+                footerSlogan.className = "text-emerald-700 text-xs sm:text-sm font-medium whitespace-nowrap inline-block";
                 
                 themeBtn.className = "bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition shrink-0";
                 themeIcon.className = "fa-solid fa-sun text-amber-500";
@@ -483,7 +488,7 @@
                 desc = "透過山谷、匯流點與喜濕植被生長判斷地下水與純淨水源位置。";
                 steps = [
                     "1. 觀察地形等高線圖，尋找多條谷地交匯處（V型谷底部）。",
-                    "2. 觀察喜濕植物（如香蒲、蕨類、燈心草）的密集生長帶。",
+                    "2. 觀察喜濕植物（如香蒲, 蕨類, 燈心草）的密集生長帶。",
                     "3. 留意清晨或傍晚山谷上空的昆蟲聚集處與水氣蒸發霧氣。",
                     "4. 在河谷彎道外側或乾燥河床沙層下方 30-50 公分處挖掘滲水坑過濾。"
                 ];
@@ -510,29 +515,23 @@
         let showFavoritesOnly = false;
         let currentRangeSegment = 'ALL';
         let currentActiveSkillId = null;
+        
+        let visitorCount = parseInt(localStorage.getItem('survival_visitors') || '1240') + 1;
+        localStorage.setItem('survival_visitors', visitorCount);
+        let pageLikes = parseInt(localStorage.getItem('survival_pagelikes') || '96');
+        let hasLikedPage = localStorage.getItem('survival_has_liked') === 'true';
 
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             renderCategories();
             renderSkills(skills);
             updateFavoriteBadge();
+            updateStatsUI();
 
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 currentSearch = e.target.value.trim().toLowerCase();
                 document.getElementById('clearSearchBtn').classList.toggle('hidden', !currentSearch);
                 filterData();
-            });
-
-            // 滾動監聽：超過 300px 時自動顯示「回到頁首箭頭」
-            window.addEventListener('scroll', () => {
-                const btn = document.getElementById('backToTopBtn');
-                if (window.scrollY > 300) {
-                    btn.classList.remove('opacity-0', 'pointer-events-none');
-                    btn.classList.add('opacity-100');
-                } else {
-                    btn.classList.add('opacity-0', 'pointer-events-none');
-                    btn.classList.remove('opacity-100');
-                }
             });
         });
 
@@ -709,6 +708,33 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function updateStatsUI() {
+            document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
+            document.getElementById('pageLikeCount').textContent = pageLikes;
+            
+            const heartIcon = document.getElementById('pageHeartIcon');
+            if (hasLikedPage) {
+                heartIcon.className = "fa-solid fa-heart text-rose-500 scale-125 transition transform";
+            } else {
+                heartIcon.className = "fa-regular fa-heart text-rose-500 transition";
+            }
+        }
+
+        function handlePageLike() {
+            if (!hasLikedPage) {
+                pageLikes++;
+                hasLikedPage = true;
+                localStorage.setItem('survival_pagelikes', pageLikes);
+                localStorage.setItem('survival_has_liked', 'true');
+            } else {
+                pageLikes--;
+                hasLikedPage = false;
+                localStorage.setItem('survival_pagelikes', pageLikes);
+                localStorage.setItem('survival_has_liked', 'false');
+            }
+            updateStatsUI();
         }
 
         function renderCategories() {
@@ -902,12 +928,10 @@
             badge.classList.toggle('hidden', !hasFilter);
         }
 
-        // 平滑捲動至頁頭 (Page Top)
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 平滑捲動至頁尾 (Page Bottom)
         function scrollToBottom() {
             document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
         }
