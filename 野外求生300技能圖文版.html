@@ -19,6 +19,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -52,14 +53,14 @@
             border-radius: 4px;
         }
         .glow-effect {
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
         }
     </style>
 </head>
-<body id="pageTop" class="bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
+<body id="pageTop" class="bg-forest-950 dark:bg-forest-950 text-gray-100 dark:text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar transition-colors duration-300">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-forest-950/95 backdrop-blur-md border-b border-emerald-500/20">
+    <header class="sticky top-0 z-40 bg-forest-900/95 dark:bg-forest-950/95 backdrop-blur-md border-b border-teal-500/20 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-400 via-teal-500 to-cyan-400 flex items-center justify-center text-forest-950 font-black text-2xl shadow-lg shadow-emerald-500/30">
@@ -71,9 +72,17 @@
                 </div>
             </div>
 
-            <!-- Stats & Actions -->
+            <!-- Stats & Theme Switch -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
+                <!-- 淺色/深色切換按鈕 -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="切換深色/淺色主題"
+                    class="bg-forest-800 dark:bg-forest-900 hover:bg-forest-700 text-amber-300 dark:text-amber-400 px-3 py-2 rounded-xl border border-teal-500/40 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    <span id="themeText" class="hidden sm:inline">深色</span>
+                </button>
+
+                <!-- 瀏覽人數與愛心按讚 -->
+                <div class="hidden md:flex items-center gap-3 text-xs bg-forest-800/80 dark:bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
                     <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
                     <span class="text-teal-700">|</span>
                     <button onclick="handlePageLike()" class="flex items-center gap-1 hover:text-rose-400 transition cursor-pointer">
@@ -82,7 +91,8 @@
                     </button>
                 </div>
 
-                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 hover:from-forest-800 hover:to-forest-700 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
+                <!-- Favorite Toggle -->
+                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
                     <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow">0</span>
@@ -97,7 +107,7 @@
     </div>
 
     <!-- Hero Banner -->
-    <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-10 px-4 border-b border-teal-500/20 text-center overflow-hidden">
+    <section class="relative bg-gradient-to-b from-emerald-900 via-teal-950 to-forest-950 dark:from-emerald-950 dark:via-teal-950 dark:to-forest-950 py-10 px-4 border-b border-teal-500/20 text-center overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
         <div class="max-w-4xl mx-auto space-y-4 relative z-10">
             <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 rounded-full text-xs font-bold shadow-lg">
@@ -110,7 +120,7 @@
                 </h2>
             </div>
 
-            <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+            <p class="text-gray-200 dark:text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
                 結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
             <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-forest-900/80 py-2.5 px-5 rounded-2xl border border-teal-500/30 max-w-xs mx-auto shadow-md">
@@ -126,7 +136,7 @@
 
     <!-- Search and Filter Section -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
-        <div class="bg-gradient-to-br from-forest-900/90 to-forest-950/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
+        <div class="bg-forest-900/90 dark:bg-forest-900/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
             
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-teal-400 text-lg"></i>
@@ -167,7 +177,7 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-grow w-full">
         <div class="flex justify-between items-center mb-6">
-            <p class="text-xs sm:text-sm text-gray-300 font-medium">
+            <p class="text-xs sm:text-sm text-gray-200 dark:text-gray-300 font-medium">
                 已載入 <span id="resultCount" class="text-cyan-400 font-bold">300</span> 項技能
             </p>
             <div id="activeFilterBadge" class="hidden text-xs bg-teal-500/20 text-teal-300 border border-teal-500/40 px-3 py-1 rounded-full flex items-center gap-2 shadow">
@@ -189,7 +199,7 @@
 
     <!-- 底部訪客留言與聯絡表單區 -->
     <section id="contactSection" class="max-w-4xl mx-auto px-4 py-12 w-full">
-        <div class="bg-gradient-to-br from-forest-900 to-forest-950 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
+        <div class="bg-forest-900 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
             <div class="text-center space-y-2">
                 <span class="inline-block px-3.5 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-bold border border-teal-500/30">
                     <i class="fa-solid fa-envelope-open-text mr-1"></i> 網頁設計與意見交流
@@ -228,7 +238,7 @@
         </div>
     </section>
 
-    <!-- Detail Modal (採用高質感 CSS 視覺化插圖卡片，零破圖) -->
+    <!-- Detail Modal -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
@@ -246,7 +256,6 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
-                <!-- 零破圖保證：採用高質感漸層與動態圖示視覺化卡片 -->
                 <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl bg-gradient-to-tr from-emerald-950 via-teal-900 to-forest-900 p-6 flex flex-col items-center justify-center text-center">
                     <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:12px_12px] pointer-events-none"></div>
                     <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 text-3xl mb-3 shadow-lg shadow-emerald-950 animate-pulse relative z-10">
@@ -348,6 +357,30 @@
 
     <!-- JavaScript Logic -->
     <script>
+        // 主題模式切換控制 (深色 / 淺色)
+        let isLightMode = localStorage.getItem('theme_mode') === 'light';
+
+        function initTheme() {
+            if (isLightMode) {
+                document.body.classList.remove('bg-forest-950', 'text-gray-100');
+                document.body.classList.add('bg-emerald-50', 'text-slate-800');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+                document.getElementById('themeText').textContent = '淺色';
+            } else {
+                document.body.classList.remove('bg-emerald-50', 'text-slate-800');
+                document.body.classList.add('bg-forest-950', 'text-gray-100');
+                document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+                document.getElementById('themeText').textContent = '深色';
+            }
+        }
+
+        function toggleTheme() {
+            isLightMode = !isLightMode;
+            localStorage.setItem('theme_mode', isLightMode ? 'light' : 'dark');
+            initTheme();
+            renderSkills(skills); // 重新渲染卡片字體與背景
+        }
+
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -385,7 +418,6 @@
             { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        // 類別對應圖示
         const categoryIcons = {
             1: 'fa-fire',
             2: 'fa-droplet',
@@ -465,6 +497,7 @@
         let hasLikedPage = localStorage.getItem('survival_has_liked') === 'true';
 
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
             renderCategories();
             renderSkills(skills);
             updateFavoriteBadge();
@@ -514,7 +547,6 @@
             document.getElementById('contactForm').reset();
         }
 
-        // 發表留言 (送出後繼續停留此視窗)
         function submitComment(event) {
             event.preventDefault();
             if (!currentActiveSkillId) return;
@@ -542,7 +574,6 @@
             alert("心得已發表！視窗保持開啟，您可以繼續查看或分享。");
         }
 
-        // 將當前心得直接寄送到設計師信箱
         function sendCommentToEmail() {
             if (!currentActiveSkillId) return;
             const skill = skills.find(s => s.id === currentActiveSkillId);
@@ -741,15 +772,23 @@
             }
 
             empty.classList.add('hidden');
+
+            const cardBg = isLightMode 
+                ? 'bg-white border-emerald-300 shadow-md hover:shadow-xl hover:border-emerald-500' 
+                : 'bg-gradient-to-br from-forest-900/80 to-forest-950 border-teal-500/30 hover:border-cyan-400 hover:shadow-2xl hover:shadow-teal-950';
+
+            const titleColor = isLightMode ? 'text-emerald-950' : 'text-white';
+            const descColor = isLightMode ? 'text-slate-700' : 'text-gray-300';
+
             grid.innerHTML = data.map(skill => {
                 const isFav = favorites.includes(skill.id);
-                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
-                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                                  'bg-rose-500/20 text-rose-300 border-rose-500/40';
+                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40' :
+                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-500/40' :
+                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/40' :
+                                  'bg-rose-500/20 text-rose-700 dark:text-rose-300 border-rose-500/40';
 
                 return `
-                    <div class="bg-gradient-to-br from-forest-900/80 to-forest-950 border border-teal-500/30 hover:border-cyan-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between hover:shadow-2xl hover:shadow-teal-950 hover:-translate-y-1 group">
+                    <div class="${cardBg} border rounded-3xl p-6 transition duration-300 flex flex-col justify-between hover:-translate-y-1 group">
                         <div class="space-y-3">
                             <div class="flex justify-between items-start">
                                 <span class="text-xs font-mono px-3 py-1 bg-teal-950/80 rounded-xl text-cyan-300 border border-teal-500/30 shadow-inner">
@@ -763,15 +802,15 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">${skill.title}</h3>
-                                <p class="text-xs text-teal-400/80 font-mono italic">${skill.en}</p>
+                                <h3 class="text-lg font-bold ${titleColor} group-hover:text-emerald-600 dark:group-hover:text-cyan-300 transition">${skill.title}</h3>
+                                <p class="text-xs text-emerald-600 dark:text-teal-400/80 font-mono italic">${skill.en}</p>
                             </div>
-                            <p class="text-sm text-gray-300 leading-relaxed font-light">${skill.desc}</p>
+                            <p class="text-sm ${descColor} leading-relaxed font-light">${skill.desc}</p>
                         </div>
                         <div class="mt-5 pt-4 border-t border-teal-500/20 flex justify-between items-center text-xs">
-                            <span class="text-teal-400"><i class="fa-solid fa-folder text-emerald-400 mr-1"></i>領域 ${skill.cat}</span>
-                            <button onclick="openDetail(${skill.id})" class="bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600 hover:to-teal-600 text-teal-200 hover:text-white px-3.5 py-2 rounded-xl border border-teal-500/40 transition flex items-center gap-1.5 font-bold shadow">
-                                <i class="fa-solid fa-image text-cyan-400"></i> 詳細圖解與影片
+                            <span class="text-emerald-700 dark:text-teal-400 font-medium"><i class="fa-solid fa-folder text-emerald-500 mr-1"></i>領域 ${skill.cat}</span>
+                            <button onclick="openDetail(${skill.id})" class="bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600 hover:to-teal-600 text-teal-800 dark:text-teal-200 hover:text-white px-3.5 py-2 rounded-xl border border-teal-500/40 transition flex items-center gap-1.5 font-bold shadow">
+                                <i class="fa-solid fa-image text-emerald-600 dark:text-cyan-400"></i> 詳細圖解與影片
                             </button>
                         </div>
                     </div>
@@ -787,7 +826,6 @@
             document.getElementById('modalEn').textContent = skill.en;
             document.getElementById('modalDesc').textContent = skill.desc;
 
-            // 動態載入分類對應的圖示與標題（100% 絕不破圖）
             const visualIcon = document.getElementById('modalVisualIcon');
             visualIcon.className = `fa-solid ${categoryIcons[skill.cat] || 'fa-fire'}`;
             document.getElementById('modalVisualTitle').textContent = skill.title;
