@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 引入 Firebase SDK (雲端即時資料庫) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -68,12 +73,6 @@
 
             <!-- Stats & Actions -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <!-- 管理者權限開關按鈕 -->
-                <button id="adminModeBtn" onclick="toggleAdminMode()" title="設計師管理切換" class="bg-forest-900/90 text-teal-300 hover:text-white px-3 py-2 rounded-xl border border-teal-500/30 text-xs font-bold transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-shield text-amber-400"></i>
-                    <span id="adminStatusText">管理員登入</span>
-                </button>
-
                 <!-- 瀏覽人數與愛心按讚 -->
                 <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
                     <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
@@ -117,7 +116,6 @@
             <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
                 結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
-            <!-- 手機版顯示的統計數據列 -->
             <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-forest-900/80 py-2.5 px-5 rounded-2xl border border-teal-500/30 max-w-xs mx-auto shadow-md">
                 <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-cyan-300">1,240</strong></span>
                 <span>|</span>
@@ -195,7 +193,7 @@
         </div>
     </main>
 
-    <!-- 底部訪客留言與聯絡表單區 (畫面嚴格保密，不寫出信箱) -->
+    <!-- 底部訪客留言與聯絡表單區 -->
     <section id="contactSection" class="max-w-4xl mx-auto px-4 py-12 w-full">
         <div class="bg-gradient-to-br from-forest-900 to-forest-950 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
             <div class="text-center space-y-2">
@@ -236,6 +234,634 @@
         </div>
     </section>
 
-    <!-- Detail Modal -->
+    <!-- Detail Modal (含即時留言、編輯、刪除與按讚) -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-
+        <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-teal-500/30 flex justify-between items-start bg-forest-950/80">
+                <div>
+                    <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-teal-950 rounded-xl text-cyan-300 border border-teal-500/40 mr-2 shadow-inner">#001</span>
+                    <span id="modalDiffBadge" class="text-xs px-2.5 py-0.5 rounded-full border">入門</span>
+                    <h3 id="modalTitle" class="text-xl font-black text-white mt-2">技能名稱</h3>
+                    <p id="modalEn" class="text-xs text-teal-400 font-mono italic">English Name</p>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl p-2 bg-forest-900/80 rounded-full w-9 h-9 flex items-center justify-center border border-teal-500/20">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
+                
+                <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group">
+                    <img id="modalImg" src="https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop" alt="情境圖" class="w-full h-48 sm:h-56 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-transparent to-transparent flex items-end p-4">
+                        <span class="text-xs text-cyan-300 bg-forest-900/90 px-3.5 py-1.5 rounded-full border border-teal-500/40 flex items-center gap-1.5 shadow-md">
+                            <i class="fa-solid fa-camera text-emerald-400"></i> 實地情境模擬圖示
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-400"></i> 核心應用價值</h4>
+                    <p id="modalDesc" class="text-sm text-gray-200 leading-relaxed font-light"></p>
+                </div>
+
+                <div class="bg-gradient-to-r from-forest-900 to-forest-950 border border-rose-500/30 rounded-2xl p-4 flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rose-600/20 text-rose-400 flex items-center justify-center text-xl shrink-0 border border-rose-500/30">
+                            <i class="fa-brands fa-youtube"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-xs font-bold text-white">YouTube 實作教學影片參考</h5>
+                            <p class="text-[11px] text-gray-400">點擊按鈕直接前往觀看相關技能示範與教學</p>
+                        </div>
+                    </div>
+                    <a id="modalVideoBtn" href="#" target="_blank" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs px-4 py-2.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 shadow-lg shadow-rose-900/40">
+                        <i class="fa-solid fa-play"></i> 觀看影片
+                    </a>
+                </div>
+
+                <div class="border-t border-teal-500/20 pt-4">
+                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-cyan-400"></i> 具體 DIY 操作步驟與實作方法</h4>
+                    <div id="modalSteps" class="space-y-3"></div>
+                </div>
+
+                <div class="border-t border-teal-500/20 pt-4">
+                    <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> 安全與永續注意事項 (LNT)</h4>
+                    <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
+                </div>
+
+                <!-- 訪客心得交流留言區 (支援 Firebase 即時、編輯與刪除) -->
+                <div class="border-t border-teal-500/20 pt-6 space-y-4">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-cyan-400"></i> 觀看心得與實作分享區
+                    </h4>
+                    <div id="commentList" class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-1">
+                        <!-- 動態載入留言 -->
+                    </div>
+                    <form id="commentForm" onsubmit="submitComment(event)" class="space-y-2 pt-2">
+                        <input type="text" id="commenterName" required placeholder="您的稱呼 / 暱稱" 
+                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-400">
+                        <textarea id="commentBody" rows="2" required placeholder="分享您的觀看心得或實作經驗..." 
+                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs resize-none focus:outline-none focus:border-cyan-400"></textarea>
+                        <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
+                            發表心得分享
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-4 bg-forest-950/90 border-t border-teal-500/30 flex justify-end">
+                <button onclick="closeModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg transition">
+                    關閉視窗
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右下角快速導覽控制浮動鈕 -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-40">
+        <button id="backToTopBtn" onclick="scrollToTop()" title="回到頁面頂端"
+            class="w-11 h-11 bg-gradient-to-tr from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-forest-950 rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 font-bold text-lg">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <button id="scrollToBottomBtn" onclick="scrollToBottom()" title="快速前往頁底留言區"
+            class="w-11 h-11 bg-gradient-to-tr from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center transition-all duration-300 font-bold text-lg border border-teal-400/40">
+            <i class="fa-solid fa-arrow-down"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="pageBottom" class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
+        <p class="text-teal-400 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-400"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
+        
+        <div class="inline-block py-2 px-6 rounded-2xl bg-forest-900/60 border border-teal-500/30 shadow-md max-w-full overflow-x-auto">
+            <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow">
+                網頁設計師：張秋霞 <span class="text-xs font-mono ml-2 text-cyan-400 font-normal">115/10/22 製作</span>
+            </p>
+        </div>
+
+        <p class="text-xs text-gray-500 pt-1">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
+    </footer>
+
+    <!-- JavaScript Data & Firebase Logic -->
+    <script>
+        // ==========================================
+        // 🔥 Firebase 配置專區 (請貼上你申請的 Firebase Config)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        let isFirebaseActive = false;
+        let database = null;
+
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                database = firebase.database();
+                isFirebaseActive = true;
+            }
+        } catch (e) {
+            console.log("Firebase 尚未配置或初始化失敗，自動切換至備用儲存模式。");
+        }
+
+        const categories = [
+            { id: 'ALL', name: '全部 300 項', icon: 'fa-globe' },
+            { id: 1, name: '一、火源與熱能管理', icon: 'fa-fire' },
+            { id: 2, name: '二、水源尋找與淨化', icon: 'fa-droplet' },
+            { id: 3, name: '三、避難所與營地建設', icon: 'fa-campground' },
+            { id: 4, name: '四、定向導航與位置', icon: 'fa-compass' },
+            { id: 5, name: '五、全植物採集與料理', icon: 'fa-seedling' },
+            { id: 6, name: '六、緊急醫療與創傷', icon: 'fa-kit-medical' },
+            { id: 7, name: '七、繩結與純植物工藝', icon: 'fa-wrench' },
+            { id: 8, name: '八、求救與信號傳遞', icon: 'fa-tower-cell' },
+            { id: 9, name: '九、氣象觀察與極端', icon: 'fa-cloud-showers-heavy' },
+            { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
+        ];
+
+        const sampleImages = [
+            "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop"
+        ];
+
+        const skills = [];
+        for (let i = 1; i <= 300; i++) {
+            const catId = Math.ceil(i / 30);
+            const diffs = ['入門', '中等', '中高', '高'];
+            const diff = diffs[i % 4];
+
+            let title = `求生技能 #${i} - 護生實務運用`;
+            let en = `Survival Skill #${i}`;
+            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，進行全植物與低衝擊之永續生存。`;
+            let steps = [
+                "步驟一：環境與生態評估，確認周邊資源豐富且無破壞性干擾。",
+                "步驟二：準備對應的天然植物材料或隨身環保求生工具。",
+                "步驟三：依照標準 DIY 護生程序進行組合、測試與應用。",
+                "步驟四：執行完畢後落實無痕山林（LNT），完整恢復自然原貌。"
+            ];
+            let notice = "請務必在確保自身安全與絕對不破壞生態的前提下執行，切勿過度採集植物或留下任何人工廢棄物。";
+            let videoQuery = encodeURIComponent(`野外求生 ${title}`);
+
+            if (i === 1) {
+                title = "打火棒使用技巧"; en = "Ferro Rod Striking";
+                desc = "無懼潮濕與強風，穩定產生高溫火花點燃天然火絨。";
+                steps = [
+                    "1. 收集乾燥的樹皮纖維、枯草或蒲公英絨毛作為乾淨的火絨堆。",
+                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒保持 45 度夾角。",
+                    "3. 固定刮片位置，快速將打火棒向前抽拉，使高溫火花直落火絨。",
+                    "4. 火苗燃起後輕輕吹氣提供氧氣，逐步加入細枝擴大火勢。"
+                ];
+                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，嚴禁剝取活樹樹皮。";
+            } else if (i === 31) {
+                title = "地形地貌水文研判"; en = "Water Hydrology & Topography";
+                desc = "透過山谷、匯流點與喜濕植被生長判斷地下水與純淨水源位置。";
+                steps = [
+                    "1. 觀察地形等高線圖，尋找多條谷地交匯處（V型谷底部）。",
+                    "2. 觀察喜濕植物（如香蒲、蕨類、燈心草）的密集生長帶。",
+                    "3. 留意清晨或傍晚山谷上空的昆蟲聚集處與水氣蒸發霧氣。",
+                    "4. 在河谷彎道外側或乾燥河床沙層下方 30-50 公分處挖掘滲水坑過濾。"
+                ];
+                notice = "取回的水源必須經過煮沸或過濾殺菌後方可飲用，避免直接生飲生水。";
+            } else if (i === 62) {
+                title = "A 字型防水布帳搭建"; en = "A-Frame Tarp Shelter";
+                desc = "最經典迅速防風防雨的野外天幕搭建與固定方式。";
+                steps = [
+                    "1. 挑選兩棵距離適當、結構堅固的立木或使用兩支登山杖。",
+                    "2. 在兩點之間綁上一條主營繩（Ridge Line），高度約離地 1 公尺。",
+                    "3. 將防水布（Tarp）對折披在主營繩上方，拉開兩側。",
+                    "4. 將防水布四角拉開，以營釘和營繩斜向固定於地面，形成 A 字斜頂。"
+                ];
+                notice = "天幕四周應預先挖好導水溝，防止大雨時雨水流入睡鋪下方。";
+            }
+
+            const imgUrl = sampleImages[(i - 1) % sampleImages.length];
+            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice, imgUrl, videoUrl: `https://www.youtube.com/results?search_query=${videoQuery}` });
+        }
+
+        let favorites = JSON.parse(localStorage.getItem('survival_favs') || '[]');
+        let currentCategory = 'ALL';
+        let currentSearch = '';
+        let showFavoritesOnly = false;
+        let currentRangeSegment = 'ALL';
+        let currentActiveSkillId = null;
+        
+        let visitorCount = parseInt(localStorage.getItem('survival_visitors') || '1240') + 1;
+        localStorage.setItem('survival_visitors', visitorCount);
+        let pageLikes = parseInt(localStorage.getItem('survival_pagelikes') || '96');
+        let hasLikedPage = localStorage.getItem('survival_has_liked') === 'true';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderSkills(skills);
+            updateFavoriteBadge();
+            updateStatsUI();
+
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                currentSearch = e.target.value.trim().toLowerCase();
+                document.getElementById('clearSearchBtn').classList.toggle('hidden', !currentSearch);
+                filterData();
+            });
+
+            window.addEventListener('scroll', () => {
+                const btn = document.getElementById('backToTopBtn');
+                btn.classList.toggle('opacity-0', window.scrollY <= 300);
+                btn.classList.toggle('pointer-events-none', window.scrollY <= 300);
+            });
+        });
+
+        function setRangeSegment(seg) {
+            currentRangeSegment = seg;
+            ['ALL', 1, 2, 3].forEach(s => {
+                const btn = document.getElementById(`segBtn_${s}`);
+                if (btn) {
+                    if (s === seg) {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800";
+                    }
+                }
+            });
+            filterData();
+        }
+
+        function submitContactForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('senderName').value;
+            const email = document.getElementById('senderEmail').value;
+            const message = document.getElementById('senderMessage').value;
+
+            const targetEmail = "wesley_joyce@yahoo.com.tw";
+            const subject = encodeURIComponent(`【野外求生網頁諮詢/留言】來自 ${name}`);
+            const body = encodeURIComponent(`姓名：${name}\n回信信箱：${email}\n\n留言內容：\n${message}\n\n-----------------------------\n(註：本電子信箱不外流，僅供設計師與訪客聯繫使用)`);
+
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+            
+            alert("感謝您的留言！系統已為您準備好郵件，將發送至張秋霞設計師信箱。");
+            document.getElementById('contactForm').reset();
+        }
+
+        // ==========================================
+        // 💬 留言新增、讀取、編輯、刪除與按讚 (整合 Firebase)
+        // ==========================================
+
+        // 1. 發表心得
+        function submitComment(event) {
+            event.preventDefault();
+            if (!currentActiveSkillId) return;
+
+            const name = document.getElementById('commenterName').value;
+            const body = document.getElementById('commentBody').value;
+            const date = new Date().toLocaleDateString();
+
+            if (isFirebaseActive) {
+                // Firebase 寫入
+                database.ref('comments/' + currentActiveSkillId).push({
+                    name: name,
+                    body: body,
+                    date: date,
+                    likes: 0
+                });
+            } else {
+                // LocalStorage 備用寫入
+                const storageKey = `skill_comments_${currentActiveSkillId}`;
+                let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                comments.push({ id: Date.now().toString(), name, body, date, likes: 0 });
+                localStorage.setItem(storageKey, JSON.stringify(comments));
+                loadComments(currentActiveSkillId);
+            }
+
+            document.getElementById('commentForm').reset();
+        }
+
+        // 2. 編輯留言
+        function editComment(commentId, currentBody) {
+            const newBody = prompt("請修改您的留言內容：", currentBody);
+            if (newBody !== null && newBody.trim() !== "") {
+                if (isFirebaseActive) {
+                    database.ref(`comments/${currentActiveSkillId}/${commentId}`).update({ body: newBody.trim() });
+                } else {
+                    const storageKey = `skill_comments_${currentActiveSkillId}`;
+                    let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    const idx = comments.findIndex(c => c.id === commentId);
+                    if (idx !== -1) {
+                        comments[idx].body = newBody.trim();
+                        localStorage.setItem(storageKey, JSON.stringify(comments));
+                        loadComments(currentActiveSkillId);
+                    }
+                }
+            }
+        }
+
+        // 3. 刪除留言
+        function deleteComment(commentId) {
+            if (confirm("確定要刪除這則心得分享嗎？")) {
+                if (isFirebaseActive) {
+                    database.ref(`comments/${currentActiveSkillId}/${commentId}`).remove();
+                } else {
+                    const storageKey = `skill_comments_${currentActiveSkillId}`;
+                    let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    comments = comments.filter(c => c.id !== commentId);
+                    localStorage.setItem(storageKey, JSON.stringify(comments));
+                    loadComments(currentActiveSkillId);
+                }
+            }
+        }
+
+        // 4. 留言按讚
+        function likeComment(commentId, currentLikes) {
+            if (isFirebaseActive) {
+                database.ref(`comments/${currentActiveSkillId}/${commentId}`).update({ likes: (currentLikes || 0) + 1 });
+            } else {
+                const storageKey = `skill_comments_${currentActiveSkillId}`;
+                let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                const idx = comments.findIndex(c => c.id === commentId);
+                if (idx !== -1) {
+                    comments[idx].likes = (comments[idx].likes || 0) + 1;
+                    localStorage.setItem(storageKey, JSON.stringify(comments));
+                    loadComments(currentActiveSkillId);
+                }
+            }
+        }
+
+        // 5. 載入留言列表
+        function loadComments(skillId) {
+            const container = document.getElementById('commentList');
+
+            if (isFirebaseActive) {
+                // 從 Firebase 實時監聽與載入
+                database.ref('comments/' + skillId).on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) {
+                        container.innerHTML = `<p class="text-xs text-gray-500 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
+                        return;
+                    }
+
+                    const commentsArray = Object.entries(data).map(([key, val]) => ({ id: key, ...val }));
+                    renderCommentCards(container, commentsArray);
+                });
+            } else {
+                // 從 LocalStorage 載入
+                const storageKey = `skill_comments_${skillId}`;
+                let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                if (comments.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-gray-500 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
+                    return;
+                }
+                renderCommentCards(container, comments);
+            }
+        }
+
+        // 渲染留言 HTML 結構
+        function renderCommentCards(container, comments) {
+            container.innerHTML = comments.map(c => `
+                <div class="bg-forest-950/80 p-3 rounded-xl border border-teal-500/20 shadow-sm space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-cyan-300"><i class="fa-solid fa-user-circle mr-1"></i>${c.name}</span>
+                        <span class="text-[10px] text-gray-500 font-mono">${c.date}</span>
+                    </div>
+                    <p class="text-xs text-gray-200 leading-relaxed">${c.body}</p>
+                    <div class="flex justify-between items-center pt-1 border-t border-teal-500/10 mt-1">
+                        <div class="flex gap-2">
+                            <button onclick="editComment('${c.id}', '${c.body.replace(/'/g, "\\'")}')" class="text-[11px] text-teal-400 hover:text-cyan-300 transition flex items-center gap-1">
+                                <i class="fa-solid fa-pen-to-square"></i> 編輯
+                            </button>
+                            <button onclick="deleteComment('${c.id}')" class="text-[11px] text-rose-400 hover:text-rose-300 transition flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> 刪除
+                            </button>
+                        </div>
+                        <button onclick="likeComment('${c.id}', ${c.likes || 0})" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/20 transition cursor-pointer">
+                            <i class="fa-solid fa-heart"></i> <span>${c.likes || 0} 讚</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStatsUI() {
+            document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
+            document.getElementById('visitorCountMob').textContent = visitorCount.toLocaleString();
+            document.getElementById('pageLikeCount').textContent = pageLikes;
+            document.getElementById('pageLikeCountMob').textContent = pageLikes;
+            
+            const heartIcon = document.getElementById('pageHeartIcon');
+            if (hasLikedPage) {
+                heartIcon.className = "fa-solid fa-heart text-rose-500 scale-125 transition transform";
+            } else {
+                heartIcon.className = "fa-regular fa-heart text-rose-500 transition";
+            }
+        }
+
+        function handlePageLike() {
+            if (!hasLikedPage) {
+                pageLikes++;
+                hasLikedPage = true;
+                localStorage.setItem('survival_pagelikes', pageLikes);
+                localStorage.setItem('survival_has_liked', 'true');
+            } else {
+                pageLikes--;
+                hasLikedPage = false;
+                localStorage.setItem('survival_pagelikes', pageLikes);
+                localStorage.setItem('survival_has_liked', 'false');
+            }
+            updateStatsUI();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoryContainer');
+            container.innerHTML = categories.map(cat => `
+                <button onclick="selectCategory('${cat.id}')"
+                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-900/50 scale-105' : 'bg-forest-900/80 text-teal-200 hover:bg-forest-800 border border-teal-500/30'}">
+                    <i class="fa-solid ${cat.icon}"></i>
+                    <span>${cat.name}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(id) {
+            currentCategory = id === 'ALL' ? 'ALL' : parseInt(id);
+            showFavoritesOnly = false;
+            renderCategories();
+            filterData();
+        }
+
+        function filterData() {
+            const diff = document.getElementById('difficultySelect').value;
+            const filtered = skills.filter(item => {
+                const matchesCat = currentCategory === 'ALL' || item.cat === currentCategory;
+                const matchesDiff = diff === 'ALL' || item.diff === diff;
+                const matchesSearch = !currentSearch || 
+                    item.title.toLowerCase().includes(currentSearch) || 
+                    item.en.toLowerCase().includes(currentSearch) || 
+                    item.desc.toLowerCase().includes(currentSearch) ||
+                    item.id.toString() === currentSearch;
+                const matchesFav = !showFavoritesOnly || favorites.includes(item.id);
+
+                let matchesRange = true;
+                if (currentRangeSegment === 1) matchesRange = item.id >= 1 && item.id <= 100;
+                else if (currentRangeSegment === 2) matchesRange = item.id >= 101 && item.id <= 200;
+                else if (currentRangeSegment === 3) matchesRange = item.id >= 201 && item.id <= 300;
+
+                return matchesCat && matchesDiff && matchesSearch && matchesFav && matchesRange;
+            });
+
+            renderSkills(filtered);
+            updateBadgeState();
+        }
+
+        function renderSkills(data) {
+            const grid = document.getElementById('skillsGrid');
+            const empty = document.getElementById('emptyState');
+            document.getElementById('resultCount').textContent = data.length;
+
+            if (data.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.innerHTML = data.map(skill => {
+                const isFav = favorites.includes(skill.id);
+                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
+                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
+                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
+                                  'bg-rose-500/20 text-rose-300 border-rose-500/40';
+
+                return `
+                    <div class="bg-gradient-to-br from-forest-900/80 to-forest-950 border border-teal-500/30 hover:border-cyan-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between hover:shadow-2xl hover:shadow-teal-950 hover:-translate-y-1 group">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <span class="text-xs font-mono px-3 py-1 bg-teal-950/80 rounded-xl text-cyan-300 border border-teal-500/30 shadow-inner">
+                                    #${skill.id.toString().padStart(3, '0')}
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs px-3 py-1 rounded-full border font-bold ${diffColor}">${skill.diff}</span>
+                                    <button onclick="toggleFavorite(${skill.id})" class="text-gray-400 hover:text-rose-500 transition text-lg p-1">
+                                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart ${isFav ? 'text-rose-500 scale-110' : ''} transition"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">${skill.title}</h3>
+                                <p class="text-xs text-teal-400/80 font-mono italic">${skill.en}</p>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed font-light">${skill.desc}</p>
+                        </div>
+                        <div class="mt-5 pt-4 border-t border-teal-500/20 flex justify-between items-center text-xs">
+                            <span class="text-teal-400"><i class="fa-solid fa-folder text-emerald-400 mr-1"></i>領域 ${skill.cat}</span>
+                            <button onclick="openDetail(${skill.id})" class="bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600 hover:to-teal-600 text-teal-200 hover:text-white px-3.5 py-2 rounded-xl border border-teal-500/40 transition flex items-center gap-1.5 font-bold shadow">
+                                <i class="fa-solid fa-image text-cyan-400"></i> 詳細圖解與影片
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openDetail(id) {
+            currentActiveSkillId = id;
+            const skill = skills.find(s => s.id === id);
+            document.getElementById('modalIdBadge').textContent = `#${skill.id.toString().padStart(3, '0')}`;
+            document.getElementById('modalTitle').textContent = skill.title;
+            document.getElementById('modalEn').textContent = skill.en;
+            document.getElementById('modalDesc').textContent = skill.desc;
+            document.getElementById('modalImg').src = skill.imgUrl;
+            document.getElementById('modalVideoBtn').href = skill.videoUrl;
+
+            const diffBadge = document.getElementById('modalDiffBadge');
+            diffBadge.textContent = skill.diff;
+            diffBadge.className = `text-xs px-2.5 py-0.5 rounded-full border font-bold ${
+                skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
+                skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
+                skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
+                'bg-rose-500/20 text-rose-300 border-rose-500/40'
+            }`;
+
+            const stepsContainer = document.getElementById('modalSteps');
+            stepsContainer.innerHTML = skill.steps.map((step, index) => `
+                <div class="flex items-start gap-3 bg-forest-950/80 p-3.5 rounded-2xl border border-teal-500/30 shadow-sm">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-forest-950 text-xs flex items-center justify-center shrink-0 font-black shadow">${index + 1}</span>
+                    <p class="text-xs sm:text-sm text-gray-200 leading-relaxed pt-0.5">${step.replace(/^[步驟\d]+[：:]\s*/, '')}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('modalNotice').textContent = skill.notice;
+            loadComments(id);
+
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('survival_favs', JSON.stringify(favorites));
+            updateFavoriteBadge();
+            filterData();
+        }
+
+        function updateFavoriteBadge() {
+            document.getElementById('favoriteCount').textContent = favorites.length;
+        }
+
+        function toggleFavoriteFilter() {
+            showFavoritesOnly = !showFavoritesOnly;
+            const btn = document.getElementById('favoriteToggleBtn');
+            btn.classList.toggle('bg-rose-500/20', showFavoritesOnly);
+            btn.classList.toggle('border-rose-500', showFavoritesOnly);
+            filterData();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            currentSearch = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterData();
+        }
+
+        function resetAllFilters() {
+            currentCategory = 'ALL';
+            document.getElementById('difficultySelect').value = 'ALL';
+            currentSearch = '';
+            showFavoritesOnly = false;
+            currentRangeSegment = 'ALL';
+            setRangeSegment('ALL');
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderCategories();
+            filterData();
+        }
+
+        function updateBadgeState() {
+            const badge = document.getElementById('activeFilterBadge');
+            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly || currentRangeSegment !== 'ALL';
+            badge.classList.toggle('hidden', !hasFilter);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToBottom() {
+            document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
