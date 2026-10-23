@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>野外求生 300 項技能完全指南 (純素護生/絢麗版)</title>
+    <title>野外求生 300 項技能完全指南 (張秋霞設計師版)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 6 Icons CDN -->
@@ -54,7 +54,7 @@
 <body class="bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-forest-950/90 backdrop-blur-md border-b border-emerald-500/20">
+    <header class="sticky top-0 z-40 bg-forest-950/95 backdrop-blur-md border-b border-emerald-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-400 via-teal-500 to-cyan-400 flex items-center justify-center text-forest-950 font-black text-2xl shadow-lg shadow-emerald-500/30">
@@ -62,12 +62,13 @@
                 </div>
                 <div>
                     <h1 class="text-lg sm:text-xl font-black tracking-wide bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">野外求生 300 項指南</h1>
-                    <p class="text-xs text-teal-400 font-medium">純素護生絢麗版 • 全方位荒野智典</p>
+                    <p class="text-xs text-teal-400 font-medium">純素護生豪華版 • 全方位荒野智典</p>
                 </div>
             </div>
 
             <!-- Stats & Actions -->
             <div class="flex items-center gap-2 sm:gap-3">
+                <!-- 瀏覽人數與愛心按讚 -->
                 <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
                     <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
                     <span class="text-teal-700">|</span>
@@ -77,6 +78,7 @@
                     </button>
                 </div>
 
+                <!-- Favorite Toggle -->
                 <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 hover:from-forest-800 hover:to-forest-700 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
@@ -85,6 +87,11 @@
             </div>
         </div>
     </header>
+
+    <!-- 頂部網頁設計服務招攬列 -->
+    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 py-2.5 px-4 text-center text-white text-xs sm:text-sm font-bold shadow-md tracking-wide">
+        <span>✨ 專業網頁設計服務：<strong>如需網頁設計可以找我</strong>！歡迎洽詢或於下方留言與我聯繫 ✉️</span>
+    </div>
 
     <!-- Hero Banner -->
     <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-12 px-4 border-b border-teal-500/20 text-center overflow-hidden">
@@ -99,6 +106,7 @@
             <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
                 結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
+            <!-- 手機版顯示的統計數據列 -->
             <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-forest-900/80 py-2.5 px-5 rounded-2xl border border-teal-500/30 max-w-xs mx-auto shadow-md">
                 <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-cyan-300">1,240</strong></span>
                 <span>|</span>
@@ -114,6 +122,7 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
         <div class="bg-gradient-to-br from-forest-900/90 to-forest-950/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
             
+            <!-- Search Bar -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-teal-400 text-lg"></i>
                 <input type="text" id="searchInput" placeholder="搜尋技能名稱、關鍵字（如：打火棒、水質過濾、天幕、止血帶）..." 
@@ -123,7 +132,17 @@
                 </button>
             </div>
 
-            <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+            <!-- 100則區段快速切換分頁 (100 * 3) -->
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-teal-500/20">
+                <span class="text-xs text-teal-300 self-center font-medium mr-1"><i class="fa-solid fa-layer-group"></i> 區段分頁：</span>
+                <button onclick="setRangeSegment('ALL')" id="segBtn_ALL" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow">全部顯示 (300)</button>
+                <button onclick="setRangeSegment(1)" id="segBtn_1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 1-100 項</button>
+                <button onclick="setRangeSegment(2)" id="segBtn_2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 101-200 項</button>
+                <button onclick="setRangeSegment(3)" id="segBtn_3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 201-300 項</button>
+            </div>
+
+            <!-- Categories & Difficulty -->
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center pt-2">
                 <div class="w-full overflow-x-auto custom-scrollbar pb-2 md:pb-0">
                     <div class="flex gap-2 min-w-max" id="categoryContainer"></div>
                 </div>
@@ -165,9 +184,51 @@
         </div>
     </main>
 
-    <!-- Detail Modal -->
+    <!-- 底部訪客留言與聯絡表單區 (信箱嚴格保密，不顯示在畫面) -->
+    <section class="max-w-4xl mx-auto px-4 py-12 w-full">
+        <div class="bg-gradient-to-br from-forest-900 to-forest-950 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
+            <div class="text-center space-y-2">
+                <span class="inline-block px-3.5 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-bold border border-teal-500/30">
+                    <i class="fa-solid fa-envelope-open-text mr-1"></i> 網頁設計與意見交流
+                </span>
+                <h3 class="text-2xl sm:text-3xl font-black text-white">與設計師聯繫 / 訪客留言</h3>
+                <p class="text-xs sm:text-sm text-teal-300">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
+                <p class="text-[11px] text-cyan-400 font-medium bg-forest-950/60 py-1.5 px-3 rounded-xl inline-block border border-cyan-500/30">
+                    🔒 <strong>電子信箱保密不外流</strong>，表單送出後將直接安全傳送至設計師專屬信箱。
+                </p>
+            </div>
+
+            <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs text-teal-300 font-medium">您的姓名 / 稱呼 *</label>
+                        <input type="text" id="senderName" required placeholder="例如：林先生 / 王小姐" 
+                            class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs text-teal-300 font-medium">您的電子信箱 (絕對保密) *</label>
+                        <input type="email" id="senderEmail" required placeholder="name@example.com" 
+                            class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-teal-300 font-medium">留言內容 / 網頁設計需求 *</label>
+                    <textarea id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." 
+                        class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400 resize-none"></textarea>
+                </div>
+                <div class="text-center pt-2">
+                    <button type="submit" class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-forest-950 font-black px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto">
+                        <i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Detail Modal (含情境圖、DIY步驟、YouTube影片與心得留言區) -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
             <div class="p-5 border-b border-teal-500/30 flex justify-between items-start bg-forest-950/80">
                 <div>
                     <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-teal-950 rounded-xl text-cyan-300 border border-teal-500/40 mr-2 shadow-inner">#001</span>
@@ -179,6 +240,7 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
+            <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
                 <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group">
@@ -211,7 +273,7 @@
                 </div>
 
                 <div class="border-t border-teal-500/20 pt-4">
-                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-cyan-400"></i> 具體操作步驟與實作方法</h4>
+                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-cyan-400"></i> 具體 DIY 操作步驟與實作方法</h4>
                     <div id="modalSteps" class="space-y-3"></div>
                 </div>
 
@@ -219,7 +281,27 @@
                     <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> 安全與永續注意事項 (LNT)</h4>
                     <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
                 </div>
+
+                <!-- 訪客心得交流留言區 (支援按讚與顯示) -->
+                <div class="border-t border-teal-500/20 pt-6 space-y-4">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-cyan-400"></i> 觀看心得與實作分享區
+                    </h4>
+                    <div id="commentList" class="space-y-2.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                        <!-- 動態載入留言與按讚數 -->
+                    </div>
+                    <form id="commentForm" onsubmit="submitComment(event)" class="space-y-2 pt-2">
+                        <input type="text" id="commenterName" required placeholder="您的稱呼 / 暱稱" 
+                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-400">
+                        <textarea id="commentBody" rows="2" required placeholder="分享您的觀看心得或實作經驗..." 
+                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs resize-none focus:outline-none focus:border-cyan-400"></textarea>
+                        <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
+                            發表心得分享
+                        </button>
+                    </form>
+                </div>
             </div>
+            <!-- Modal Footer -->
             <div class="p-4 bg-forest-950/90 border-t border-teal-500/30 flex justify-end">
                 <button onclick="closeModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg transition">
                     關閉視窗
@@ -237,12 +319,14 @@
     <footer class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
         <p class="text-teal-400 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-400"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
         
-        <!-- 網頁設計師 張秋霞 115/10/22製作 (藍色粗體標楷體) -->
-        <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-lg sm:text-xl drop-shadow">
-            網業設計師 張秋霞 115/10/22製作
-        </p>
+        <!-- 網頁設計師署名：強制單行顯示 (標楷體) -->
+        <div class="inline-block py-2 px-6 rounded-2xl bg-forest-900/60 border border-teal-500/30 shadow-md max-w-full overflow-x-auto">
+            <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow">
+                網頁設計師：張秋霞 <span class="text-xs font-mono ml-2 text-cyan-400 font-normal">115/10/22 製作</span>
+            </p>
+        </div>
 
-        <p class="text-xs text-gray-500">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
+        <p class="text-xs text-gray-500 pt-1">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
     </footer>
 
     <!-- JavaScript Data & Logic -->
@@ -276,29 +360,29 @@
 
             let title = `求生技能 #${i} - 護生實務運用`;
             let en = `Survival Skill #${i}`;
-            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，確保低衝擊與安全生存。`;
+            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，進行全植物與低衝擊之永續生存。`;
             let steps = [
-                "步驟一：評估周邊環境安全性，確認無落石或動物干擾。",
-                "步驟二：備齊對應的天然植物材料或隨身緊急求生裝備。",
-                "步驟三：依照標準操作程序進行組裝或測試，確保穩定度。",
-                "步驟四：執行完畢後落實無痕山林（LNT），恢復自然原貌。"
+                "步驟一：環境與生態評估，確認周邊資源豐富且無破壞性干擾。",
+                "步驟二：準備對應的天然植物材料或隨身環保求生工具。",
+                "步驟三：依照標準 DIY 護生程序進行組合、測試與應用。",
+                "步驟四：執行完畢後落實無痕山林（LNT），完整恢復自然原貌。"
             ];
-            let notice = "請務必在確保自身安全與不破壞生態的前提下執行，切勿過度採集或留下人工廢棄物。";
+            let notice = "請務必在確保自身安全與絕對不破壞生態的前提下執行，切勿過度採集植物或留下任何人工廢棄物。";
             let videoQuery = encodeURIComponent(`野外求生 ${title}`);
 
             if (i === 1) {
                 title = "打火棒使用技巧"; en = "Ferro Rod Striking";
-                desc = "無懼潮濕與強風，穩定產生高溫火花點燃火絨。";
+                desc = "無懼潮濕與強風，穩定產生高溫火花點燃天然火絨。";
                 steps = [
-                    "1. 收集乾燥的樹皮纖維、羽毛棒或蒲公英絨毛作為火絨堆。",
-                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒成 45 度角。",
-                    "3. 固定刮片，快速將打火棒向前抽拉，使火花直落火絨。",
+                    "1. 收集乾燥的樹皮纖維、枯草或蒲公英絨毛作為乾淨的火絨堆。",
+                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒保持 45 度夾角。",
+                    "3. 固定刮片位置，快速將打火棒向前抽拉，使高溫火花直落火絨。",
                     "4. 火苗燃起後輕輕吹氣提供氧氣，逐步加入細枝擴大火勢。"
                 ];
-                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，切勿剝取活樹樹皮。";
+                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，嚴禁剝取活樹樹皮。";
             } else if (i === 31) {
                 title = "地形地貌水文研判"; en = "Water Hydrology & Topography";
-                desc = "透過山谷、匯流點與植被生長判斷地下水與水源位置。";
+                desc = "透過山谷、匯流點與喜濕植被生長判斷地下水與純淨水源位置。";
                 steps = [
                     "1. 觀察地形等高線圖，尋找多條谷地交匯處（V型谷底部）。",
                     "2. 觀察喜濕植物（如香蒲、蕨類、燈心草）的密集生長帶。",
@@ -308,11 +392,11 @@
                 notice = "取回的水源必須經過煮沸或過濾殺菌後方可飲用，避免直接生飲生水。";
             } else if (i === 62) {
                 title = "A 字型防水布帳搭建"; en = "A-Frame Tarp Shelter";
-                desc = "最經典迅速防風防雨的天幕搭建方式。";
+                desc = "最經典迅速防風防雨的野外天幕搭建與固定方式。";
                 steps = [
                     "1. 挑選兩棵距離適當、結構堅固的立木或使用兩支登山杖。",
                     "2. 在兩點之間綁上一條主營繩（Ridge Line），高度約離地 1 公尺。",
-                    "3. 將防水布（Tarp）對折披在主營繩上方。",
+                    "3. 將防水布（Tarp）對折披在主營繩上方，拉開兩側。",
                     "4. 將防水布四角拉開，以營釘和營繩斜向固定於地面，形成 A 字斜頂。"
                 ];
                 notice = "天幕四周應預先挖好導水溝，防止大雨時雨水流入睡鋪下方。";
@@ -326,6 +410,8 @@
         let currentCategory = 'ALL';
         let currentSearch = '';
         let showFavoritesOnly = false;
+        let currentRangeSegment = 'ALL';
+        let currentActiveSkillId = null;
         
         let visitorCount = parseInt(localStorage.getItem('survival_visitors') || '1240') + 1;
         localStorage.setItem('survival_visitors', visitorCount);
@@ -350,6 +436,93 @@
                 btn.classList.toggle('pointer-events-none', window.scrollY <= 300);
             });
         });
+
+        function setRangeSegment(seg) {
+            currentRangeSegment = seg;
+            ['ALL', 1, 2, 3].forEach(s => {
+                const btn = document.getElementById(`segBtn_${s}`);
+                if (btn) {
+                    if (s === seg) {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800";
+                    }
+                }
+            });
+            filterData();
+        }
+
+        // 聯絡表單送出（信箱嚴格隱藏，透過後台傳送至 wesley_joyce@yahoo.com.tw）
+        function submitContactForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('senderName').value;
+            const email = document.getElementById('senderEmail').value;
+            const message = document.getElementById('senderMessage').value;
+
+            const targetEmail = "wesley_joyce@yahoo.com.tw";
+            const subject = encodeURIComponent(`【野外求生網頁諮詢/留言】來自 ${name}`);
+            const body = encodeURIComponent(`姓名：${name}\n回信信箱：${email}\n\n留言內容：\n${message}\n\n-----------------------------\n(註：本電子信箱不外流，僅供設計師與訪客聯繫使用)`);
+
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+            
+            alert("感謝您的留言！系統已為您準備好郵件，將發送至張秋霞設計師信箱。");
+            document.getElementById('contactForm').reset();
+        }
+
+        // 發表心得分享
+        function submitComment(event) {
+            event.preventDefault();
+            if (!currentActiveSkillId) return;
+
+            const name = document.getElementById('commenterName').value;
+            const body = document.getElementById('commentBody').value;
+            const date = new Date().toLocaleDateString();
+
+            const storageKey = `skill_comments_${currentActiveSkillId}`;
+            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            comments.push({ name, body, date, likes: 0 });
+            localStorage.setItem(storageKey, JSON.stringify(comments));
+
+            document.getElementById('commentForm').reset();
+            loadComments(currentActiveSkillId);
+        }
+
+        // 留言按讚功能
+        function likeComment(skillId, index) {
+            const storageKey = `skill_comments_${skillId}`;
+            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if (comments[index]) {
+                comments[index].likes = (comments[index].likes || 0) + 1;
+                localStorage.setItem(storageKey, JSON.stringify(comments));
+                loadComments(skillId);
+            }
+        }
+
+        function loadComments(skillId) {
+            const container = document.getElementById('commentList');
+            const storageKey = `skill_comments_${skillId}`;
+            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+            if (comments.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
+                return;
+            }
+
+            container.innerHTML = comments.map((c, index) => `
+                <div class="bg-forest-950/80 p-3 rounded-xl border border-teal-500/20 shadow-sm space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-cyan-300"><i class="fa-solid fa-user-circle mr-1"></i>${c.name}</span>
+                        <span class="text-[10px] text-gray-500 font-mono">${c.date}</span>
+                    </div>
+                    <p class="text-xs text-gray-200 leading-relaxed">${c.body}</p>
+                    <div class="flex justify-end pt-1">
+                        <button onclick="likeComment(${skillId}, ${index})" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/20 transition cursor-pointer">
+                            <i class="fa-solid fa-heart"></i> <span>${c.likes || 0} 讚</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
         function updateStatsUI() {
             document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
@@ -410,7 +583,12 @@
                     item.id.toString() === currentSearch;
                 const matchesFav = !showFavoritesOnly || favorites.includes(item.id);
 
-                return matchesCat && matchesDiff && matchesSearch && matchesFav;
+                let matchesRange = true;
+                if (currentRangeSegment === 1) matchesRange = item.id >= 1 && item.id <= 100;
+                else if (currentRangeSegment === 2) matchesRange = item.id >= 101 && item.id <= 200;
+                else if (currentRangeSegment === 3) matchesRange = item.id >= 201 && item.id <= 300;
+
+                return matchesCat && matchesDiff && matchesSearch && matchesFav && matchesRange;
             });
 
             renderSkills(filtered);
@@ -468,6 +646,7 @@
         }
 
         function openDetail(id) {
+            currentActiveSkillId = id;
             const skill = skills.find(s => s.id === id);
             document.getElementById('modalIdBadge').textContent = `#${skill.id.toString().padStart(3, '0')}`;
             document.getElementById('modalTitle').textContent = skill.title;
@@ -494,6 +673,8 @@
             `).join('');
 
             document.getElementById('modalNotice').textContent = skill.notice;
+            loadComments(id);
+
             document.getElementById('detailModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -538,6 +719,8 @@
             document.getElementById('difficultySelect').value = 'ALL';
             currentSearch = '';
             showFavoritesOnly = false;
+            currentRangeSegment = 'ALL';
+            setRangeSegment('ALL');
             document.getElementById('searchInput').value = '';
             document.getElementById('clearSearchBtn').classList.add('hidden');
             renderCategories();
@@ -546,7 +729,7 @@
 
         function updateBadgeState() {
             const badge = document.getElementById('activeFilterBadge');
-            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly;
+            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly || currentRangeSegment !== 'ALL';
             badge.classList.toggle('hidden', !hasFilter);
         }
 
