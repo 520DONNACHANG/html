@@ -898,4 +898,19 @@
 
         function updateBadgeState() {
             const badge = document.getElementById('activeFilterBadge');
-            const hasFilter = currentCategory !== 'ALL
+            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly || currentRangeSegment !== 'ALL';
+            badge.classList.toggle('hidden', !hasFilter);
+        }
+
+        // 平滑捲動至頁頭 (Page Top)
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 平滑捲動至頁尾 (Page Bottom)
+        function scrollToBottom() {
+            document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
