@@ -73,7 +73,6 @@
 
             <!-- Stats & Actions -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <!-- 瀏覽人數與愛心按讚 -->
                 <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
                     <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
                     <span class="text-teal-700">|</span>
@@ -83,7 +82,6 @@
                     </button>
                 </div>
 
-                <!-- Favorite Toggle -->
                 <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 hover:from-forest-800 hover:to-forest-700 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
@@ -106,7 +104,6 @@
                 <i class="fa-solid fa-fire-flame-curved text-amber-400"></i> 全植物 • 不殺生 • 絢麗圖影互動指南
             </span>
             
-            <!-- 標題：強制單行顯示 -->
             <div class="w-full overflow-x-auto custom-scrollbar py-1">
                 <h2 class="text-xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-normal whitespace-nowrap drop-shadow-md">
                     荒野生存與護生智典 <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">300 項</span>
@@ -131,7 +128,6 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
         <div class="bg-gradient-to-br from-forest-900/90 to-forest-950/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
             
-            <!-- Search Bar -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-teal-400 text-lg"></i>
                 <input type="text" id="searchInput" placeholder="搜尋技能名稱、關鍵字（如：打火棒、水質過濾、天幕、止血帶）..." 
@@ -141,7 +137,6 @@
                 </button>
             </div>
 
-            <!-- 100則區段快速切換分頁 (100 * 3) -->
             <div class="flex flex-wrap gap-2 pt-2 border-t border-teal-500/20">
                 <span class="text-xs text-teal-300 self-center font-medium mr-1"><i class="fa-solid fa-layer-group"></i> 區段分頁：</span>
                 <button onclick="setRangeSegment('ALL')" id="segBtn_ALL" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow">全部顯示 (300)</button>
@@ -150,7 +145,6 @@
                 <button onclick="setRangeSegment(3)" id="segBtn_3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 201-300 項</button>
             </div>
 
-            <!-- Categories & Difficulty -->
             <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center pt-2">
                 <div class="w-full overflow-x-auto custom-scrollbar pb-2 md:pb-0">
                     <div class="flex gap-2 min-w-max" id="categoryContainer"></div>
@@ -234,7 +228,7 @@
         </div>
     </section>
 
-    <!-- Detail Modal (包含修復版防破圖情境圖) -->
+    <!-- Detail Modal (停留視窗 + 心得寄信 + 編輯刪除功能) -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
@@ -252,7 +246,6 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
-                <!-- 強化防破圖圖片區域 -->
                 <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group bg-forest-950">
                     <img id="modalImg" src="" alt="情境圖" 
                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop';" 
@@ -294,20 +287,27 @@
                     <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
                 </div>
 
-                <!-- 訪客心得交流留言區 (Firebase) -->
+                <!-- 訪客心得交流留言區 -->
                 <div class="border-t border-teal-500/20 pt-6 space-y-4">
                     <h4 class="text-sm font-bold text-white flex items-center gap-2">
                         <i class="fa-solid fa-comments text-cyan-400"></i> 觀看心得與實作分享區
                     </h4>
                     <div id="commentList" class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
+                    
                     <form id="commentForm" onsubmit="submitComment(event)" class="space-y-2 pt-2">
                         <input type="text" id="commenterName" required placeholder="您的稱呼 / 暱稱" 
                             class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-400">
                         <textarea id="commentBody" rows="2" required placeholder="分享您的觀看心得或實作經驗..." 
                             class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs resize-none focus:outline-none focus:border-cyan-400"></textarea>
-                        <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
-                            發表心得分享
-                        </button>
+                        
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
+                                發表心得分享 (停留此頁)
+                            </button>
+                            <button type="button" onclick="sendCommentToEmail()" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-paper-plane"></i> 寄送此心得給設計師
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -347,7 +347,6 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // Firebase 設定檔
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -385,7 +384,6 @@
             { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        // 高穩定備用圖庫（避免破圖）
         const sampleImages = [
             "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
@@ -509,7 +507,7 @@
             document.getElementById('contactForm').reset();
         }
 
-        // 留言功能 (Firebase / LocalStorage 雙模組)
+        // 發表留言 (送出後繼續停留此視窗)
         function submitComment(event) {
             event.preventDefault();
             if (!currentActiveSkillId) return;
@@ -533,7 +531,27 @@
                 loadComments(currentActiveSkillId);
             }
 
-            document.getElementById('commentForm').reset();
+            document.getElementById('commentBody').value = '';
+            alert("心得已發表！視窗保持開啟，您可以繼續查看或分享。");
+        }
+
+        // 將當前心得直接寄送到設計師信箱
+        function sendCommentToEmail() {
+            if (!currentActiveSkillId) return;
+            const skill = skills.find(s => s.id === currentActiveSkillId);
+            const name = document.getElementById('commenterName').value || '熱心訪客';
+            const body = document.getElementById('commentBody').value;
+
+            if (!body) {
+                alert("請先輸入您的心得內容再點擊寄送喔！");
+                return;
+            }
+
+            const targetEmail = "wesley_joyce@yahoo.com.tw";
+            const subject = encodeURIComponent(`【求生技能 #${skill.id} 心得分享】來自 ${name}`);
+            const mailBody = encodeURIComponent(`求生技能：#${skill.id} - ${skill.title}\n訪客暱稱：${name}\n\n心得經驗分享：\n${body}\n\n-----------------------------\n(此郵件由野外求生指南單頁系統自動發送)`);
+
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${mailBody}`;
         }
 
         function editComment(commentId, currentBody) {
@@ -762,7 +780,6 @@
             document.getElementById('modalEn').textContent = skill.en;
             document.getElementById('modalDesc').textContent = skill.desc;
 
-            // 確保圖片與防破圖正確載入
             const imgElem = document.getElementById('modalImg');
             imgElem.src = skill.imgUrl;
 
