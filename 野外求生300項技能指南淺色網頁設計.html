@@ -60,32 +60,31 @@
 
     <!-- Header / Navbar -->
     <header id="mainHeader" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-200 shadow-sm transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-3 overflow-hidden">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-2xl shadow-md shrink-0">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-1 sm:gap-2">
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-xl sm:text-2xl shadow-md shrink-0">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
-                <div class="overflow-hidden">
-                    <!-- 左上角主標題設定為同行不換行 (whitespace-nowrap) -->
+                <div>
+                    <!-- 強制單行顯示 (whitespace-nowrap) 與響應式字體大小 -->
                     <h1 id="headerTitle" class="text-sm sm:text-xl font-black tracking-wide text-emerald-950 transition-colors whitespace-nowrap">野外求生 300 項指南</h1>
                     <p id="headerSubTitle" class="text-[11px] sm:text-xs text-emerald-600 font-medium whitespace-nowrap">純素護生雙色版 • 全方位荒野智典</p>
                 </div>
             </div>
 
             <!-- Header 右側功能按鈕區 -->
-            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-                <!-- 網頁設計切換深淺版連結按鈕 -->
+            <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <!-- 網頁設計切換深淺版連結按鈕 (改為兩行顯示) -->
                 <a href="https://520donnachang.github.io/html/%E9%87%8E%E5%A4%96%E6%B1%82%E7%94%9F300%E6%8A%80%E8%83%BD%E5%9C%96%E6%96%87%E7%89%88.html" target="_blank" 
                    title="網頁設計切換深淺版"
-                   class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-2.5 py-2 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md transition transform hover:scale-105 shrink-0">
-                    <i class="fa-solid fa-globe"></i>
-                    <span class="hidden sm:inline">網頁設計切換深淺版</span>
-                    <span class="inline sm:hidden">深淺版</span>
+                   class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition transform hover:scale-105 text-center leading-tight">
+                    <i class="fa-solid fa-globe text-sm"></i>
+                    <span class="block text-left text-[11px] sm:text-xs leading-tight">網頁設計<br>切換深淺版</span>
                 </a>
 
                 <!-- 深色 / 淺色主題切換按鈕 -->
                 <button onclick="toggleTheme()" id="themeToggleBtn" title="切換深色/淺色主題"
-                    class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition shrink-0">
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1 shadow-sm transition shrink-0">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
                     <span id="themeText" class="hidden sm:inline">淺色</span>
                 </button>
@@ -94,7 +93,7 @@
                 <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-white hover:bg-rose-50 text-slate-700 px-2.5 py-2 sm:px-3.5 sm:py-2 rounded-xl border border-rose-200 transition duration-300 text-xs sm:text-sm flex items-center gap-1.5 shadow-sm shrink-0">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
-                    <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-1.5 py-0.2 rounded-full font-bold shadow">0</span>
+                    <span id="favoriteCount" class="bg-rose-500 text-white text-[10px] sm:text-xs px-1.5 py-0.2 rounded-full font-bold shadow">0</span>
                 </button>
             </div>
         </div>
@@ -379,7 +378,7 @@
                 footer.className = "bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4 transition-colors duration-300";
                 footerSlogan.className = "text-teal-300 text-xs sm:text-sm font-medium whitespace-nowrap inline-block";
                 
-                themeBtn.className = "bg-forest-800 hover:bg-forest-700 text-amber-300 px-3 py-2 rounded-xl border border-teal-500/40 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition shrink-0";
+                themeBtn.className = "bg-forest-800 hover:bg-forest-700 text-amber-300 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl border border-teal-500/40 text-xs sm:text-sm font-bold flex items-center gap-1 shadow transition shrink-0";
                 themeIcon.className = "fa-solid fa-moon text-amber-300";
                 themeText.textContent = "深色";
             } else {
@@ -393,7 +392,7 @@
                 footer.className = "bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner transition-colors duration-300";
                 footerSlogan.className = "text-emerald-700 text-xs sm:text-sm font-medium whitespace-nowrap inline-block";
                 
-                themeBtn.className = "bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition shrink-0";
+                themeBtn.className = "bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1 shadow-sm transition shrink-0";
                 themeIcon.className = "fa-solid fa-sun text-amber-500";
                 themeText.textContent = "淺色";
             }
@@ -940,3 +939,4 @@
     </script>
 </body>
 </html>
+
