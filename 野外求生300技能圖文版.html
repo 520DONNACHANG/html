@@ -228,7 +228,7 @@
         </div>
     </section>
 
-    <!-- Detail Modal (停留視窗 + 心得寄信 + 編輯刪除功能) -->
+    <!-- Detail Modal (採用高質感 CSS 視覺化插圖卡片，零破圖) -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
@@ -246,15 +246,16 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
-                <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group bg-forest-950">
-                    <img id="modalImg" src="" alt="情境圖" 
-                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop';" 
-                        class="w-full h-48 sm:h-56 object-cover transition duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-transparent to-transparent flex items-end p-4">
-                        <span class="text-xs text-cyan-300 bg-forest-900/90 px-3.5 py-1.5 rounded-full border border-teal-500/40 flex items-center gap-1.5 shadow-md">
-                            <i class="fa-solid fa-camera text-emerald-400"></i> 實地情境模擬圖示
-                        </span>
+                <!-- 零破圖保證：採用高質感漸層與動態圖示視覺化卡片 -->
+                <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl bg-gradient-to-tr from-emerald-950 via-teal-900 to-forest-900 p-6 flex flex-col items-center justify-center text-center">
+                    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:12px_12px] pointer-events-none"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 text-3xl mb-3 shadow-lg shadow-emerald-950 animate-pulse relative z-10">
+                        <i id="modalVisualIcon" class="fa-solid fa-fire"></i>
                     </div>
+                    <h4 id="modalVisualTitle" class="text-white font-black text-base sm:text-lg tracking-wide relative z-10">技能圖解標題</h4>
+                    <span class="text-xs text-cyan-300 bg-forest-950/80 px-3.5 py-1 rounded-full border border-teal-500/40 flex items-center gap-1.5 shadow-md mt-2 relative z-10">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> 純植物永續求生 • 實地情境模擬圖解
+                    </span>
                 </div>
 
                 <div>
@@ -384,12 +385,19 @@
             { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        const sampleImages = [
-            "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop"
-        ];
+        // 類別對應圖示
+        const categoryIcons = {
+            1: 'fa-fire',
+            2: 'fa-droplet',
+            3: 'fa-campground',
+            4: 'fa-compass',
+            5: 'fa-seedling',
+            6: 'fa-kit-medical',
+            7: 'fa-wrench',
+            8: 'fa-tower-cell',
+            9: 'fa-cloud-sun',
+            10: 'fa-brain'
+        };
 
         const skills = [];
         for (let i = 1; i <= 300; i++) {
@@ -441,8 +449,7 @@
                 notice = "天幕四周應預先挖好導水溝，防止大雨時雨水流入睡鋪下方。";
             }
 
-            const imgUrl = sampleImages[(i - 1) % sampleImages.length];
-            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice, imgUrl, videoUrl: `https://www.youtube.com/results?search_query=${videoQuery}` });
+            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice, videoUrl: `https://www.youtube.com/results?search_query=${videoQuery}` });
         }
 
         let favorites = JSON.parse(localStorage.getItem('survival_favs') || '[]');
@@ -780,8 +787,10 @@
             document.getElementById('modalEn').textContent = skill.en;
             document.getElementById('modalDesc').textContent = skill.desc;
 
-            const imgElem = document.getElementById('modalImg');
-            imgElem.src = skill.imgUrl;
+            // 動態載入分類對應的圖示與標題（100% 絕不破圖）
+            const visualIcon = document.getElementById('modalVisualIcon');
+            visualIcon.className = `fa-solid ${categoryIcons[skill.cat] || 'fa-fire'}`;
+            document.getElementById('modalVisualTitle').textContent = skill.title;
 
             document.getElementById('modalVideoBtn').href = skill.videoUrl;
 
