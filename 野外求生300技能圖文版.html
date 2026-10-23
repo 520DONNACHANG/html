@@ -51,7 +51,7 @@
         }
     </style>
 </head>
-<body class="bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
+<body id="pageTop" class="bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
 
     <!-- Header / Navbar -->
     <header class="sticky top-0 z-40 bg-forest-950/95 backdrop-blur-md border-b border-emerald-500/20">
@@ -94,15 +94,20 @@
     </div>
 
     <!-- Hero Banner -->
-    <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-12 px-4 border-b border-teal-500/20 text-center overflow-hidden">
+    <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-10 px-4 border-b border-teal-500/20 text-center overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
         <div class="max-w-4xl mx-auto space-y-4 relative z-10">
             <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 rounded-full text-xs font-bold shadow-lg">
                 <i class="fa-solid fa-fire-flame-curved text-amber-400"></i> 全植物 • 不殺生 • 絢麗圖影互動指南
             </span>
-            <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                荒野生存與護生智典 <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">300 項</span>
-            </h2>
+            
+            <!-- 標題：強制單行顯示 (whitespace-nowrap + 自動適應縮放字體) -->
+            <div class="w-full overflow-x-auto custom-scrollbar py-1">
+                <h2 class="text-xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-normal whitespace-nowrap drop-shadow-md">
+                    荒野生存與護生智典 <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">300 項</span>
+                </h2>
+            </div>
+
             <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
                 結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
@@ -184,8 +189,8 @@
         </div>
     </main>
 
-    <!-- 底部訪客留言與聯絡表單區 (信箱嚴格保密，不顯示在畫面) -->
-    <section class="max-w-4xl mx-auto px-4 py-12 w-full">
+    <!-- 底部訪客留言與聯絡表單區 (畫面嚴格保密，不寫出信箱) -->
+    <section id="contactSection" class="max-w-4xl mx-auto px-4 py-12 w-full">
         <div class="bg-gradient-to-br from-forest-900 to-forest-950 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
             <div class="text-center space-y-2">
                 <span class="inline-block px-3.5 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-bold border border-teal-500/30">
@@ -225,7 +230,7 @@
         </div>
     </section>
 
-    <!-- Detail Modal (含情境圖、DIY步驟、YouTube影片與心得留言區) -->
+    <!-- Detail Modal -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
@@ -282,13 +287,13 @@
                     <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
                 </div>
 
-                <!-- 訪客心得交流留言區 (支援按讚與顯示) -->
+                <!-- 訪客心得交流留言區 (支援按讚互動顯示) -->
                 <div class="border-t border-teal-500/20 pt-6 space-y-4">
                     <h4 class="text-sm font-bold text-white flex items-center gap-2">
                         <i class="fa-solid fa-comments text-cyan-400"></i> 觀看心得與實作分享區
                     </h4>
                     <div id="commentList" class="space-y-2.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
-                        <!-- 動態載入留言與按讚數 -->
+                        <!-- 動態載入留言 -->
                     </div>
                     <form id="commentForm" onsubmit="submitComment(event)" class="space-y-2 pt-2">
                         <input type="text" id="commenterName" required placeholder="您的稱呼 / 暱稱" 
@@ -310,16 +315,25 @@
         </div>
     </div>
 
-    <!-- Back to Top -->
-    <button id="backToTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-tr from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
+    <!-- 右下角快速導覽控制浮動鈕 (包含：向上頂端 + 向下頁底) -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-40">
+        <!-- 向上回到頂端按鈕 -->
+        <button id="backToTopBtn" onclick="scrollToTop()" title="回到頁面頂端"
+            class="w-11 h-11 bg-gradient-to-tr from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-forest-950 rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 font-bold text-lg">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+        <!-- 向下直達頁底/留言區按鈕 -->
+        <button id="scrollToBottomBtn" onclick="scrollToBottom()" title="快速前往頁底留言區"
+            class="w-11 h-11 bg-gradient-to-tr from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center transition-all duration-300 font-bold text-lg border border-teal-400/40">
+            <i class="fa-solid fa-arrow-down"></i>
+        </button>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
+    <footer id="pageBottom" class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
         <p class="text-teal-400 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-400"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
         
-        <!-- 網頁設計師署名：強制單行顯示 (標楷體) -->
+        <!-- 網頁設計師署名：標楷體單行顯示 -->
         <div class="inline-block py-2 px-6 rounded-2xl bg-forest-900/60 border border-teal-500/30 shadow-md max-w-full overflow-x-auto">
             <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow">
                 網頁設計師：張秋霞 <span class="text-xs font-mono ml-2 text-cyan-400 font-normal">115/10/22 製作</span>
@@ -452,7 +466,7 @@
             filterData();
         }
 
-        // 聯絡表單送出（信箱嚴格隱藏，透過後台傳送至 wesley_joyce@yahoo.com.tw）
+        // 聯絡表單送出（信箱完全隱藏於後台傳送）
         function submitContactForm(event) {
             event.preventDefault();
             const name = document.getElementById('senderName').value;
@@ -733,8 +747,13 @@
             badge.classList.toggle('hidden', !hasFilter);
         }
 
+        // 快速滾動功能
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToBottom() {
+            document.getElementById('contactSection').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
