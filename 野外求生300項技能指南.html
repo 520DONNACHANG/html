@@ -19,6 +19,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -30,6 +31,7 @@
                             700: '#15803d',
                             800: '#166534',
                             900: '#14532d',
+                            950: '#011c14',
                         }
                     },
                     fontFamily: {
@@ -52,38 +54,42 @@
             background: #10b981;
             border-radius: 4px;
         }
-        .glow-effect-light {
-            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.15);
-        }
     </style>
 </head>
-<body id="pageTop" class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col custom-scrollbar">
+<body id="pageTop" class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col custom-scrollbar transition-colors duration-300">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-emerald-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header id="mainHeader" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-200 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2">
             <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-2xl shadow-md shadow-emerald-200">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-white font-black text-2xl shadow-md shrink-0">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-black tracking-wide text-emerald-950">野外求生 300 項指南</h1>
-                    <p class="text-xs text-emerald-600 font-medium">純素護生亮彩版 • 全方位荒野智典</p>
+                    <h1 id="headerTitle" class="text-base sm:text-xl font-black tracking-wide text-emerald-950 transition-colors">野外求生 300 項指南</h1>
+                    <p id="headerSubTitle" class="text-xs text-emerald-600 font-medium">純素護生雙色版 • 全方位荒野智典</p>
                 </div>
             </div>
 
-            <!-- Stats & Actions -->
+            <!-- Header 右側功能按鈕區 -->
             <div class="flex items-center gap-2 sm:gap-3">
-                <div class="hidden md:flex items-center gap-3 text-xs bg-emerald-50/80 px-3.5 py-2 rounded-xl border border-emerald-200 text-slate-700 shadow-inner">
-                    <span><i class="fa-solid fa-eye text-emerald-600 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-teal-700">1,240</strong> 人</span>
-                    <span class="text-emerald-300">|</span>
-                    <button onclick="handlePageLike()" class="flex items-center gap-1 hover:text-rose-600 transition cursor-pointer">
-                        <i id="pageHeartIcon" class="fa-regular fa-heart text-rose-500"></i>
-                        <strong id="pageLikeCount" class="text-rose-600">96</strong>
-                    </button>
-                </div>
+                <!-- 外部圖文版連結按鈕 -->
+                <a href="https://520donnachang.github.io/html/%E9%87%8E%E5%A4%96%E6%B1%82%E7%94%9F300%E6%8A%80%E8%83%BD%E5%9C%96%E6%96%87%E7%89%88.html" target="_blank" 
+                   title="前往專屬圖文版網頁"
+                   class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md transition transform hover:scale-105 shrink-0">
+                    <i class="fa-solid fa-globe"></i>
+                    <span class="hidden md:inline">切換</span>圖文版指南
+                </a>
 
-                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-white hover:bg-rose-50 text-slate-700 px-3.5 py-2 rounded-xl border border-rose-200 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-sm">
+                <!-- 深色 / 淺色主題切換按鈕 -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="切換深色/淺色主題"
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition shrink-0">
+                    <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
+                    <span id="themeText" class="hidden sm:inline">淺色</span>
+                </button>
+
+                <!-- Favorite Toggle -->
+                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-white hover:bg-rose-50 text-slate-700 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl border border-rose-200 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-sm shrink-0">
                     <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
                     <span class="hidden sm:inline">已收藏</span>
                     <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow">0</span>
@@ -98,35 +104,27 @@
     </div>
 
     <!-- Hero Banner -->
-    <section class="relative bg-gradient-to-b from-emerald-100/60 via-teal-50/40 to-slate-50 py-10 px-4 border-b border-emerald-100 text-center overflow-hidden">
+    <section id="heroSection" class="relative bg-gradient-to-b from-emerald-100/60 via-teal-50/40 to-slate-50 py-10 px-4 border-b border-emerald-100 text-center overflow-hidden transition-colors duration-300">
         <div class="max-w-4xl mx-auto space-y-4 relative z-10">
-            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-white text-emerald-800 border border-emerald-200 rounded-full text-xs font-bold shadow-sm">
-                <i class="fa-solid fa-fire-flame-curved text-amber-500"></i> 全植物 • 不殺生 • 高畫質情境照片指南
+            <span id="heroBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-white text-emerald-800 border border-emerald-200 rounded-full text-xs font-bold shadow-sm">
+                <i class="fa-solid fa-fire-flame-curved text-amber-500"></i> 全植物 • 不殺生 • 深淺風格雙視角指南
             </span>
             
             <div class="w-full overflow-x-auto custom-scrollbar py-1">
-                <h2 class="text-xl sm:text-3xl md:text-5xl font-black text-emerald-950 tracking-tight leading-normal whitespace-nowrap drop-shadow-sm">
+                <h2 id="heroTitle" class="text-xl sm:text-3xl md:text-5xl font-black text-emerald-950 tracking-tight leading-normal whitespace-nowrap drop-shadow-sm">
                     荒野生存與護生智典 <span class="text-emerald-600">300 項</span>
                 </h2>
             </div>
 
-            <p class="text-slate-600 text-xs sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
+            <p id="heroDesc" class="text-slate-600 text-xs sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
                 結合精美圖解、真實情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
-            <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-white/80 py-2.5 px-5 rounded-2xl border border-emerald-200 max-w-xs mx-auto shadow-sm">
-                <span><i class="fa-solid fa-eye text-emerald-600 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-teal-700">1,240</strong></span>
-                <span>|</span>
-                <button onclick="handlePageLike()" class="flex items-center gap-1 text-rose-600">
-                    <i class="fa-solid fa-heart"></i>
-                    <strong id="pageLikeCountMob" class="text-rose-600">96</strong> 讚
-                </button>
-            </div>
         </div>
     </section>
 
     <!-- Search and Filter Section -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
-        <div class="bg-white border border-emerald-200/80 p-4 sm:p-6 rounded-3xl shadow-xl glow-effect-light space-y-4">
+        <div id="filterCard" class="bg-white border border-emerald-200/80 p-4 sm:p-6 rounded-3xl shadow-xl space-y-4 transition-colors duration-300">
             
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg"></i>
@@ -137,8 +135,8 @@
                 </button>
             </div>
 
-            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100">
-                <span class="text-xs text-slate-600 self-center font-bold mr-1"><i class="fa-solid fa-layer-group text-emerald-600"></i> 區段分頁：</span>
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100 dark:border-teal-500/20">
+                <span id="rangeLabel" class="text-xs text-slate-600 font-bold self-center mr-1"><i class="fa-solid fa-layer-group text-emerald-600"></i> 區段分頁：</span>
                 <button onclick="setRangeSegment('ALL')" id="segBtn_ALL" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow">全部顯示 (300)</button>
                 <button onclick="setRangeSegment(1)" id="segBtn_1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50">第 1-100 項</button>
                 <button onclick="setRangeSegment(2)" id="segBtn_2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50">第 101-200 項</button>
@@ -151,7 +149,7 @@
                 </div>
 
                 <div class="flex items-center gap-2 self-end md:self-auto min-w-max">
-                    <label class="text-xs text-slate-600 font-bold"><i class="fa-solid fa-filter text-emerald-600 mr-1"></i>難易度：</label>
+                    <label id="diffLabel" class="text-xs text-slate-600 font-bold"><i class="fa-solid fa-filter text-emerald-600 mr-1"></i>難易度：</label>
                     <select id="difficultySelect" onchange="filterData()" class="bg-slate-50 border border-emerald-200 rounded-xl px-3.5 py-2 text-xs text-slate-700 focus:outline-none focus:border-emerald-500 shadow-sm">
                         <option value="ALL">全部難度</option>
                         <option value="入門">入門</option>
@@ -167,7 +165,7 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-grow w-full">
         <div class="flex justify-between items-center mb-6">
-            <p class="text-xs sm:text-sm text-slate-600 font-medium">
+            <p id="resultText" class="text-xs sm:text-sm text-slate-600 font-medium">
                 已載入 <span id="resultCount" class="text-emerald-700 font-bold">300</span> 項技能
             </p>
             <div id="activeFilterBadge" class="hidden text-xs bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1 rounded-full flex items-center gap-2 shadow-sm">
@@ -189,13 +187,13 @@
 
     <!-- 底部訪客留言與聯絡表單區 -->
     <section id="contactSection" class="max-w-4xl mx-auto px-4 py-12 w-full">
-        <div class="bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 glow-effect-light">
+        <div id="contactCard" class="bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 transition-colors duration-300">
             <div class="text-center space-y-2">
                 <span class="inline-block px-3.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold border border-emerald-300">
                     <i class="fa-solid fa-envelope-open-text mr-1"></i> 網頁設計與意見交流
                 </span>
-                <h3 class="text-2xl sm:text-3xl font-black text-emerald-950">與設計師聯繫 / 訪客留言</h3>
-                <p class="text-xs sm:text-sm text-slate-600">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
+                <h3 id="contactTitle" class="text-2xl sm:text-3xl font-black text-emerald-950">與設計師聯繫 / 訪客留言</h3>
+                <p id="contactSub" class="text-xs sm:text-sm text-slate-600">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
                 <p class="text-[11px] text-teal-800 font-medium bg-emerald-50 py-1.5 px-3 rounded-xl inline-block border border-emerald-200">
                     🔒 <strong>電子信箱保密不外流</strong>，表單送出後將直接安全傳送至設計師專屬信箱。
                 </p>
@@ -204,18 +202,18 @@
             <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label class="text-xs text-slate-700 font-bold">您的姓名 / 稱呼 *</label>
+                        <label id="lblSenderName" class="text-xs text-slate-700 font-bold">您的姓名 / 稱呼 *</label>
                         <input type="text" id="senderName" required placeholder="例如：林先生 / 王小姐" 
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-xs text-slate-700 font-bold">您的電子信箱 (絕對保密) *</label>
+                        <label id="lblSenderEmail" class="text-xs text-slate-700 font-bold">您的電子信箱 (絕對保密) *</label>
                         <input type="email" id="senderEmail" required placeholder="name@example.com" 
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
                     </div>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs text-slate-700 font-bold">留言內容 / 網頁設計需求 *</label>
+                    <label id="lblSenderMsg" class="text-xs text-slate-700 font-bold">留言內容 / 網頁設計需求 *</label>
                     <textarea id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." 
                         class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white resize-none"></textarea>
                 </div>
@@ -228,11 +226,11 @@
         </div>
     </section>
 
-    <!-- Detail Modal (含多重自動修復保證載入高畫質實景照片) -->
+    <!-- Detail Modal -->
     <div id="detailModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white border border-emerald-200 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div id="modalBox" class="bg-white border border-emerald-200 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 transition-colors">
             <!-- Modal Header -->
-            <div class="p-5 border-b border-slate-100 flex justify-between items-start bg-emerald-50/50">
+            <div id="modalHeader" class="p-5 border-b border-slate-100 flex justify-between items-start bg-emerald-50/50">
                 <div>
                     <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-xl border border-emerald-200 mr-2 shadow-inner font-bold">#001</span>
                     <span id="modalDiffBadge" class="text-xs px-2.5 py-0.5 rounded-full border font-bold">入門</span>
@@ -246,7 +244,6 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                 
-                <!-- 實景照片展示區（附帶自動降級多重備用連結，確保防破圖） -->
                 <div class="relative rounded-2xl overflow-hidden border border-emerald-200 shadow-md bg-slate-100 h-52 sm:h-64 group">
                     <img id="modalImg" src="" alt="野外求生實境照片" 
                         onerror="handleImageError(this)" 
@@ -259,7 +256,7 @@
                 </div>
 
                 <div>
-                    <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-600"></i> 核心應用價值</h4>
+                    <h4 id="modalCoreTitle" class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-600"></i> 核心應用價值</h4>
                     <p id="modalDesc" class="text-sm text-slate-700 leading-relaxed font-normal"></p>
                 </div>
 
@@ -269,7 +266,7 @@
                             <i class="fa-brands fa-youtube"></i>
                         </div>
                         <div>
-                            <h5 class="text-xs font-bold text-slate-800">YouTube 實作教學影片參考</h5>
+                            <h5 id="modalYtTitle" class="text-xs font-bold text-slate-800">YouTube 實作教學影片參考</h5>
                             <p class="text-[11px] text-slate-500">點擊按鈕直接前往觀看相關技能示範與教學</p>
                         </div>
                     </div>
@@ -279,18 +276,18 @@
                 </div>
 
                 <div class="border-t border-slate-100 pt-4">
-                    <h4 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-teal-600"></i> 具體 DIY 操作步驟與實作方法</h4>
+                    <h4 id="modalStepsTitle" class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-teal-600"></i> 具體 DIY 操作步驟與實作方法</h4>
                     <div id="modalSteps" class="space-y-3"></div>
                 </div>
 
                 <div class="border-t border-slate-100 pt-4">
-                    <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 安全與永續注意事項 (LNT)</h4>
+                    <h4 id="modalNoticeTitle" class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 安全與永續注意事項 (LNT)</h4>
                     <p id="modalNotice" class="text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200 leading-relaxed"></p>
                 </div>
 
                 <!-- 訪客心得交流留言區 -->
                 <div class="border-t border-slate-100 pt-6 space-y-4">
-                    <h4 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <h4 id="modalCommentHead" class="text-sm font-bold text-slate-800 flex items-center gap-2">
                         <i class="fa-solid fa-comments text-teal-600"></i> 觀看心得與實作分享區
                     </h4>
                     <div id="commentList" class="space-y-2.5 max-h-56 overflow-y-auto custom-scrollbar pr-1"></div>
@@ -313,7 +310,7 @@
                 </div>
             </div>
             <!-- Modal Footer -->
-            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+            <div id="modalFooter" class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
                 <button onclick="closeModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-md transition">
                     關閉視窗
                 </button>
@@ -334,7 +331,7 @@
     </div>
 
     <!-- Footer -->
-    <footer id="pageBottom" class="bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner">
+    <footer id="pageBottom" class="bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner transition-colors duration-300">
         <p class="text-emerald-700 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-600"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
         
         <div class="inline-block py-2 px-6 rounded-2xl bg-emerald-50/80 border border-emerald-200 shadow-sm max-w-full overflow-x-auto">
@@ -343,11 +340,63 @@
             </p>
         </div>
 
-        <p class="text-xs text-slate-400 pt-1">© 2026 野外求生指南單頁系統 • 明亮極簡互動版</p>
+        <p class="text-xs text-slate-400 pt-1">© 2026 野外求生指南單頁系統 • 明亮極簡與深色雙色切換版</p>
     </footer>
 
     <!-- JavaScript Logic -->
     <script>
+        // 深色 / 淺色主題開關
+        let isDarkMode = localStorage.getItem('theme_mode') === 'dark';
+
+        function initTheme() {
+            const body = document.body;
+            const header = document.getElementById('mainHeader');
+            const headerTitle = document.getElementById('headerTitle');
+            const heroSection = document.getElementById('heroSection');
+            const heroTitle = document.getElementById('heroTitle');
+            const filterCard = document.getElementById('filterCard');
+            const contactCard = document.getElementById('contactCard');
+            const footer = document.getElementById('pageBottom');
+            const themeBtn = document.getElementById('themeToggleBtn');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            if (isDarkMode) {
+                body.className = "bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar transition-colors duration-300";
+                header.className = "sticky top-0 z-40 bg-forest-900/95 backdrop-blur-md border-b border-teal-500/20 shadow-md transition-colors duration-300";
+                headerTitle.className = "text-base sm:text-xl font-black tracking-wide text-white";
+                heroSection.className = "relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-10 px-4 border-b border-teal-500/20 text-center overflow-hidden transition-colors duration-300";
+                heroTitle.className = "text-xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-normal whitespace-nowrap drop-shadow-md";
+                filterCard.className = "bg-forest-900/90 border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-4 transition-colors duration-300";
+                contactCard.className = "bg-forest-900 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 transition-colors duration-300";
+                footer.className = "bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4 transition-colors duration-300";
+                
+                themeBtn.className = "bg-forest-800 hover:bg-forest-700 text-amber-300 px-3 py-2 rounded-xl border border-teal-500/40 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition shrink-0";
+                themeIcon.className = "fa-solid fa-moon text-amber-300";
+                themeText.textContent = "深色";
+            } else {
+                body.className = "bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col custom-scrollbar transition-colors duration-300";
+                header.className = "sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-200 shadow-sm transition-colors duration-300";
+                headerTitle.className = "text-base sm:text-xl font-black tracking-wide text-emerald-950";
+                heroSection.className = "relative bg-gradient-to-b from-emerald-100/60 via-teal-50/40 to-slate-50 py-10 px-4 border-b border-emerald-100 text-center overflow-hidden transition-colors duration-300";
+                heroTitle.className = "text-xl sm:text-3xl md:text-5xl font-black text-emerald-950 tracking-tight leading-normal whitespace-nowrap drop-shadow-sm";
+                filterCard.className = "bg-white border border-emerald-200/80 p-4 sm:p-6 rounded-3xl shadow-xl space-y-4 transition-colors duration-300";
+                contactCard.className = "bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 transition-colors duration-300";
+                footer.className = "bg-white border-t border-emerald-100 py-10 mt-12 text-center space-y-4 shadow-inner transition-colors duration-300";
+                
+                themeBtn.className = "bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition shrink-0";
+                themeIcon.className = "fa-solid fa-sun text-amber-500";
+                themeText.textContent = "淺色";
+            }
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('theme_mode', isDarkMode ? 'dark' : 'light');
+            initTheme();
+            filterData();
+        }
+
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -385,17 +434,15 @@
             { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        // 高清晰度野外求生主題照片庫（來自跨國高速 CDN）
         const realPhotos = [
-            "https://picsum.photos/id/1015/800/500", // 森林與溪流
-            "https://picsum.photos/id/1043/800/500", // 篝火與營地
-            "https://picsum.photos/id/1029/800/500", // 山嶽與星空
-            "https://picsum.photos/id/1036/800/500", // 雪山與荒野
-            "https://picsum.photos/id/1057/800/500", // 叢林探險
-            "https://picsum.photos/id/1069/800/500"  // 水源與植物
+            "https://picsum.photos/id/1015/800/500",
+            "https://picsum.photos/id/1043/800/500",
+            "https://picsum.photos/id/1029/800/500",
+            "https://picsum.photos/id/1036/800/500",
+            "https://picsum.photos/id/1057/800/500",
+            "https://picsum.photos/id/1069/800/500"
         ];
 
-        // 圖片載入失敗時的自動切換備用機制（100% 不會破圖）
         function handleImageError(img) {
             img.onerror = null;
             img.src = "https://picsum.photos/800/500?random=" + Math.floor(Math.random() * 100);
@@ -468,6 +515,7 @@
         let hasLikedPage = localStorage.getItem('survival_has_liked') === 'true';
 
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
             renderCategories();
             renderSkills(skills);
             updateFavoriteBadge();
@@ -494,7 +542,9 @@
                     if (s === seg) {
                         btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow";
                     } else {
-                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50";
+                        btn.className = isDarkMode 
+                            ? "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800"
+                            : "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 border border-slate-200 hover:bg-emerald-50";
                     }
                 }
             });
@@ -636,22 +686,22 @@
 
         function renderCommentCards(container, comments) {
             container.innerHTML = comments.map(c => `
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-sm space-y-1.5">
+                <div class="${isDarkMode ? 'bg-forest-950/80 border-teal-500/20' : 'bg-slate-50 border-slate-200'} p-3 rounded-xl border shadow-sm space-y-1.5">
                     <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-emerald-800"><i class="fa-solid fa-user-circle mr-1 text-emerald-600"></i>${c.name}</span>
+                        <span class="text-xs font-bold ${isDarkMode ? 'text-cyan-300' : 'text-emerald-800'}"><i class="fa-solid fa-user-circle mr-1 text-emerald-600"></i>${c.name}</span>
                         <span class="text-[10px] text-slate-400 font-mono">${c.date}</span>
                     </div>
-                    <p class="text-xs text-slate-700 leading-relaxed">${c.body}</p>
-                    <div class="flex justify-between items-center pt-1 border-t border-slate-200/60 mt-1">
+                    <p class="text-xs ${isDarkMode ? 'text-gray-200' : 'text-slate-700'} leading-relaxed">${c.body}</p>
+                    <div class="flex justify-between items-center pt-1 border-t ${isDarkMode ? 'border-teal-500/10' : 'border-slate-200/60'} mt-1">
                         <div class="flex gap-2">
-                            <button onclick="editComment('${c.id}', '${c.body.replace(/'/g, "\\'")}')" class="text-[11px] text-teal-700 hover:text-teal-900 transition flex items-center gap-1 font-medium">
+                            <button onclick="editComment('${c.id}', '${c.body.replace(/'/g, "\\'")}')" class="text-[11px] ${isDarkMode ? 'text-teal-400 hover:text-cyan-300' : 'text-teal-700 hover:text-teal-900'} transition flex items-center gap-1 font-medium">
                                 <i class="fa-solid fa-pen-to-square"></i> 編輯
                             </button>
-                            <button onclick="deleteComment('${c.id}')" class="text-[11px] text-rose-600 hover:text-rose-800 transition flex items-center gap-1 font-medium">
+                            <button onclick="deleteComment('${c.id}')" class="text-[11px] ${isDarkMode ? 'text-rose-400 hover:text-rose-300' : 'text-rose-600 hover:text-rose-800'} transition flex items-center gap-1 font-medium">
                                 <i class="fa-solid fa-trash-can"></i> 刪除
                             </button>
                         </div>
-                        <button onclick="likeComment('${c.id}', ${c.likes || 0})" class="text-xs text-rose-600 hover:text-rose-700 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-50 border border-rose-200 transition cursor-pointer font-bold">
+                        <button onclick="likeComment('${c.id}', ${c.likes || 0})" class="text-xs text-rose-600 hover:text-rose-700 flex items-center gap-1.5 px-2 py-0.5 rounded-lg ${isDarkMode ? 'bg-rose-500/10 border-rose-500/20' : 'bg-rose-50 border-rose-200'} transition cursor-pointer font-bold">
                             <i class="fa-solid fa-heart"></i> <span>${c.likes || 0} 讚</span>
                         </button>
                     </div>
@@ -661,9 +711,7 @@
 
         function updateStatsUI() {
             document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
-            document.getElementById('visitorCountMob').textContent = visitorCount.toLocaleString();
             document.getElementById('pageLikeCount').textContent = pageLikes;
-            document.getElementById('pageLikeCountMob').textContent = pageLikes;
             
             const heartIcon = document.getElementById('pageHeartIcon');
             if (hasLikedPage) {
@@ -692,7 +740,7 @@
             const container = document.getElementById('categoryContainer');
             container.innerHTML = categories.map(cat => `
                 <button onclick="selectCategory('${cat.id}')"
-                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-emerald-600 text-white shadow-md scale-105' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 border border-slate-200'}">
+                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-emerald-600 text-white shadow-md scale-105' : (isDarkMode ? 'bg-forest-900/80 text-teal-200 hover:bg-forest-800 border border-teal-500/30' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 border border-slate-200')}">
                     <i class="fa-solid ${cat.icon}"></i>
                     <span>${cat.name}</span>
                 </button>
@@ -743,6 +791,13 @@
 
             empty.classList.add('hidden');
 
+            const cardBg = isDarkMode 
+                ? 'bg-forest-900/80 border-teal-500/30 hover:border-cyan-400 hover:shadow-2xl' 
+                : 'bg-white border-emerald-100 hover:border-emerald-400 hover:shadow-xl';
+
+            const titleColor = isDarkMode ? 'text-white' : 'text-slate-800';
+            const descColor = isDarkMode ? 'text-gray-300' : 'text-slate-600';
+
             grid.innerHTML = data.map(skill => {
                 const isFav = favorites.includes(skill.id);
                 const diffColor = skill.diff === '入門' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
@@ -751,7 +806,7 @@
                                   'bg-rose-100 text-rose-800 border-rose-300';
 
                 return `
-                    <div class="bg-white border border-emerald-100 hover:border-emerald-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 group">
+                    <div class="${cardBg} border rounded-3xl p-6 transition duration-300 flex flex-col justify-between shadow-sm hover:-translate-y-1 group">
                         <div class="space-y-3">
                             <div class="flex justify-between items-start">
                                 <span class="text-xs font-mono px-3 py-1 bg-emerald-50 rounded-xl text-emerald-800 border border-emerald-200 font-bold shadow-inner">
@@ -765,12 +820,12 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-700 transition">${skill.title}</h3>
+                                <h3 class="text-lg font-bold ${titleColor} group-hover:text-emerald-600 transition">${skill.title}</h3>
                                 <p class="text-xs text-emerald-600 font-mono italic">${skill.en}</p>
                             </div>
-                            <p class="text-sm text-slate-600 leading-relaxed font-normal">${skill.desc}</p>
+                            <p class="text-sm ${descColor} leading-relaxed font-normal">${skill.desc}</p>
                         </div>
-                        <div class="mt-5 pt-4 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <div class="mt-5 pt-4 border-t border-slate-100 dark:border-teal-500/20 flex justify-between items-center text-xs">
                             <span class="text-emerald-800 font-medium"><i class="fa-solid fa-folder text-emerald-600 mr-1"></i>領域 ${skill.cat}</span>
                             <button onclick="openDetail(${skill.id})" class="bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white px-3.5 py-2 rounded-xl border border-emerald-200 hover:border-emerald-600 transition flex items-center gap-1.5 font-bold shadow-sm">
                                 <i class="fa-solid fa-image text-emerald-600 group-hover:text-white"></i> 詳細圖解與影片
@@ -789,7 +844,6 @@
             document.getElementById('modalEn').textContent = skill.en;
             document.getElementById('modalDesc').textContent = skill.desc;
 
-            // 實景照片載入
             const imgElem = document.getElementById('modalImg');
             imgElem.src = skill.imgUrl;
 
