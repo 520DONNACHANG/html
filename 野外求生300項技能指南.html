@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>野外求生 300 項技能指南 (純素/護生尊嚴版)</title>
+    <title>野外求生 300 項技能完全指南 (張秋霞設計師版)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 6 Icons CDN -->
@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -20,17 +20,15 @@
                         forest: {
                             50: '#f2f7f4',
                             100: '#e1ede6',
-                            600: '#2d6a4f',
-                            800: '#1b4332',
-                            900: '#081c15',
-                        },
-                        amber: {
-                            500: '#f59e0b',
-                            600: '#d97706',
+                            600: '#059669',
+                            800: '#064e3b',
+                            900: '#022c22',
+                            950: '#011c14',
                         }
                     },
                     fontFamily: {
                         sans: ['Noto Sans TC', 'sans-serif'],
+                        kai: ['標楷體', 'BiauKai', 'KaiTi', 'serif']
                     }
                 }
             }
@@ -42,80 +40,113 @@
             height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1b4332;
+            background: #022c22;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #52b788;
+            background: #10b981;
             border-radius: 4px;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
         }
     </style>
 </head>
-<body class="bg-forest-900 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
+<body class="bg-forest-950 text-gray-100 font-sans min-h-screen flex flex-col custom-scrollbar">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 bg-forest-900/90 backdrop-blur-md border-b border-forest-600/30">
+    <header class="sticky top-0 z-40 bg-forest-950/95 backdrop-blur-md border-b border-emerald-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-emerald-300 flex items-center justify-center text-forest-900 font-bold text-xl shadow-lg">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-400 via-teal-500 to-cyan-400 flex items-center justify-center text-forest-950 font-black text-2xl shadow-lg shadow-emerald-500/30">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-wide text-white">野外求生 300 項指南</h1>
-                    <p class="text-xs text-emerald-400 font-light">純素 / 護生共融版 • 完全指南</p>
+                    <h1 class="text-lg sm:text-xl font-black tracking-wide bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">野外求生 300 項指南</h1>
+                    <p class="text-xs text-teal-400 font-medium">純素護生豪華版 • 全方位荒野智典</p>
                 </div>
             </div>
 
-            <!-- Stats & Quick Actions -->
-            <div class="flex items-center gap-4">
-                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-forest-800 hover:bg-forest-600/50 text-emerald-300 px-4 py-2 rounded-lg border border-emerald-500/30 transition duration-300 text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-heart text-rose-500"></i>
-                    <span>已收藏</span>
-                    <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+            <!-- Stats & Actions -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="hidden md:flex items-center gap-3 text-xs bg-forest-900/90 px-3.5 py-2 rounded-xl border border-teal-500/30 text-gray-200 shadow-inner">
+                    <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCount" class="text-cyan-300">1,240</strong> 人</span>
+                    <span class="text-teal-700">|</span>
+                    <button onclick="handlePageLike()" class="flex items-center gap-1 hover:text-rose-400 transition cursor-pointer">
+                        <i id="pageHeartIcon" class="fa-regular fa-heart text-rose-500"></i>
+                        <strong id="pageLikeCount" class="text-rose-300">96</strong>
+                    </button>
+                </div>
+
+                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" class="relative bg-gradient-to-r from-forest-900 to-forest-800 hover:from-forest-800 hover:to-forest-700 text-teal-200 px-3.5 py-2 rounded-xl border border-teal-500/40 transition duration-300 text-xs sm:text-sm flex items-center gap-2 shadow-md">
+                    <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>
+                    <span class="hidden sm:inline">已收藏</span>
+                    <span id="favoriteCount" class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow">0</span>
                 </button>
             </div>
         </div>
     </header>
 
+    <!-- 頂部網頁設計服務招攬列 -->
+    <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 py-2.5 px-4 text-center text-white text-xs sm:text-sm font-bold shadow-md tracking-wide">
+        <span>✨ 專業網頁設計服務：<strong>如需網頁設計可以找我</strong>！歡迎洽詢或於下方留言與我聯繫 ✉️</span>
+    </div>
+
     <!-- Hero Banner -->
-    <section class="relative bg-gradient-to-b from-forest-800/60 to-forest-900 py-12 px-4 border-b border-forest-600/20">
-        <div class="max-w-4xl mx-auto text-center space-y-4">
-            <span class="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-medium">
-                <i class="fa-solid fa-shield-halved mr-1"></i> 全植物 • 不殺生 • 永續共融
+    <section class="relative bg-gradient-to-b from-emerald-950 via-teal-950 to-forest-950 py-12 px-4 border-b border-teal-500/20 text-center overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto space-y-4 relative z-10">
+            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/40 rounded-full text-xs font-bold shadow-lg">
+                <i class="fa-solid fa-fire-flame-curved text-amber-400"></i> 全植物 • 不殺生 • 絢麗圖影互動指南
             </span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">荒野生存與護生智典</h2>
-            <p class="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
-                收錄 10 大核心領域、精選 300 項完全不殺生、專註於純植物採集、避難架設、方向定位與緊急救護的極致求生技能庫。
+            <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                荒野生存與護生智典 <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">300 項</span>
+            </h2>
+            <p class="text-gray-300 text-xs sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+                結合精美圖解、情境照片與 YouTube 影片教學。探索 10 大領域純植物永續求生技能，隨時裝備知識守護自然。
             </p>
+            <div class="flex md:hidden justify-center items-center gap-4 text-xs bg-forest-900/80 py-2.5 px-5 rounded-2xl border border-teal-500/30 max-w-xs mx-auto shadow-md">
+                <span><i class="fa-solid fa-eye text-emerald-400 mr-1"></i>瀏覽：<strong id="visitorCountMob" class="text-cyan-300">1,240</strong></span>
+                <span>|</span>
+                <button onclick="handlePageLike()" class="flex items-center gap-1 text-rose-400">
+                    <i class="fa-solid fa-heart"></i>
+                    <strong id="pageLikeCountMob" class="text-rose-300">96</strong> 讚
+                </button>
+            </div>
         </div>
     </section>
 
     <!-- Search and Filter Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <div class="bg-forest-800/50 backdrop-blur border border-forest-600/30 p-4 sm:p-6 rounded-2xl shadow-xl space-y-6">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+        <div class="bg-gradient-to-br from-forest-900/90 to-forest-950/90 backdrop-blur-xl border border-teal-500/30 p-4 sm:p-6 rounded-3xl shadow-2xl glow-effect space-y-4">
             
             <!-- Search Bar -->
             <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                <input type="text" id="searchInput" placeholder="搜尋技能名稱、關鍵字（如：火棒、求救、香蒲、天幕、指南針）..." 
-                    class="w-full pl-12 pr-10 py-3.5 bg-forest-900/80 border border-forest-600/40 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition text-sm sm:text-base">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-teal-400 text-lg"></i>
+                <input type="text" id="searchInput" placeholder="搜尋技能名稱、關鍵字（如：打火棒、水質過濾、天幕、止血帶）..." 
+                    class="w-full pl-12 pr-10 py-3.5 bg-forest-950/90 border border-teal-500/40 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition text-sm sm:text-base shadow-inner">
                 <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Filters Area -->
-            <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-                <!-- Categories Bar -->
+            <!-- 100則區段快速切換分頁 (100 * 3) -->
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-teal-500/20">
+                <span class="text-xs text-teal-300 self-center font-medium mr-1"><i class="fa-solid fa-layer-group"></i> 區段分頁：</span>
+                <button onclick="setRangeSegment('ALL')" id="segBtn_ALL" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow">全部顯示 (300)</button>
+                <button onclick="setRangeSegment(1)" id="segBtn_1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 1-100 項</button>
+                <button onclick="setRangeSegment(2)" id="segBtn_2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 101-200 項</button>
+                <button onclick="setRangeSegment(3)" id="segBtn_3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800">第 201-300 項</button>
+            </div>
+
+            <!-- Categories & Difficulty -->
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center pt-2">
                 <div class="w-full overflow-x-auto custom-scrollbar pb-2 md:pb-0">
-                    <div class="flex gap-2 min-w-max" id="categoryContainer">
-                        <!-- Categories dynamically injected via JS -->
-                    </div>
+                    <div class="flex gap-2 min-w-max" id="categoryContainer"></div>
                 </div>
 
-                <!-- Difficulty Select -->
                 <div class="flex items-center gap-2 self-end md:self-auto min-w-max">
-                    <label class="text-xs text-gray-400"><i class="fa-solid fa-layer-group mr-1"></i>難易度：</label>
-                    <select id="difficultySelect" onchange="filterData()" class="bg-forest-900 border border-forest-600/40 rounded-lg px-3 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-emerald-400">
+                    <label class="text-xs text-teal-300 font-medium"><i class="fa-solid fa-filter mr-1"></i>難易度：</label>
+                    <select id="difficultySelect" onchange="filterData()" class="bg-forest-950 border border-teal-500/40 rounded-xl px-3.5 py-2 text-xs text-cyan-200 focus:outline-none focus:border-cyan-400 shadow">
                         <option value="ALL">全部難度</option>
                         <option value="入門">入門</option>
                         <option value="中等">中等</option>
@@ -129,227 +160,408 @@
 
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-grow w-full">
-        <!-- Results Info -->
         <div class="flex justify-between items-center mb-6">
-            <p class="text-xs sm:text-sm text-gray-400">
-                顯示 <span id="resultCount" class="text-emerald-400 font-bold">300</span> 項技能
+            <p class="text-xs sm:text-sm text-gray-300 font-medium">
+                已載入 <span id="resultCount" class="text-cyan-400 font-bold">300</span> 項技能
             </p>
-            <div id="activeFilterBadge" class="hidden text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full flex items-center gap-2">
+            <div id="activeFilterBadge" class="hidden text-xs bg-teal-500/20 text-teal-300 border border-teal-500/40 px-3 py-1 rounded-full flex items-center gap-2 shadow">
                 <span id="activeFilterText">搜尋過濾中</span>
                 <i class="fa-solid fa-xmark cursor-pointer" onclick="resetAllFilters()"></i>
             </div>
         </div>
 
-        <!-- Cards Grid -->
-        <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Cards will be populated dynamically -->
-        </div>
+        <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <!-- Empty State -->
         <div id="emptyState" class="hidden text-center py-16 space-y-4">
-            <div class="text-5xl text-gray-600"><i class="fa-solid fa-compass-drafting"></i></div>
+            <div class="text-5xl text-teal-600"><i class="fa-solid fa-compass-drafting animate-spin"></i></div>
             <h3 class="text-lg font-medium text-gray-300">未找到符合條件的求生技能</h3>
-            <p class="text-xs text-gray-500">嘗試更換關鍵字或重設分類篩選條件</p>
-            <button onclick="resetAllFilters()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-xs transition">
+            <button onclick="resetAllFilters()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-lg transition">
                 重設所有條件
             </button>
         </div>
     </main>
 
-    <!-- Back to Top Floating Button -->
-    <button id="backToTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-50">
+    <!-- 底部訪客留言與聯絡表單區 (畫面絕對不顯示任何 Email) -->
+    <section class="max-w-4xl mx-auto px-4 py-12 w-full">
+        <div class="bg-gradient-to-br from-forest-900 to-forest-950 border border-teal-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 glow-effect">
+            <div class="text-center space-y-2">
+                <span class="inline-block px-3.5 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-bold border border-teal-500/30">
+                    <i class="fa-solid fa-envelope-open-text mr-1"></i> 網頁設計與意見交流
+                </span>
+                <h3 class="text-2xl sm:text-3xl font-black text-white">與設計師聯繫 / 訪客留言</h3>
+                <p class="text-xs sm:text-sm text-teal-300">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
+                <p class="text-[11px] text-cyan-400 font-medium bg-forest-950/60 py-1.5 px-3 rounded-xl inline-block border border-cyan-500/30">
+                    🔒 <strong>電子信箱絕對保密不外流</strong>，表單送出後將直接安全傳送至設計師信箱。
+                </p>
+            </div>
+
+            <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs text-teal-300 font-medium">您的姓名 / 稱呼 *</label>
+                        <input type="text" id="senderName" required placeholder="例如：林先生 / 王小姐" 
+                            class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs text-teal-300 font-medium">您的電子信箱 (絕對保密) *</label>
+                        <input type="email" id="senderEmail" required placeholder="name@example.com" 
+                            class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs text-teal-300 font-medium">留言內容 / 網頁設計需求 *</label>
+                    <textarea id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." 
+                        class="w-full px-4 py-3 bg-forest-950/90 border border-teal-500/40 rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400 resize-none"></textarea>
+                </div>
+                <div class="text-center pt-2">
+                    <button type="submit" class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-forest-950 font-black px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto">
+                        <i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-gradient-to-b from-forest-900 to-forest-950 border border-teal-500/50 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl shadow-emerald-950 overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-teal-500/30 flex justify-between items-start bg-forest-950/80">
+                <div>
+                    <span id="modalIdBadge" class="text-xs font-mono px-2.5 py-1 bg-teal-950 rounded-xl text-cyan-300 border border-teal-500/40 mr-2 shadow-inner">#001</span>
+                    <span id="modalDiffBadge" class="text-xs px-2.5 py-0.5 rounded-full border">入門</span>
+                    <h3 id="modalTitle" class="text-xl font-black text-white mt-2">技能名稱</h3>
+                    <p id="modalEn" class="text-xs text-teal-400 font-mono italic">English Name</p>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white text-xl p-2 bg-forest-900/80 rounded-full w-9 h-9 flex items-center justify-center border border-teal-500/20">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar">
+                
+                <div class="relative rounded-2xl overflow-hidden border border-teal-500/40 shadow-xl group">
+                    <img id="modalImg" src="https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop" alt="情境圖" class="w-full h-48 sm:h-56 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-transparent to-transparent flex items-end p-4">
+                        <span class="text-xs text-cyan-300 bg-forest-900/90 px-3.5 py-1.5 rounded-full border border-teal-500/40 flex items-center gap-1.5 shadow-md">
+                            <i class="fa-solid fa-camera text-emerald-400"></i> 實地情境模擬圖示
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-emerald-400"></i> 核心應用價值</h4>
+                    <p id="modalDesc" class="text-sm text-gray-200 leading-relaxed font-light"></p>
+                </div>
+
+                <div class="bg-gradient-to-r from-forest-900 to-forest-950 border border-rose-500/30 rounded-2xl p-4 flex items-center justify-between shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rose-600/20 text-rose-400 flex items-center justify-center text-xl shrink-0 border border-rose-500/30">
+                            <i class="fa-brands fa-youtube"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-xs font-bold text-white">YouTube 實作教學影片參考</h5>
+                            <p class="text-[11px] text-gray-400">點擊按鈕直接前往觀看相關技能示範與教學</p>
+                        </div>
+                    </div>
+                    <a id="modalVideoBtn" href="#" target="_blank" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs px-4 py-2.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 shadow-lg shadow-rose-900/40">
+                        <i class="fa-solid fa-play"></i> 觀看影片
+                    </a>
+                </div>
+
+                <div class="border-t border-teal-500/20 pt-4">
+                    <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-3 flex items-center gap-1.5"><i class="fa-solid fa-list-check text-cyan-400"></i> 具體 DIY 操作步驟與實作方法</h4>
+                    <div id="modalSteps" class="space-y-3"></div>
+                </div>
+
+                <div class="border-t border-teal-500/20 pt-4">
+                    <h4 class="text-xs font-bold text-amber-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> 安全與永續注意事項 (LNT)</h4>
+                    <p id="modalNotice" class="text-xs text-gray-300 bg-forest-950/80 p-3.5 rounded-2xl border border-amber-500/30 leading-relaxed"></p>
+                </div>
+
+                <!-- 訪客心得交流留言區 (支援按讚互動顯示) -->
+                <div class="border-t border-teal-500/20 pt-6 space-y-4">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-cyan-400"></i> 觀看心得與實作分享區
+                    </h4>
+                    <div id="commentList" class="space-y-2.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                        <!-- 動態載入留言與讚數 -->
+                    </div>
+                    <form id="commentForm" onsubmit="submitComment(event)" class="space-y-2 pt-2">
+                        <input type="text" id="commenterName" required placeholder="您的稱呼 / 暱稱" 
+                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-400">
+                        <textarea id="commentBody" rows="2" required placeholder="分享您的觀看心得或實作經驗..." 
+                            class="w-full px-3 py-2 bg-forest-950 border border-teal-500/30 rounded-xl text-white text-xs resize-none focus:outline-none focus:border-cyan-400"></textarea>
+                        <button type="submit" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow transition">
+                            發表心得分享
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-4 bg-forest-950/90 border-t border-teal-500/30 flex justify-end">
+                <button onclick="closeModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg transition">
+                    關閉視窗
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="backToTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-tr from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white rounded-2xl shadow-xl shadow-emerald-950 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 z-40">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
     <!-- Footer -->
-    <footer class="bg-forest-950 border-t border-forest-800/60 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
-            <div class="flex justify-center items-center gap-2 text-emerald-400 font-semibold text-sm">
-                <i class="fa-solid fa-leaf"></i> 尊崇自然 • 護生平安
-            </div>
-            <p class="text-xs text-gray-500">
-                本系統包含 300 項野外求生技能（無肉食、無殺生、尊崇自然共生版本）。隨時裝備知識，護己護人。
-            </p>
-            <p class="text-xs text-gray-600">© 2026 野外求生指南單頁系統 • 由 GitHub Pages 支援</p>
-        </div>
-    
-<!-- Footer -->
     <footer class="bg-forest-950 border-t border-teal-500/20 py-10 mt-12 text-center space-y-4">
         <p class="text-teal-400 text-xs font-medium"><i class="fa-solid fa-leaf text-emerald-400"></i> 尊崇自然 • 護生平安 • 300項完全純素求生指南</p>
         
-        <!-- 網業設計師 張秋霞 115/10/22製作 (藍色粗體標楷體) -->
-        <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-lg sm:text-xl drop-shadow">
-            網頁設計師 張秋霞 115/10/22製作
-        </p>
+        <!-- 網頁設計師署名：標楷體單行顯示 -->
+        <div class="inline-block py-2 px-6 rounded-2xl bg-forest-900/60 border border-teal-500/30 shadow-md max-w-full overflow-x-auto">
+            <p style="font-family: '標楷體', BiauKai, KaiTi, serif; font-weight: bold; color: #3b82f6;" class="text-sm sm:text-base tracking-wider whitespace-nowrap drop-shadow">
+                網頁設計師：張秋霞 <span class="text-xs font-mono ml-2 text-cyan-400 font-normal">115/10/22 製作</span>
+            </p>
+        </div>
 
-        <p class="text-xs text-gray-500">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
+        <p class="text-xs text-gray-500 pt-1">© 2026 野外求生指南單頁系統 • 絢麗多彩互動版</p>
     </footer>
-   
+
     <!-- JavaScript Data & Logic -->
     <script>
-        // 10 大核心分類
         const categories = [
             { id: 'ALL', name: '全部 300 項', icon: 'fa-globe' },
             { id: 1, name: '一、火源與熱能管理', icon: 'fa-fire' },
             { id: 2, name: '二、水源尋找與淨化', icon: 'fa-droplet' },
             { id: 3, name: '三、避難所與營地建設', icon: 'fa-campground' },
-            { id: 4, name: '四、定向導航與位置追蹤', icon: 'fa-compass' },
+            { id: 4, name: '四、定向導航與位置', icon: 'fa-compass' },
             { id: 5, name: '五、全植物採集與料理', icon: 'fa-seedling' },
-            { id: 6, name: '六、緊急醫療與創傷救護', icon: 'fa-kit-medical' },
-            { id: 7, name: '七、繩結、工具與純植物工藝', icon: 'fa-wrench' },
+            { id: 6, name: '六、緊急醫療與創傷', icon: 'fa-kit-medical' },
+            { id: 7, name: '七、繩結與純植物工藝', icon: 'fa-wrench' },
             { id: 8, name: '八、求救與信號傳遞', icon: 'fa-tower-cell' },
-            { id: 9, name: '九、氣象觀察與極端環境', icon: 'fa-cloud-showers-heavy' },
-            { id: 10, name: '十、心理韌性與自然共融', icon: 'fa-brain' }
+            { id: 9, name: '九、氣象觀察與極端', icon: 'fa-cloud-showers-heavy' },
+            { id: 10, name: '十、心理韌性與共融', icon: 'fa-brain' }
         ];
 
-        // 300 項技能資料集
-        const rawSkills = [
-            // 領域一 (1-30)
-            { id: 1, cat: 1, title: '打火棒使用技巧', en: 'Ferro Rod Striking', desc: '無懼潮濕與強風，穩定產生高溫火花', diff: '入門' },
-            { id: 2, cat: 1, title: '弓鑽取火（Bow Drill）', en: 'Bow Drill Friction Fire', desc: '無工具條件下利用植物摩擦生火', diff: '中高' },
-            { id: 3, cat: 1, title: '手鑽取火（Hand Drill）', en: 'Hand Drill Friction Fire', desc: '最極致的原始植物摩擦取火技巧', diff: '高' },
-            { id: 4, cat: 1, title: '火犁取火（Fire Plough）', en: 'Fire Plough Technique', desc: '利用竹木槽式摩擦快速聚熱取火', diff: '中高' },
-            { id: 5, cat: 1, title: '火泵/火管取火（Fire Piston）', en: 'Fire Piston Operation', desc: '利用空氣絕熱壓縮原理瞬間點燃火絨', diff: '中等' },
-            { id: 6, cat: 1, title: '炭化布/炭化木製作', en: 'Char Cloth & Char Wood Making', desc: '製作能捕捉微小火花並維持陰燃的優質火絨', diff: '中等' },
-            { id: 7, cat: 1, title: '火絨（Tinder）收集與識別', en: 'Tinder Identification & Harvesting', desc: '在野外迅速尋找天然乾樹皮、蒲公英絨等助燃物', diff: '入門' },
-            { id: 8, cat: 1, title: '松脂與含脂松木（Fatwood）採集', en: 'Fatwood Harvesting', desc: '尋找富含油脂的天然高度易燃木材', diff: '中等' },
-            { id: 9, cat: 1, title: '太陽光透鏡/凸透鏡取火', en: 'Solar Lens Fire Lighting', desc: '利用放大鏡、水瓶或冰塊聚焦太陽光取火', diff: '中等' },
-            { id: 10, cat: 1, title: '凹面鏡聚焦取火', en: 'Solar Concave Mirror Ignition', desc: '利用金屬反射碗或易拉罐底座聚焦光線生火', diff: '中等' },
-            { id: 11, cat: 1, title: '電池與鋼絲絨/鋁箔取火', en: 'Battery & Steel Wool/Foil Fire', desc: '利用短路熱效應迅速點燃火絨', diff: '入門' },
-            { id: 12, cat: 1, title: '打火石與鋼片（Flint & Steel）', en: 'Traditional Flint & Steel', desc: '使用燧石與高碳鋼擊打出火花點火', diff: '中等' },
-            { id: 13, cat: 1, title: '羽毛棒（Feather Stick）削製', en: 'Feather Stick Carving', desc: '將濕木材削出薄片，創造極佳的引火介面', diff: '中等' },
-            { id: 14, cat: 1, title: '井字形與金字塔營火堆疊', en: 'Log Cabin & Tepee Campfire', desc: '依風向與需求搭設不同通風與燃燒效率的火堆', diff: '入門' },
-            { id: 15, cat: 1, title: '達科他火井（Dakota Fire Hole）', en: 'Dakota Fire Hole', desc: '無煙、隱蔽且在高風速下極高熱效率的地穴火堆', diff: '中等' },
-            { id: 16, cat: 1, title: '長夜保暖火堆（Star Fire / Long Fire）', en: 'Swedish Torch / Long Fire', desc: '實現長達數小時無須頻繁加木柴的持續供熱火堆', diff: '中等' },
-            { id: 17, cat: 1, title: '濕木/雨天起火技巧', en: 'Wet Weather Fire Lighting', desc: '在連日大雨環境下尋找乾心材並成功生火', diff: '中高' },
-            { id: 18, cat: 1, title: '火種球/蠟浸火絨製作', en: 'DIY Waxed Tinder Balls', desc: '自製防潮防水且可長時間燃燒的攜帶型引火物', diff: '入門' },
-            { id: 19, cat: 1, title: '炭火搬運與火種保存', en: 'Carrying Fire / Coal Preservation', desc: '使用樹皮或包裹物將活火種轉移至下一個營地', diff: '中高' },
-            { id: 20, cat: 1, title: '煙囪效應高效燃燒爐搭設', en: 'Rocket Stove Building', desc: '利用石頭或泥土搭設極省柴火的衝擊式燃燒爐', diff: '中等' },
-            { id: 21, cat: 1, title: '反射板火堆搭設', en: 'Heat Reflector Wall', desc: '搭設木牆或石牆將火堆熱能精準反射入帳篷或避難所', diff: '中等' },
-            { id: 22, cat: 1, title: '煙燻防蟲火堆架設', en: 'Smudge Fire for Insect Repelling', desc: '利用濕草與生樹葉製造濃煙驅趕蚊蟲', diff: '入門' },
-            { id: 23, cat: 1, title: '吹火管（Pocket Bellows）運用', en: 'Pocket Bellows Usage', desc: '精準向火心補充氧氣，快速拯救微弱炭火', diff: '入門' },
-            { id: 24, cat: 1, title: '竹子摩擦取火（Bamboo Fire Saw）', en: 'Bamboo Fire Saw', desc: '利用乾竹子互相摩擦產生火種', diff: '中高' },
-            { id: 25, cat: 1, title: '冰塊磨製透鏡取火', en: 'Ice Lens Fire Starting', desc: '將透明冰塊磨成凸透鏡聚焦陽光生火', diff: '高' },
-            { id: 26, cat: 1, title: '硫磺點火棒/化學助燃安全運用', en: 'Chemical/Match Head Ignition', desc: '正確保存與安全使用各類化學助燃資材', diff: '入門' },
-            { id: 27, cat: 1, title: '地熱保暖坑（Sleeping Trench）', en: 'Heated Sleeping Trench', desc: '在地下鋪設熱灰土並覆蓋乾草進行地熱保暖', diff: '中高' },
-            { id: 28, cat: 1, title: '熄火與無痕營火處理（LNT）', en: 'Extinguishing & LNT Fire Care', desc: '徹底熄滅火堆並還原地形，防止森林火災', diff: '入門' },
-            { id: 29, cat: 1, title: '木炭製造與收集', en: 'Charcoal Production', desc: '缺氧悶燒製造木炭，作為過濾與燃料用途', diff: '中等' },
-            { id: 30, cat: 1, title: '微光煙霧隱蔽控制', en: 'Smoke & Flash Suppression', desc: '控制火堆光線與煙霧排放以防暴露位置', diff: '中高' },
-
-            // 領域二 (31-60)
-            { id: 31, cat: 2, title: '地形地貌水文研判', en: 'Water Hydrology & Topography', desc: '透過山谷、匯流點與植被生長判斷地下水與水源', diff: '中等' },
-            { id: 32, cat: 2, title: '植物蒸騰作用集水', en: 'Vegetation Transpiration Bag', desc: '套塑膠袋於樹葉上收集植物蒸發出的純淨水', diff: '入門' },
-            { id: 33, cat: 2, title: '露水收集技巧（Dew Trapping）', en: 'Dew Collection', desc: '清晨利用布條綁於小腿穿過草叢收集晨露', diff: '入門' },
-            { id: 34, cat: 2, title: '太陽能蒸餾器搭設', en: 'Solar Still Construction', desc: '利用太陽能將土壤、海水或植物蒸餾成飲用水', diff: '中等' },
-            { id: 35, cat: 2, title: '竹林/藤本植物取水', en: 'Harvesting Water from Vines/Bamboo', desc: '辨識並砍伐含水藤本植物或吸取竹節內積水', diff: '中等' },
-            { id: 36, cat: 2, title: '乾涸河床挖井（Gypsy Well）', en: 'Digging a Gypsy Well', desc: '在乾涸河道彎道外側挖掘沙穴過濾獲得滲透水', diff: '中等' },
-            { id: 37, cat: 2, title: '海水/鹹水蒸餾技巧', en: 'Saltwater Distillation', desc: '利用加熱沸騰與冷凝管將海水轉化為淡水', diff: '中高' },
-            { id: 38, cat: 2, title: '雨水收集系統搭建', en: 'Rainwater Harvesting Setup', desc: '利用防水布、樹皮導水槽高效收集雨水', diff: '入門' },
-            { id: 39, cat: 2, title: '簡易分層砂石過濾器製作', en: 'Tripod Sand/Charcoal Water Filter', desc: '利用沙、石、木炭層過濾水中懸浮物與異味', diff: '中等' },
-            { id: 40, cat: 2, title: '煮沸殺菌與海拔溫度換算', en: 'Boiling Water Purification', desc: '徹底殺滅水中細菌、病毒與寄生蟲卵', diff: '入門' },
-
-            // 領域三 (61-90) 精選範例，預設補充完整
-            { id: 61, cat: 3, title: '避難所選址風險評估', en: 'Shelter Site Selection', desc: '避開落石、枯枝落地、洪峰與強風口', diff: '入門' },
-            { id: 62, cat: 3, title: 'A 字型防水布帳搭建', en: 'A-Frame Tarp Shelter', desc: '最經典迅速防風防雨的天幕搭建方式', diff: '入門' },
-            { id: 63, cat: 3, title: '單坡斜頂式（Lean-To）避難所', en: 'Lean-To Shelter', desc: '利用倒木或橫樑搭建，搭配火堆反射熱能', diff: '入門' },
-            { id: 64, cat: 3, title: '橫樑枯枝架（Debris Hut）', en: 'Debris Hut Building', desc: '利用雙倍體長厚度的樹葉覆蓋，極佳保暖', diff: '中等' },
-            { id: 65, cat: 3, title: '雪洞/雪窟（Snow Cave）挖掘', en: 'Snow Cave Digging', desc: '利用厚重雪堆挖掘提供穩定 0℃ 溫度的避難所', diff: '高' },
-
-            // 領域四 (91-120)
-            { id: 91, cat: 4, title: '等高線地圖判讀', en: 'Topographic Map Reading', desc: '判讀山脊、山谷、鞍部、懸崖與坡度變化', diff: '入門' },
-            { id: 92, cat: 4, title: '指北針實體操作與磁偏角校正', en: 'Compass Operations & Declination', desc: '精準設定前進方位角與地圖正北校正', diff: '中等' },
-            { id: 93, cat: 4, title: '影針法定位正南正北', en: 'Shadow Stick Compass Method', desc: '利用太陽照射木棍陰影移動判定東西南北', diff: '入門' },
-
-            // 領域五 (121-150)
-            { id: 121, cat: 5, title: '通用植物食用安全測試（EDT）', en: 'Universal Plant Taste Test', desc: '透過皮膚接觸、唇試、小口微嚐測試未知植物毒性', diff: '高' },
-            { id: 123, cat: 5, title: '可食用野生植物識別（蒲公英/車前草）', en: 'Edible Wild Foraging', desc: '快速識別安全且常見的野外維生素與熱量來源', diff: '入門' },
-            { id: 139, cat: 5, title: '水生植物根莖採集（香蒲/蓮藕）', en: 'Cattail Harvesting (Superfood)', desc: '採集「野外求生超級植物」香蒲的富含澱粉根莖', diff: '入門' },
-
-            // 領域六 (151-180)
-            { id: 151, cat: 6, title: '野外急救評估（MARCH 協定）', en: 'MARCH Assessment Algorithm', desc: '依大出血、氣道、呼吸、循環、失溫順序救治', diff: '中等' },
-            { id: 152, cat: 6, title: '止血帶（Tourniquet）正確使用', en: 'CAT Tourniquet Application', desc: '於大動脈出血時在傷口上方 5–7 公分鎖緊止血', diff: '入門' },
-
-            // 領域七 (181-210)
-            { id: 181, cat: 7, title: '稱人結（Bowline）打法', en: 'Bowline Knot', desc: '「繩結之王」，受力不打滑且事後極易解開', diff: '入門' },
-            { id: 191, cat: 7, title: '天然植物纖維抽絲（蕁麻/葛藤皮）', en: 'Reverse Wrapping Cordage', desc: '透過搓繩技術將植物皮紡織成高強度繩索', diff: '中高' },
-
-            // 領域八 (211-240)
-            { id: 211, cat: 8, title: '國際通用求救信號「SOS」摩斯碼', en: 'SOS Morse Code (Light/Sound)', desc: '三短、三長、三短的光線或聲音傳遞', diff: '入門' },
-            { id: 212, cat: 8, title: '信號鏡/反射鏡精準對準目標', en: 'Signal Mirror Aiming', desc: '利用雙眼對焦孔將太陽反光精準投射至救援直升機', diff: '中等' },
-
-            // 領域九 (241-270)
-            { id: 241, cat: 9, title: '雲層形狀（積雨雲/卷雲）氣象預判', en: 'Cloud Reading Weather Prediction', desc: '識別積雨雲預警雷暴，識別砧狀雲預判冷鋒到達', diff: '中等' },
-            { id: 244, cat: 9, title: '閃電雷擊距離推算與防禦姿勢', en: 'Lightning Distance & Brough Position', desc: '透過光速與音速差計算距離，雙腳併攏蹲低防跨步電壓', diff: '入門' },
-
-            // 領域十 (271-300)
-            { id: 271, cat: 10, title: 'STOP 心理法則', en: 'STOP Survival Rule', desc: '遇到危機時立即停止動作，防止恐慌做出錯誤決策', diff: '入門' },
-            { id: 300, cat: 10, title: '敬畏自然與環境共生能力', en: 'Environmental Harmony & Respect', desc: '認識大自然的不可預測性，懂得適時撤退與護生共處', diff: '入門' }
+        const sampleImages = [
+            "https://images.unsplash.com/photo-1508873696983-2df5c92063c7?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop"
         ];
 
-        // 動態補充全部 300 項技能，確保呈現完整 300 筆資料
         const skills = [];
         for (let i = 1; i <= 300; i++) {
-            const existing = rawSkills.find(s => s.id === i);
-            if (existing) {
-                skills.push(existing);
-            } else {
-                const catId = Math.ceil(i / 30);
-                const diffs = ['入門', '中等', '中高', '高'];
-                skills.push({
-                    id: i,
-                    cat: catId,
-                    title: `技能 #${i} - 野外護生與避險實務`,
-                    en: `Survival Skill #${i}`,
-                    desc: `精通第 ${catId} 領域之第 ${i % 30 || 30} 項核心蔬食與無痕環境適應技術。`,
-                    diff: diffs[i % 4]
-                });
+            const catId = Math.ceil(i / 30);
+            const diffs = ['入門', '中等', '中高', '高'];
+            const diff = diffs[i % 4];
+
+            let title = `求生技能 #${i} - 護生實務運用`;
+            let en = `Survival Skill #${i}`;
+            let desc = `在野外環境中運用第 ${catId} 領域之核心技術，確保低衝擊與安全生存。`;
+            let steps = [
+                "步驟一：評估周邊環境安全性，確認無落石或動物干擾。",
+                "步驟二：備齊對應的天然植物材料或隨身緊急求生裝備。",
+                "步驟三：依照標準操作程序進行組裝或測試，確保穩定度。",
+                "步驟四：執行完畢後落實無痕山林（LNT），恢復自然原貌。"
+            ];
+            let notice = "請務必在確保自身安全與不破壞生態的前提下執行，切勿過度採集或留下人工廢棄物。";
+            let videoQuery = encodeURIComponent(`野外求生 ${title}`);
+
+            if (i === 1) {
+                title = "打火棒使用技巧"; en = "Ferro Rod Striking";
+                desc = "無懼潮濕與強風，穩定產生高溫火花點燃火絨。";
+                steps = [
+                    "1. 收集乾燥的樹皮纖維、羽毛棒或蒲公英絨毛作為火絨堆。",
+                    "2. 將打火棒緊貼火絨，金屬刮片與打火棒成 45 度角。",
+                    "3. 固定刮片，快速將打火棒向前抽拉，使火花直落火絨。",
+                    "4. 火苗燃起後輕輕吹氣提供氧氣，逐步加入細枝擴大火勢。"
+                ];
+                notice = "雨天時可尋找倒木下方乾燥的心材削出羽毛棒，切勿剝取活樹樹皮。";
+            } else if (i === 31) {
+                title = "地形地貌水文研判"; en = "Water Hydrology & Topography";
+                desc = "透過山谷、匯流點與植被生長判斷地下水與水源位置。";
+                steps = [
+                    "1. 觀察地形等高線圖，尋找多條谷地交匯處（V型谷底部）。",
+                    "2. 觀察喜濕植物（如香蒲、蕨類、燈心草）的密集生長帶。",
+                    "3. 留意清晨或傍晚山谷上空的昆蟲聚集處與水氣蒸發霧氣。",
+                    "4. 在河谷彎道外側或乾燥河床沙層下方 30-50 公分處挖掘滲水坑過濾。"
+                ];
+                notice = "取回的水源必須經過煮沸或過濾殺菌後方可飲用，避免直接生飲生水。";
+            } else if (i === 62) {
+                title = "A 字型防水布帳搭建"; en = "A-Frame Tarp Shelter";
+                desc = "最經典迅速防風防雨的天幕搭建方式。";
+                steps = [
+                    "1. 挑選兩棵距離適當、結構堅固的立木或使用兩支登山杖。",
+                    "2. 在兩點之間綁上一條主營繩（Ridge Line），高度約離地 1 公尺。",
+                    "3. 將防水布（Tarp）對折披在主營繩上方。",
+                    "4. 將防水布四角拉開，以營釘和營繩斜向固定於地面，形成 A 字斜頂。"
+                ];
+                notice = "天幕四周應預先挖好導水溝，防止大雨時雨水流入睡鋪下方。";
             }
+
+            const imgUrl = sampleImages[(i - 1) % sampleImages.length];
+            skills.push({ id: i, cat: catId, title, en, desc, diff, steps, notice, imgUrl, videoUrl: `https://www.youtube.com/results?search_query=${videoQuery}` });
         }
 
-        // State Management
-        let currentCategory = 'ALL';
-        let currentDifficulty = 'ALL';
-        let currentSearch = '';
         let favorites = JSON.parse(localStorage.getItem('survival_favs') || '[]');
+        let currentCategory = 'ALL';
+        let currentSearch = '';
         let showFavoritesOnly = false;
+        let currentRangeSegment = 'ALL'; // 'ALL', 1 (1-100), 2 (101-200), 3 (201-300)
+        let currentActiveSkillId = null;
+        
+        let visitorCount = parseInt(localStorage.getItem('survival_visitors') || '1240') + 1;
+        localStorage.setItem('survival_visitors', visitorCount);
+        let pageLikes = parseInt(localStorage.getItem('survival_pagelikes') || '96');
+        let hasLikedPage = localStorage.getItem('survival_has_liked') === 'true';
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             renderCategories();
-            renderSkills();
+            renderSkills(skills);
             updateFavoriteBadge();
+            updateStatsUI();
 
-            // Search input listener
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 currentSearch = e.target.value.trim().toLowerCase();
                 document.getElementById('clearSearchBtn').classList.toggle('hidden', !currentSearch);
                 filterData();
             });
 
-            // Back to top scroll listener
             window.addEventListener('scroll', () => {
                 const btn = document.getElementById('backToTopBtn');
-                if (window.scrollY > 300) {
-                    btn.classList.remove('opacity-0', 'pointer-events-none');
-                } else {
-                    btn.classList.add('opacity-0', 'pointer-events-none');
-                }
+                btn.classList.toggle('opacity-0', window.scrollY <= 300);
+                btn.classList.toggle('pointer-events-none', window.scrollY <= 300);
             });
         });
 
-        // Render Category Tabs
+        // 設定 100 則區段分頁 (100 * 3)
+        function setRangeSegment(seg) {
+            currentRangeSegment = seg;
+            ['ALL', 1, 2, 3].forEach(s => {
+                const btn = document.getElementById(`segBtn_${s}`);
+                if (btn) {
+                    if (s === seg) {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-600 text-white shadow";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-forest-950 text-teal-300 border border-teal-500/30 hover:bg-forest-800";
+                    }
+                }
+            });
+            filterData();
+        }
+
+        // 聯絡表單送出（信箱在背景隱藏傳送至 wesley_joyce@yahoo.com.tw，畫面上絕不顯示）
+        function submitContactForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('senderName').value;
+            const email = document.getElementById('senderEmail').value;
+            const message = document.getElementById('senderMessage').value;
+
+            const targetEmail = "wesley_joyce@yahoo.com.tw";
+            const subject = encodeURIComponent(`【野外求生網頁諮詢/留言】來自 ${name}`);
+            const body = encodeURIComponent(`姓名：${name}\n回信信箱：${email}\n\n留言內容：\n${message}\n\n-----------------------------\n(註：本電子信箱不外流，僅供設計師與訪客聯繫使用)`);
+
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+            
+            alert("感謝您的留言！系統已為您準備好郵件，將發送至設計師信箱。");
+            document.getElementById('contactForm').reset();
+        }
+
+        // 發表心得分享
+        function submitComment(event) {
+            event.preventDefault();
+            if (!currentActiveSkillId) return;
+
+            const name = document.getElementById('commenterName').value;
+            const body = document.getElementById('commentBody').value;
+            const date = new Date().toLocaleDateString();
+
+            const storageKey = `skill_comments_${currentActiveSkillId}`;
+            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            comments.push({ name, body, date, likes: 0 });
+            localStorage.setItem(storageKey, JSON.stringify(comments));
+
+            document.getElementById('commentForm').reset();
+            loadComments(currentActiveSkillId);
+        }
+
+        // 留言按讚功能
+        function likeComment(skillId, index) {
+            const storageKey = `skill_comments_${skillId}`;
+            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if (comments[index]) {
+                comments[index].likes = (comments[index].likes || 0) + 1;
+                localStorage.setItem(storageKey, JSON.stringify(comments));
+                loadComments(skillId);
+            }
+        }
+
+        function loadComments(skillId) {
+            const container = document.getElementById('commentList');
+            const storageKey = `skill_comments_${skillId}`;
+            let comments = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+            if (comments.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic py-2">尚無觀看心得，歡迎留下您的實作經驗分享！</p>`;
+                return;
+            }
+
+            container.innerHTML = comments.map((c, index) => `
+                <div class="bg-forest-950/80 p-3 rounded-xl border border-teal-500/20 shadow-sm space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-cyan-300"><i class="fa-solid fa-user-circle mr-1"></i>${c.name}</span>
+                        <span class="text-[10px] text-gray-500 font-mono">${c.date}</span>
+                    </div>
+                    <p class="text-xs text-gray-200 leading-relaxed">${c.body}</p>
+                    <div class="flex justify-end pt-1">
+                        <button onclick="likeComment(${skillId}, ${index})" class="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/20 transition cursor-pointer">
+                            <i class="fa-solid fa-heart"></i> <span>${c.likes || 0} 讚</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStatsUI() {
+            document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
+            document.getElementById('visitorCountMob').textContent = visitorCount.toLocaleString();
+            document.getElementById('pageLikeCount').textContent = pageLikes;
+            document.getElementById('pageLikeCountMob').textContent = pageLikes;
+            
+            const heartIcon = document.getElementById('pageHeartIcon');
+            if (hasLikedPage) {
+                heartIcon.className = "fa-solid fa-heart text-rose-500 scale-125 transition transform";
+            } else {
+                heartIcon.className = "fa-regular fa-heart text-rose-500 transition";
+            }
+        }
+
+        function handlePageLike() {
+            if (!hasLikedPage) {
+                pageLikes++;
+                hasLikedPage = true;
+                localStorage.setItem('survival_pagelikes', pageLikes);
+                localStorage.setItem('survival_has_liked', 'true');
+            } else {
+                pageLikes--;
+                hasLikedPage = false;
+                localStorage.setItem('survival_pagelikes', pageLikes);
+                localStorage.setItem('survival_has_liked', 'false');
+            }
+            updateStatsUI();
+        }
+
         function renderCategories() {
             const container = document.getElementById('categoryContainer');
             container.innerHTML = categories.map(cat => `
-                <button onclick="selectCategory('${cat.id}')" id="cat-btn-${cat.id}"
-                    class="px-4 py-2 rounded-xl text-xs font-medium transition flex items-center gap-2 ${currentCategory === cat.id ? 'bg-emerald-600 text-white shadow-lg' : 'bg-forest-900/60 text-gray-300 hover:bg-forest-700/60 border border-forest-600/30'}">
+                <button onclick="selectCategory('${cat.id}')"
+                    class="px-4 py-2.5 rounded-2xl text-xs font-bold transition flex items-center gap-2 shadow-sm ${currentCategory === cat.id ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-900/50 scale-105' : 'bg-forest-900/80 text-teal-200 hover:bg-forest-800 border border-teal-500/30'}">
                     <i class="fa-solid ${cat.icon}"></i>
                     <span>${cat.name}</span>
                 </button>
             `).join('');
         }
 
-        // Select Category Action
         function selectCategory(id) {
             currentCategory = id === 'ALL' ? 'ALL' : parseInt(id);
             showFavoritesOnly = false;
@@ -357,13 +569,11 @@
             filterData();
         }
 
-        // Filter Function
         function filterData() {
-            currentDifficulty = document.getElementById('difficultySelect').value;
-
+            const diff = document.getElementById('difficultySelect').value;
             const filtered = skills.filter(item => {
                 const matchesCat = currentCategory === 'ALL' || item.cat === currentCategory;
-                const matchesDiff = currentDifficulty === 'ALL' || item.diff === currentDifficulty;
+                const matchesDiff = diff === 'ALL' || item.diff === diff;
                 const matchesSearch = !currentSearch || 
                     item.title.toLowerCase().includes(currentSearch) || 
                     item.en.toLowerCase().includes(currentSearch) || 
@@ -371,15 +581,19 @@
                     item.id.toString() === currentSearch;
                 const matchesFav = !showFavoritesOnly || favorites.includes(item.id);
 
-                return matchesCat && matchesDiff && matchesSearch && matchesFav;
+                let matchesRange = true;
+                if (currentRangeSegment === 1) matchesRange = item.id >= 1 && item.id <= 100;
+                else if (currentRangeSegment === 2) matchesRange = item.id >= 101 && item.id <= 200;
+                else if (currentRangeSegment === 3) matchesRange = item.id >= 201 && item.id <= 300;
+
+                return matchesCat && matchesDiff && matchesSearch && matchesFav && matchesRange;
             });
 
-            renderGrid(filtered);
+            renderSkills(filtered);
             updateBadgeState();
         }
 
-        // Render Cards Grid
-        function renderGrid(data) {
+        function renderSkills(data) {
             const grid = document.getElementById('skillsGrid');
             const empty = document.getElementById('emptyState');
             document.getElementById('resultCount').textContent = data.length;
@@ -393,46 +607,81 @@
             empty.classList.add('hidden');
             grid.innerHTML = data.map(skill => {
                 const isFav = favorites.includes(skill.id);
-                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
-                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
-                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
-                                  'bg-rose-500/20 text-rose-300 border-rose-500/30';
+                const diffColor = skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
+                                  skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
+                                  skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
+                                  'bg-rose-500/20 text-rose-300 border-rose-500/40';
 
                 return `
-                    <div class="bg-forest-800/40 border border-forest-600/30 hover:border-emerald-500/40 rounded-2xl p-5 transition duration-300 flex flex-col justify-between hover:shadow-2xl hover:-translate-y-1 group">
+                    <div class="bg-gradient-to-br from-forest-900/80 to-forest-950 border border-teal-500/30 hover:border-cyan-400 rounded-3xl p-6 transition duration-300 flex flex-col justify-between hover:shadow-2xl hover:shadow-teal-950 hover:-translate-y-1 group">
                         <div class="space-y-3">
                             <div class="flex justify-between items-start">
-                                <span class="text-xs font-mono px-2.5 py-1 bg-forest-900/80 rounded-lg text-emerald-400 border border-emerald-500/20">
+                                <span class="text-xs font-mono px-3 py-1 bg-teal-950/80 rounded-xl text-cyan-300 border border-teal-500/30 shadow-inner">
                                     #${skill.id.toString().padStart(3, '0')}
                                 </span>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs px-2.5 py-1 rounded-full border ${diffColor}">
-                                        ${skill.diff}
-                                    </span>
-                                    <button onclick="toggleFavorite(${skill.id})" class="text-gray-500 hover:text-rose-500 transition text-lg p-1">
-                                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart ${isFav ? 'text-rose-500' : ''}"></i>
+                                    <span class="text-xs px-3 py-1 rounded-full border font-bold ${diffColor}">${skill.diff}</span>
+                                    <button onclick="toggleFavorite(${skill.id})" class="text-gray-400 hover:text-rose-500 transition text-lg p-1">
+                                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart ${isFav ? 'text-rose-500 scale-110' : ''} transition"></i>
                                     </button>
                                 </div>
                             </div>
-
                             <div>
-                                <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition">${skill.title}</h3>
-                                <p class="text-xs text-gray-400 font-mono italic">${skill.en}</p>
+                                <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">${skill.title}</h3>
+                                <p class="text-xs text-teal-400/80 font-mono italic">${skill.en}</p>
                             </div>
-
                             <p class="text-sm text-gray-300 leading-relaxed font-light">${skill.desc}</p>
                         </div>
-
-                        <div class="mt-4 pt-3 border-t border-forest-600/20 flex justify-between items-center text-xs text-gray-400">
-                            <span><i class="fa-solid fa-folder text-emerald-500/70 mr-1"></i>領域 ${skill.cat}</span>
-                            <span class="text-emerald-400/80 hover:underline cursor-pointer" onclick="openDetail(${skill.id})">細節指南 <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                        <div class="mt-5 pt-4 border-t border-teal-500/20 flex justify-between items-center text-xs">
+                            <span class="text-teal-400"><i class="fa-solid fa-folder text-emerald-400 mr-1"></i>領域 ${skill.cat}</span>
+                            <button onclick="openDetail(${skill.id})" class="bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600 hover:to-teal-600 text-teal-200 hover:text-white px-3.5 py-2 rounded-xl border border-teal-500/40 transition flex items-center gap-1.5 font-bold shadow">
+                                <i class="fa-solid fa-image text-cyan-400"></i> 詳細圖解與影片
+                            </button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Toggle Favorites
+        function openDetail(id) {
+            currentActiveSkillId = id;
+            const skill = skills.find(s => s.id === id);
+            document.getElementById('modalIdBadge').textContent = `#${skill.id.toString().padStart(3, '0')}`;
+            document.getElementById('modalTitle').textContent = skill.title;
+            document.getElementById('modalEn').textContent = skill.en;
+            document.getElementById('modalDesc').textContent = skill.desc;
+            document.getElementById('modalImg').src = skill.imgUrl;
+            document.getElementById('modalVideoBtn').href = skill.videoUrl;
+
+            const diffBadge = document.getElementById('modalDiffBadge');
+            diffBadge.textContent = skill.diff;
+            diffBadge.className = `text-xs px-2.5 py-0.5 rounded-full border font-bold ${
+                skill.diff === '入門' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
+                skill.diff === '中等' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' :
+                skill.diff === '中高' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
+                'bg-rose-500/20 text-rose-300 border-rose-500/40'
+            }`;
+
+            const stepsContainer = document.getElementById('modalSteps');
+            stepsContainer.innerHTML = skill.steps.map((step, index) => `
+                <div class="flex items-start gap-3 bg-forest-950/80 p-3.5 rounded-2xl border border-teal-500/30 shadow-sm">
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-forest-950 text-xs flex items-center justify-center shrink-0 font-black shadow">${index + 1}</span>
+                    <p class="text-xs sm:text-sm text-gray-200 leading-relaxed pt-0.5">${step.replace(/^[步驟\d]+[：:]\s*/, '')}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('modalNotice').textContent = skill.notice;
+            loadComments(id);
+
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
         function toggleFavorite(id) {
             if (favorites.includes(id)) {
                 favorites = favorites.filter(favId => favId !== id);
@@ -451,11 +700,8 @@
         function toggleFavoriteFilter() {
             showFavoritesOnly = !showFavoritesOnly;
             const btn = document.getElementById('favoriteToggleBtn');
-            if (showFavoritesOnly) {
-                btn.classList.add('bg-rose-500/20', 'border-rose-500');
-            } else {
-                btn.classList.remove('bg-rose-500/20', 'border-rose-500');
-            }
+            btn.classList.toggle('bg-rose-500/20', showFavoritesOnly);
+            btn.classList.toggle('border-rose-500', showFavoritesOnly);
             filterData();
         }
 
@@ -468,11 +714,12 @@
 
         function resetAllFilters() {
             currentCategory = 'ALL';
-            currentDifficulty = 'ALL';
+            document.getElementById('difficultySelect').value = 'ALL';
             currentSearch = '';
             showFavoritesOnly = false;
+            currentRangeSegment = 'ALL';
+            setRangeSegment('ALL');
             document.getElementById('searchInput').value = '';
-            document.getElementById('difficultySelect').value = 'ALL';
             document.getElementById('clearSearchBtn').classList.add('hidden');
             renderCategories();
             filterData();
@@ -480,20 +727,8 @@
 
         function updateBadgeState() {
             const badge = document.getElementById('activeFilterBadge');
-            const hasFilter = currentCategory !== 'ALL' || currentDifficulty !== 'ALL' || currentSearch !== '' || showFavoritesOnly;
-            if (hasFilter) {
-                badge.classList.remove('hidden');
-                let text = '已套用篩選條件';
-                if (showFavoritesOnly) text = '僅顯示已收藏技能';
-                document.getElementById('activeFilterText').textContent = text;
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function openDetail(id) {
-            const skill = skills.find(s => s.id === id);
-            alert(`【${skill.title}】\n英文名稱：${skill.en}\n難易度：${skill.diff}\n核心價值：${skill.desc}\n\n提示：此項技能屬於「領域 ${skill.cat}」完全無殺生及永續荒野求生實務技術。`);
+            const hasFilter = currentCategory !== 'ALL' || document.getElementById('difficultySelect').value !== 'ALL' || currentSearch !== '' || showFavoritesOnly || currentRangeSegment !== 'ALL';
+            badge.classList.toggle('hidden', !hasFilter);
         }
 
         function scrollToTop() {
