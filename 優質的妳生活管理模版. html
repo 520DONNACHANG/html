@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>女生自我管理工作台</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fcf8f2;
+            --sidebar-bg: #f5eee6;
+            --card-bg: #ffffff;
+            --text-main: #4a3e3d;
+            --text-sub: #8c7b75;
+            --accent-green: #7ca982;
+            --accent-green-light: #e8f0e9;
+            --accent-orange: #f2a65a;
+            --accent-pink: #f4b6c2;
+            --accent-blue: #9bb7d4;
+            --accent-purple: #c3aed6;
+            --shadow: 0 8px 20px rgba(180, 160, 150, 0.08);
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 側邊欄 Sidebar */
+        .sidebar {
+            width: 90px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            gap: 20px;
+            border-right: 1px solid rgba(200, 180, 170, 0.2);
+        }
+
+        .sidebar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: var(--text-sub);
+            font-size: 12px;
+            transition: all 0.3s ease;
+            width: 100%;
+            padding: 8px 0;
+        }
+
+        .sidebar-item.active, .sidebar-item:hover {
+            color: var(--accent-green);
+        }
+
+        .sidebar-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+        }
+
+        .sidebar-item:hover .sidebar-icon {
+            transform: scale(1.1);
+        }
+
+        /* 主內容區 Main Content */
+        .main-container {
+            flex: 1;
+            padding: 28px 36px;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-y: auto;
+        }
+
+        /* 頁眉 Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .title-group h1 {
+            font-size: 24px;
+            color: #3d312e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-group p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .date-badge {
+            background-color: var(--card-bg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-sub);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 歡迎與金句卡片 Greeting */
+        .greeting-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .greeting-card {
+            background-color: var(--card-bg);
+            padding: 18px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .greeting-card h2 {
+            font-size: 18px;
+            color: #2c2220;
+            margin-bottom: 6px;
+        }
+
+        .greeting-card p {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        .quote-card {
+            background-color: var(--accent-green-light);
+            padding: 18px 20px;
+            border-radius: var(--radius);
+            color: var(--accent-green);
+            font-size: 13px;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        /* 今日進度 Progress Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .progress-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .circular-progress {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: conic-gradient(var(--color) var(--percent), #eee 0deg);
+        }
+
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--card-bg);
+        }
+
+        .circular-value {
+            position: relative;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .progress-info h4 {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 4px;
+        }
+
+        .progress-info p {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* 內容雙欄 Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .badge {
+            background: var(--accent-green-light);
+            color: var(--accent-green);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        /* 計劃清單 Todo List */
+        .todo-list {
+            list-style: none;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #faf7f5;
+            border-radius: 10px;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .todo-item:hover {
+            background: #f3ede8;
+        }
+
+        .todo-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: #b0a39f;
+        }
+
+        .todo-time {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        /* 心情選擇器 Mood Selector */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 14px 0;
+        }
+
+        .mood-btn {
+            border: none;
+            background: #faf7f5;
+            padding: 10px 4px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-sub);
+            transition: all 0.2s;
+        }
+
+        .mood-btn.active {
+            background: var(--accent-pink);
+            color: white;
+        }
+
+        .mood-btn i {
+            font-size: 18px;
+        }
+
+        .mood-note {
+            background: #fbf8f3;
+            border-left: 3px solid var(--accent-green);
+            padding: 10px 12px;
+            font-size: 12px;
+            color: var(--text-sub);
+            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+        }
+
+        /* 紀念日 Schedule */
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .event-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .event-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .event-title {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .event-date {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .event-tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        /* 快捷入口 Quick Links */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .quick-card {
+            background: var(--card-bg);
+            padding: 14px 8px;
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(180, 160, 150, 0.15);
+        }
+
+        .quick-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .quick-title {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .quick-desc {
+            font-size: 10px;
+            color: var(--text-sub);
+        }
+
+        /* Custom Checkbox Style */
+        input[type="checkbox"] {
+            accent-color: var(--accent-green);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .progress-grid { grid-template-columns: repeat(2, 1fr); }
+            .content-grid { grid-template-columns: 1fr; }
+            .quick-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊欄 Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-item active">
+            <div class="sidebar-icon"><i class="fa-solid fa-house"></i></div>
+            <span>首頁</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-bottle-water"></i></div>
+            <span>飲食喝水</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-person-running"></i></div>
+            <span>運動管理</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-book-open"></i></div>
+            <span>學習管理</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-comments"></i></div>
+            <span>表達能力</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-shirt"></i></div>
+            <span>穿搭助手</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-wallet"></i></div>
+            <span>記帳</span>
+        </div>
+        <div class="sidebar-item">
+            <div class="sidebar-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+            <span>備忘錄</span>
+        </div>
+    </aside>
+
+    <!-- 主區塊 Main -->
+    <main class="main-container">
+        
+        <!-- 頁眉 Header -->
+        <header class="header">
+            <div class="title-group">
+                <h1>🌿 女生自我管理工作台</h1>
+                <p>做更好的自己，從每天一點點開始 🌸</p>
+            </div>
+            <div class="date-badge">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span id="current-date">2026年10月24日 · 星期六 · 23:38</span>
+            </div>
+        </header>
+
+        <!-- 歡迎 & 每日金句 -->
+        <section class="greeting-grid">
+            <div class="greeting-card">
+                <div>
+                    <h2>Hi, 優質的妳 🌻</h2>
+                    <p>今天也是閃閃發光的一天！保持好心情，按計劃生活，慢慢靠近理想的自己吧～</p>
+                </div>
+            </div>
+            <div class="quote-card">
+                <i class="fa-solid fa-quote-left fa-lg"></i>
+                <span>自律不是壓抑，而是給自己更多選擇的自由。</span>
+            </div>
+        </section>
+
+        <!-- 今日進度 Progress -->
+        <section>
+            <div class="section-header">
+                <div class="section-title"><i class="fa-solid fa-chart-line" style="color:var(--accent-green)"></i> 今日進度</div>
+                <span style="font-size: 12px; color: var(--text-sub);">今日也要加油呀！💪</span>
+            </div>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <div class="circular-progress" style="--color: var(--accent-blue); --percent: 216deg;">
+                        <span class="circular-value">60%</span>
+                    </div>
+                    <div class="progress-info">
+                        <h4>💧 喝水打卡</h4>
+                        <p>900 / 1500 ml</p>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <div class="circular-progress" style="--color: var(--accent-purple); --percent: 288deg;">
+                        <span class="circular-value">80%</span>
+                    </div>
+                    <div class="progress-info">
+                        <h4>🌙 睡眠時長</h4>
+                        <p>6.4 / 8 h</p>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <div class="circular-progress" style="--color: var(--accent-orange); --percent: 180deg;">
+                        <span class="circular-value">50%</span>
+                    </div>
+                    <div class="progress-info">
+                        <h4>🏃‍♀️ 運動時長</h4>
+                        <p>30 / 60 min</p>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <div class="circular-progress" style="--color: var(--accent-green); --percent: 252deg;">
+                        <span class="circular-value">70%</span>
+                    </div>
+                    <div class="progress-info">
+                        <h4>📖 今日閱讀</h4>
+                        <p>35 / 50 min</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 任務與心情 -->
+        <section class="content-grid">
+            
+            <!-- 今日計劃 -->
+            <div class="dashboard-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa-regular fa-clipboard" style="color:var(--accent-orange)"></i> 今日計劃</div>
+                    <span class="badge" id="today-count">3/5 已完成</span>
+                </div>
+                <ul class="todo-list" id="today-tasks">
+                    <li class="todo-item completed">
+                        <div class="todo-left"><input type="checkbox" checked> <span>早起喝一杯溫水</span></div>
+                        <span class="todo-time">07:30</span>
+                    </li>
+                    <li class="todo-item completed">
+                        <div class="todo-left"><input type="checkbox" checked> <span>完成30分鐘運動</span></div>
+                        <span class="todo-time">10:00</span>
+                    </li>
+                    <li class="todo-item completed">
+                        <div class="todo-left"><input type="checkbox" checked> <span>閱讀30分鐘</span></div>
+                        <span class="todo-time">20:00</span>
+                    </li>
+                    <li class="todo-item">
+                        <div class="todo-left"><input type="checkbox"> <span>拍一組今日穿搭照</span></div>
+                        <span class="todo-time">今天</span>
+                    </li>
+                    <li class="todo-item">
+                        <div class="todo-left"><input type="checkbox"> <span>整理房間</span></div>
+                        <span class="todo-time">今天</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 今日狀態 -->
+            <div class="dashboard-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa-regular fa-sun" style="color:var(--accent-orange)"></i> 今日狀態</div>
+                    <span style="font-size:12px; color:var(--text-sub); cursor:pointer;">記錄心情 ></span>
+                </div>
+                <div class="mood-grid">
+                    <button class="mood-btn active"><i class="fa-solid fa-face-laugh-beam"></i> 超棒</button>
+                    <button class="mood-btn"><i class="fa-solid fa-face-smile"></i> 開心</button>
+                    <button class="mood-btn"><i class="fa-solid fa-face-meh"></i> 平靜</button>
+                    <button class="mood-btn"><i class="fa-solid fa-face-tired"></i> 有點累</button>
+                    <button class="mood-btn"><i class="fa-solid fa-face-sad-tear"></i> 低落</button>
+                </div>
+                <div class="mood-note">
+                    💭 今天心情很不錯！完成了運動，感覺整個人都有活力了～ 🍃
+                </div>
+            </div>
+
+            <!-- 重要日程 -->
+            <div class="dashboard-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa-regular fa-calendar" style="color:var(--accent-pink)"></i> 重要日程 / 紀念日</div>
+                    <span style="font-size:12px; color:var(--text-sub); cursor:pointer;">查看更多 ></span>
+                </div>
+                <div class="event-list">
+                    <div class="event-item">
+                        <div class="event-left">
+                            <div class="event-icon" style="background:#fde8e8; color:#e57373;"><i class="fa-solid fa-cake-candles"></i></div>
+                            <div>
+                                <div class="event-title">閨蜜生日 🎂</div>
+                                <div class="event-date">今天 · 2026年10月24日</div>
+                            </div>
+                        </div>
+                        <span class="event-tag" style="background:#fde8e8; color:#e57373;">今天</span>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-left">
+                            <div class="event-icon" style="background:#e3f2fd
