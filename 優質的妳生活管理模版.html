@@ -638,4 +638,141 @@
                     </div>
                     <div class="event-item">
                         <div class="event-left">
-                            <div class="event-icon" style="background:#e3f2fd
+                            <div class="event-icon" style="background:#e3f2fd; color:#64b5f6;"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="event-title">週末旅行計劃</div>
+                                <div class="event-date">10月27日 · 星期二</div>
+                            </div>
+                        </div>
+                        <span class="event-tag" style="background:#e3f2fd; color:#1e88e5;">3天後</span>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-left">
+                            <div class="event-icon" style="background:#fff8e1; color:#ffb74d;"><i class="fa-solid fa-sack-dollar"></i></div>
+                            <div>
+                                <div class="event-title">發薪日 💰</div>
+                                <div class="event-date">10月31日 · 星期六</div>
+                            </div>
+                        </div>
+                        <span class="event-tag" style="background:#fff8e1; color:#f57c00;">7天後</span>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-left">
+                            <div class="event-icon" style="background:#f3e5f5; color:#ba68c8;"><i class="fa-solid fa-pump-soap"></i></div>
+                            <div>
+                                <div class="event-title">護膚品囤貨</div>
+                                <div class="event-date">11月04日 · 星期三</div>
+                            </div>
+                        </div>
+                        <span class="event-tag" style="background:#f3e5f5; color:#ab47bc;">11天後</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 本周重點 -->
+            <div class="dashboard-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="fa-solid fa-bullseye" style="color:var(--accent-green)"></i> 本周重點 / 待辦清單</div>
+                    <span class="badge" id="week-count">4/7 已完成</span>
+                </div>
+                <ul class="todo-list" id="week-tasks">
+                    <li class="todo-item completed"><div class="todo-left"><input type="checkbox" checked> <span>完成2次有氧運動</span></div></li>
+                    <li class="todo-item completed"><div class="todo-left"><input type="checkbox" checked> <span>堅持早睡 (23:00前)</span></div></li>
+                    <li class="todo-item completed"><div class="todo-left"><input type="checkbox" checked> <span>整理衣櫃，斷捨離</span></div></li>
+                    <li class="todo-item completed"><div class="todo-left"><input type="checkbox" checked> <span>學習一個新技能</span></div></li>
+                    <li class="todo-item"><div class="todo-left"><input type="checkbox"> <span>完成讀書筆記</span></div></li>
+                    <li class="todo-item"><div class="todo-left"><input type="checkbox"> <span>做好下周的計劃</span></div></li>
+                    <li class="todo-item"><div class="todo-left"><input type="checkbox"> <span>給家人打電話</span></div></li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- 快捷入口 Quick Links -->
+        <section>
+            <div class="section-header">
+                <div class="section-title"><i class="fa-solid fa-bolt" style="color:var(--accent-orange)"></i> 快捷入口</div>
+                <span style="font-size: 12px; color: var(--text-sub);">高效生活，從這裡開始 ✨</span>
+            </div>
+            <div class="quick-grid">
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#e3f2fd; color:#2196f3;"><i class="fa-solid fa-whiskey-glass"></i></div>
+                    <div class="quick-title">飲食喝水</div>
+                    <div class="quick-desc">記錄飲食熱量</div>
+                </div>
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#e8f5e9; color:#4caf50;"><i class="fa-solid fa-person-running"></i></div>
+                    <div class="quick-title">運動管理</div>
+                    <div class="quick-desc">制定運動計劃</div>
+                </div>
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#fff3e0; color:#ff9800;"><i class="fa-solid fa-book"></i></div>
+                    <div class="quick-title">學習管理</div>
+                    <div class="quick-desc">提升自我成長</div>
+                </div>
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#f3e5f5; color:#9c27b0;"><i class="fa-solid fa-comments"></i></div>
+                    <div class="quick-title">表達能力</div>
+                    <div class="quick-desc">溝通與情商</div>
+                </div>
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#fce4ec; color:#e91e63;"><i class="fa-solid fa-vest"></i></div>
+                    <div class="quick-title">穿搭助手</div>
+                    <div class="quick-desc">今日穿搭推薦</div>
+                </div>
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#fff8e1; color:#ffc107;"><i class="fa-solid fa-coins"></i></div>
+                    <div class="quick-title">記帳</div>
+                    <div class="quick-desc">每一筆都算數</div>
+                </div>
+                <div class="quick-card">
+                    <div class="quick-icon" style="background:#efebe9; color:#795548;"><i class="fa-solid fa-note-sticky"></i></div>
+                    <div class="quick-title">備忘錄</div>
+                    <div class="quick-desc">記錄靈感與待辦</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript 邏輯 -->
+    <script>
+        // 互動：待辦清單完成勾選
+        function setupTodoList(containerId, countId) {
+            const container = document.getElementById(containerId);
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            
+            function updateCount() {
+                const total = checkboxes.length;
+                let completed = 0;
+                checkboxes.forEach(cb => {
+                    const item = cb.closest('.todo-item');
+                    if (cb.checked) {
+                        completed++;
+                        item.classList.add('completed');
+                    } else {
+                        item.classList.remove('completed');
+                    }
+                });
+                document.getElementById(countId).innerText = `${completed}/${total} 已完成`;
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', updateCount);
+            });
+        }
+
+        setupTodoList('today-tasks', 'today-count');
+        setupTodoList('week-tasks', 'week-count');
+
+        // 互動：心情選擇器
+        const moodBtns = document.querySelectorAll('.mood-btn');
+        moodBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                moodBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
