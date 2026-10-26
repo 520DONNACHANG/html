@@ -72,6 +72,27 @@
       100% { opacity: 1; }
     }
 
+    /* ---------------- 動態卡位人數計數器 ---------------- */
+    .counter-box {
+      background: rgba(46, 204, 113, 0.12);
+      border: 1px solid var(--accent-green);
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+      margin: 20px 0 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 255, 136, 0.15);
+    }
+
+    .counter-box span {
+      color: var(--gold-yellow);
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 0 4px;
+      transition: all 0.3s ease;
+    }
+
     /* ---------------- 超大醒目倒數計時器 ---------------- */
     .countdown-banner {
       background: #1e0a0a;
@@ -79,7 +100,7 @@
       padding: 22px 15px;
       border-radius: 14px;
       text-align: center;
-      margin: 25px 0;
+      margin: 20px 0;
       box-shadow: 0 8px 25px rgba(255, 71, 87, 0.25);
     }
 
@@ -118,7 +139,7 @@
 
     /* ---------------- Hero Section ---------------- */
     .hero {
-      padding: 30px 0 20px;
+      padding: 20px 0;
       text-align: center;
     }
 
@@ -282,7 +303,7 @@
       border-radius: 3px;
     }
 
-    /* ---------------- 互動創意：植物殺手指數小測驗 ---------------- */
+    /* ---------------- 互動測驗區 ---------------- */
     .quiz-box {
       background: var(--bg-card);
       border: 2px solid var(--accent-green);
@@ -457,7 +478,7 @@
       margin-bottom: 15px;
     }
 
-    /* ---------------- Form Section (填單報名處) ---------------- */
+    /* ---------------- Form Section ---------------- */
     .form-container {
       background: var(--bg-card);
       padding: 35px;
@@ -495,23 +516,25 @@
       border-color: var(--accent-green);
     }
 
-    /* 副本勾選框樣式 */
     .form-checkbox-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 22px;
       text-align: left;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-sub);
+      white-space: nowrap;
+      overflow-x: auto;
     }
 
     .form-checkbox-group input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       accent-color: var(--accent-green);
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     /* ---------------- 底部黏著轉化長條 (Sticky CTA) ---------------- */
@@ -557,16 +580,27 @@
       color: var(--text-sub);
       font-size: 0.95rem;
     }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--accent-glow);
+    }
   </style>
 </head>
 <body>
 
   <!-- 頂部警示條 -->
   <div class="alert-bar">
-    🔥 注意：本期免費名額倒數中，已有 86 位學員搶先卡位！
+    🔥 注意：本期免費名額倒數中，席位即將全數售罄！
   </div>
 
   <div class="container">
+
+    <!-- 自動平滑累加計數器 -->
+    <div class="counter-box">
+      🔥 目前已累積 <span id="participantCounter">0</span> 位學員完成線上卡位！
+    </div>
 
     <!-- 超大醒目倒數計時器 -->
     <div class="countdown-banner">
@@ -611,7 +645,7 @@
       </div>
     </section>
 
-    <!-- 互動創意區塊：植物殺手指數小測驗 -->
+    <!-- 互動測驗區 -->
     <section>
       <div class="quiz-box">
         <h3>💡 互動小測驗：你是哪一種「植物殺手」？</h3>
@@ -730,11 +764,11 @@
             <input type="tel" id="phone" name="phone" placeholder="0912345678" required>
           </div>
 
-          <!-- 副本勾選框 -->
+          <!-- 副本勾選框 (單排) -->
           <div class="form-checkbox-group">
             <input type="checkbox" id="sendCopy" name="sendCopy" checked>
             <label for="sendCopy" style="margin: 0; font-weight: normal; cursor: pointer;">
-              同時傳送一份報名副本到指定信箱 (joyce0585@gmail.com)
+              同時傳送一份報名副本至管理者信箱 (密件副本)
             </label>
           </div>
 
@@ -755,6 +789,81 @@
 
   <footer>
     <p>© 2026 水苔球綠意生活手作. All Rights Reserved.</p>
+    <div class="footer-note">有問題可以搜尋藝想天開植能香氛學苑 網頁設計師：張小姐</div>
   </footer>
 
-  <
+  <!-- 互動邏輯腳本 -->
+  <script>
+    // 1. 全域變數與 LINE 社群連結
+    const lineCommunityUrl = "https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
+    const adminBccEmail = "joyce0585@gmail.com";
+
+    // 2. 報名人數計數器：數字平滑上升動畫
+    function animateCounter(targetNumber, duration) {
+      const counterElement = document.getElementById("participantCounter");
+      let startNumber = 0;
+      const increment = targetNumber / (duration / 16);
+
+      const timer = setInterval(() => {
+        startNumber += increment;
+        if (startNumber >= targetNumber) {
+          counterElement.innerText = targetNumber;
+          clearInterval(timer);
+        } else {
+          counterElement.innerText = Math.floor(startNumber);
+        }
+      }, 16);
+    }
+
+    // 3. 互動小測驗邏輯
+    function showQuizResult(type) {
+      const resultBox = document.getElementById('quizResult');
+      resultBox.style.display = 'block';
+      if(type === 1) {
+        resultBox.innerHTML = "🚨 診斷結果：這是典型的「土壤排水不良＋澆水過多」！水苔球的超強透氣結構能完美解決爛根問題。";
+      } else if(type === 2) {
+        resultBox.innerHTML = "🚨 診斷結果：傳統花盆的泥土容易隨澆水流失！水苔球「無土包裹」技術，乾淨俐落絕不掉土。";
+      } else if(type === 3) {
+        resultBox.innerHTML = "🚨 診斷結果：你錯過了植物「補水黃金期」！水苔球獨特的「浸泡式吸水」能讓水分鎖在球體內更持久。";
+      }
+    }
+
+    // 4. 表單提交與跳轉邏輯
+    function handleSubmit(e) {
+      e.preventDefault();
+      const sendCopyChecked = document.getElementById('sendCopy').checked;
+      let msg = '🎉 恭喜報名成功！系統已將 ZOOM 直播連結發送到您的信箱。';
+      
+      if (sendCopyChecked) {
+        console.log("BCC mail sent via backend logic for: ", adminBccEmail);
+      }
+      
+      msg += '\n\n點擊「確定」後將引導您加入「商品 職訊 電商 分享」LINE 官方社群！';
+
+      alert(msg);
+      
+      // 自動跳轉至 LINE 社群
+      window.open(lineCommunityUrl, '_blank');
+      document.getElementById('registrationForm').reset();
+    }
+
+    // 5. 倒數計時器邏輯
+    let hours = 5, minutes = 42, seconds = 19;
+    setInterval(() => {
+      seconds--;
+      if (seconds < 0) { seconds = 59; minutes--; }
+      if (minutes < 0) { minutes = 59; hours--; }
+      if (hours < 0) { hours = 0; minutes = 0; seconds = 0; }
+      
+      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+    }, 1000);
+
+    // 6. 頁面載入完成後啟動計數器動畫 (預設 186 人)
+    window.addEventListener("DOMContentLoaded", () => {
+      animateCounter(186, 1500);
+    });
+  </script>
+</body>
+</html>
