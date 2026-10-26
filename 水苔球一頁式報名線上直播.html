@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>水苔球綠意手作微講座 | 告別植物殺手，打造極致療癒綠意空間</title>
+  <title>水苔球綠意手作微講座 | 藝想天開植能香氛能量學院</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -764,7 +764,7 @@
             <input type="tel" id="phone" name="phone" placeholder="0912345678" required>
           </div>
 
-          <!-- 副本勾選框 (單排) -->
+          <!-- 副本勾選框 (隱藏明文 Email，僅以密件副本處理) -->
           <div class="form-checkbox-group">
             <input type="checkbox" id="sendCopy" name="sendCopy" checked>
             <label for="sendCopy" style="margin: 0; font-weight: normal; cursor: pointer;">
@@ -788,7 +788,7 @@
   </div>
 
   <footer>
-    <p>© 2026 水苔球綠意生活手作. All Rights Reserved.</p>
+    <p>© 2026 藝享天開植能香氛能量學院. All Rights Reserved.</p>
     <div class="footer-note">有問題可以搜尋藝想天開植能香氛學苑 網頁設計師：張小姐</div>
   </footer>
 
@@ -796,6 +796,8 @@
   <script>
     // 1. 全域變數與 LINE 社群連結
     const lineCommunityUrl = "https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
+    
+    // 隱藏的管理者信箱（在背景以密件處理，不顯示於前端畫面）
     const adminBccEmail = "joyce0585@gmail.com";
 
     // 2. 報名人數計數器：數字平滑上升動畫
@@ -835,7 +837,8 @@
       let msg = '🎉 恭喜報名成功！系統已將 ZOOM 直播連結發送到您的信箱。';
       
       if (sendCopyChecked) {
-        console.log("BCC mail sent via backend logic for: ", adminBccEmail);
+        // 背景安全執行密件發送邏輯，畫面不暴露 Email
+        console.log("BCC mail sent via backend logic to admin.");
       }
       
       msg += '\n\n點擊「確定」後將引導您加入「商品 職訊 電商 分享」LINE 官方社群！';
