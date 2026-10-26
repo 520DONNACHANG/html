@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>水苔球綠意手作微講座 | 告別植物殺手，打造極致療癒綠意空間</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ---------------- 全局樣式 ---------------- */
+    :root {
+      --bg-main: #0d1b12;
+      --bg-card: #162a1e;
+      --bg-darker: #08120c;
+      --accent-green: #2ecc71;
+      --accent-glow: #00ff88;
+      --warning-red: #ff4757;
+      --gold-yellow: #f1c40f;
+      --line-green: #06c755;
+      --text-main: #ffffff;
+      --text-sub: #d1d8e0;
+      --border-color: #274d35;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.7;
+      font-size: 1.1rem;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    /* ---------------- 頂部急迫感警示條 ---------------- */
+    .alert-bar {
+      background: linear-gradient(90deg, #d63031, #e17055);
+      color: #fff;
+      text-align: center;
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      animation: pulse-bg 2s infinite;
+    }
+
+    @keyframes pulse-bg {
+      0% { opacity: 1; }
+      50% { opacity: 0.85; }
+      100% { opacity: 1; }
+    }
+
+    /* ---------------- 超大醒目倒數計時器 ---------------- */
+    .countdown-banner {
+      background: #1e0a0a;
+      border: 2px dashed var(--warning-red);
+      padding: 22px 15px;
+      border-radius: 14px;
+      text-align: center;
+      margin: 25px 0;
+      box-shadow: 0 8px 25px rgba(255, 71, 87, 0.25);
+    }
+
+    .countdown-title {
+      font-size: 1.25rem;
+      color: #ff8787;
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+
+    .countdown-timers {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: var(--gold-yellow);
+    }
+
+    .timer-block {
+      background: #2d1010;
+      border: 1px solid #ff4757;
+      border-radius: 10px;
+      padding: 8px 16px;
+      min-width: 80px;
+    }
+
+    .timer-block span {
+      font-size: 0.85rem;
+      color: #fff;
+      display: block;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* ---------------- Hero Section ---------------- */
+    .hero {
+      padding: 30px 0 20px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background-color: rgba(46, 204, 113, 0.18);
+      border: 1px solid var(--accent-green);
+      color: var(--accent-glow);
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .highlight-green {
+      color: var(--accent-glow);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-sub);
+      margin-bottom: 25px;
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      margin: 20px 0 30px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--accent-green);
+      box-shadow: 0 20px 40px rgba(0, 255, 136, 0.25);
+    }
+
+    .hero-image-wrapper img {
+      max-height: 480px;
+      filter: brightness(0.95);
+    }
+
+    /* ---------------- 價值與價格 ---------------- */
+    .price-box {
+      margin: 20px 0;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: #7f8c8d;
+      font-size: 1.4rem;
+    }
+
+    .free-price {
+      color: var(--gold-yellow);
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin-left: 12px;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      width: 100%;
+      max-width: 500px;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 900;
+      padding: 20px 35px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      margin-top: 10px;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(46, 204, 113, 0.6);
+      background: linear-gradient(135deg, #00ff88, #2ecc71);
+      color: #0d1b12;
+    }
+
+    .notice-text {
+      color: var(--warning-red);
+      font-size: 1rem;
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    /* ---------------- LINE 社群引流專區 ---------------- */
+    .community-box {
+      background: linear-gradient(135deg, #102a1b, #07190e);
+      border: 2px solid var(--line-green);
+      border-radius: 16px;
+      padding: 25px;
+      margin: 30px 0;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(6, 199, 85, 0.2);
+    }
+
+    .community-box h3 {
+      color: var(--line-green);
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .community-box p {
+      color: var(--text-sub);
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+    }
+
+    .btn-line-community {
+      display: inline-block;
+      width: 100%;
+      max-width: 450px;
+      background: var(--line-green);
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 16px 25px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(6, 199, 85, 0.35);
+      transition: all 0.3s ease;
+    }
+
+    .btn-line-community:hover {
+      transform: translateY(-2px);
+      background: #05b34c;
+      box-shadow: 0 12px 25px rgba(6, 199, 85, 0.5);
+    }
+
+    /* ---------------- Section Header ---------------- */
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 55px 0 30px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 70px;
+      height: 5px;
+      background: var(--accent-green);
+      margin: 12px auto 0;
+      border-radius: 3px;
+    }
+
+    /* ---------------- 互動創意：植物殺手指數小測驗 ---------------- */
+    .quiz-box {
+      background: var(--bg-card);
+      border: 2px solid var(--accent-green);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 35px 0;
+    }
+
+    .quiz-box h3 {
+      color: var(--gold-yellow);
+      margin-bottom: 15px;
+      font-size: 1.35rem;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .quiz-btn {
+      background: #1c2d22;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 15px 18px;
+      border-radius: 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1.05rem;
+    }
+
+    .quiz-btn:hover {
+      background: var(--accent-green);
+      color: #0d1b12;
+      font-weight: 700;
+    }
+
+    .quiz-result {
+      margin-top: 18px;
+      padding: 16px;
+      background: #08120c;
+      border-radius: 10px;
+      color: var(--warning-red);
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: none;
+    }
+
+    /* ---------------- Pain Points Grid ---------------- */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+      margin-bottom: 35px;
+    }
+
+    .pain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 22px;
+      overflow: hidden;
+    }
+
+    .pain-card img {
+      height: 170px;
+      margin-bottom: 15px;
+    }
+
+    .pain-card h3 {
+      color: var(--warning-red);
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .pain-card p {
+      color: var(--text-sub);
+      font-size: 1rem;
+    }
+
+    /* ---------------- Chat Comparison ---------------- */
+    .comparison-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin: 35px 0;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chat-box {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid var(--border-color);
+    }
+
+    .chat-header {
+      font-weight: 800;
+      font-size: 1.2rem;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .chat-box.bad .chat-header { color: var(--warning-red); }
+    .chat-box.good .chat-header { color: var(--accent-glow); }
+
+    .chat-bubble {
+      background: #233e2c;
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      font-size: 1rem;
+    }
+
+    .chat-bubble.user { background: #1c2d22; color: #fff; }
+    .chat-bubble.bot { background: var(--accent-green); color: #000; font-weight: 700; }
+
+    /* ---------------- Feature List ---------------- */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feature-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 22px;
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .feature-item { grid-template-columns: 1fr; }
+    }
+
+    .feature-item img { height: 130px; }
+    .feature-text h4 { font-size: 1.3rem; margin-bottom: 8px; color: var(--accent-glow); }
+    .feature-text p { font-size: 1.05rem; color: var(--text-sub); }
+
+    /* ---------------- 限量加碼禮遇 ---------------- */
+    .bonus-box {
+      background: linear-gradient(135deg, #2c2216, #161108);
+      border: 2px solid var(--gold-yellow);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .bonus-box h3 {
+      color: var(--gold-yellow);
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+    }
+
+    .bonus-box p {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+
+    /* ---------------- Form Section (填單報名處) ---------------- */
+    .form-container {
+      background: var(--bg-card);
+      padding: 35px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      max-width: 520px;
+      margin: 0 auto 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-darker);
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent-green);
+    }
+
+    /* 副本勾選框樣式 */
+    .form-checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-sub);
+    }
+
+    .form-checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-green);
+      cursor: pointer;
+    }
+
+    /* ---------------- 底部黏著轉化長條 (Sticky CTA) ---------------- */
+    .sticky-footer-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(13, 27, 18, 0.96);
+      border-top: 2px solid var(--accent-green);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 999;
+      backdrop-filter: blur(8px);
+    }
+
+    .sticky-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .sticky-text span {
+      color: var(--gold-yellow);
+      font-weight: 900;
+    }
+
+    .sticky-btn {
+      background: var(--accent-green);
+      color: #0d1b12;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 900;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 0 40px;
+      color: var(--text-sub);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部警示條 -->
+  <div class="alert-bar">
+    🔥 注意：本期免費名額倒數中，已有 86 位學員搶先卡位！
+  </div>
+
+  <div class="container">
+
+    <!-- 超大醒目倒數計時器 -->
+    <div class="countdown-banner">
+      <div class="countdown-title">⚡ 距本場直播報名通道關閉僅剩：</div>
+      <div class="countdown-timers">
+        <div class="timer-block"><span id="hours">05</span><span>小時</span></div> :
+        <div class="timer-block"><span id="minutes">42</span><span>分鐘</span></div> :
+        <div class="timer-block"><span id="seconds">19</span><span>秒</span></div>
+      </div>
+    </div>
+
+    <!-- 主視覺區塊 (Hero) -->
+    <section class="hero">
+      <div class="hero-badge">🌿 告別植物殺手稱號・免經驗輕鬆上手</div>
+      <h1>
+        教你如何用 <span class="highlight-green">「水苔球 (Kokedama)」</span><br>
+        打造 24 小時免繁瑣照顧、不弄髒桌面的極致綠意！
+      </h1>
+      <p class="hero-subtitle">告別傳統泥土與爛根焦慮，讓你在家也能輕鬆擁有一座絕美植栽森林。</p>
+
+      <div class="hero-image-wrapper">
+        <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1200&q=80" alt="絕美懸掛水苔球情境大圖">
+      </div>
+
+      <div class="price-box">
+        <span class="old-price">原價 NT$ 1,200</span>
+        <span class="free-price">限時免費報名</span>
+      </div>
+
+      <a href="#register" class="btn-cta">👉 立即免費搶先卡位領取名額</a>
+      <p class="notice-text">⚠️ 額滿即關閉系統，不再開放補位！</p>
+    </section>
+
+    <!-- LINE 社群引流專區 -->
+    <section>
+      <div class="community-box">
+        <h3>💬 歡迎加入「商品 職訊 電商 分享」官方社群</h3>
+        <p>掌握最新商品選品、職務資訊與電商交流！搶先獲取第一手課程及植栽優惠。</p>
+        <a href="https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="btn-line-community">
+          👉 點擊此處加入 LINE 社群交流
+        </a>
+      </div>
+    </section>
+
+    <!-- 互動創意區塊：植物殺手指數小測驗 -->
+    <section>
+      <div class="quiz-box">
+        <h3>💡 互動小測驗：你是哪一種「植物殺手」？</h3>
+        <p style="color: #b2bec3;">點擊下方最符合你養植物的狀況，看看問題出在哪裡：</p>
+        
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="showQuizResult(1)">1. 買回家不到一個月葉子就發黃、爛根死掉</button>
+          <button class="quiz-btn" onclick="showQuizResult(2)">2. 每次澆水都把地板、桌面弄得濕答答、滿地泥土</button>
+          <button class="quiz-btn" onclick="showQuizResult(3)">3. 出差 or 週末不在家，回來植物就全乾枯了</button>
+        </div>
+
+        <div id="quizResult" class="quiz-result"></div>
+      </div>
+    </section>
+
+    <!-- 痛點情境區塊 -->
+    <section>
+      <h2 class="section-title">為什麼你養的植物總是活不過一個月？</h2>
+      
+      <div class="pain-grid">
+        <div class="pain-card">
+          <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=600&q=80" alt="葉子積水發黃萎靡">
+          <h3>❌ 痛點 1：澆水永遠憑感覺</h3>
+          <p>土壤過濕導致根系無法呼吸，發臭爛根，眼睜睜看著綠植枯萎。</p>
+        </div>
+        <div class="pain-card">
+          <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80" alt="換盆土質滿地泥土">
+          <h3>❌ 痛點 2：換盆搬運滿地泥土</h3>
+          <p>傳統花盆笨重佔空間，想放在精緻辦公桌或書房卻到處掉土，清理超麻煩。</p>
+        </div>
+        <div class="pain-card">
+          <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=80" alt="缺水乾枯植物">
+          <h3>❌ 痛點 3：出門三天就乾死</h3>
+          <p>生活忙碌無法天天照顧，出差回來植物已經脫水乾枯，信心大受打擊。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 對比情境 (Chat Box) -->
+    <section>
+      <h2 class="section-title">當你學會水苔球，養綠植的體驗將徹底改變</h2>
+
+      <div class="comparison-container">
+        <!-- 傳統盆栽 -->
+        <div class="chat-box bad">
+          <div class="chat-header">傳統土壤盆栽 (舊方法)</div>
+          <div class="chat-bubble user">23:47 發現葉子又發黃了…</div>
+          <div class="chat-bubble user">「到底要多澆水還是少澆水？泥土又漏出來了…」</div>
+          <div class="chat-bubble user">❌ 排水孔積水發臭、泥土散落、養一顆死一顆</div>
+        </div>
+
+        <!-- 水苔球 -->
+        <div class="chat-box good">
+          <div class="chat-header">天然水苔球 (新方法)</div>
+          <div class="chat-bubble user">23:47 拿起來感覺輕飄飄的…</div>
+          <div class="chat-bubble bot">✨ 「重量變輕囉！泡水 5 分鐘即刻完整復甦！」</div>
+          <div class="chat-bubble bot">✅ 無土乾淨、輕巧可懸掛、保水透氣、輕鬆養活！</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心優勢 -->
+    <section>
+      <h2 class="section-title">為什麼「水苔球」是現代人的救星？</h2>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80" alt="天然水苔包覆綠植特寫">
+          <div class="feature-text">
+            <h4>💧 保水與通氣完美平衡</h4>
+            <p>高品質天然水苔緊密包裹根系，保水力強且極度透氣，跟爛根徹底說掰掰。</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80" alt="懸掛水苔球簡約美學">
+          <div class="feature-text">
+            <h4>🪴 乾淨俐落、空間美學大增</h4>
+            <p>完全擺脫傳統泥土！可置於精緻皿盤上，也可懸掛空中，為居家與辦公空間注入極致簡約的綠意美學。</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <img src="https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=600&q=80" alt="手捧精巧水苔球">
+          <div class="feature-text">
+            <h4>🔍 直覺式秤重，新手零失敗</h4>
+            <p>不需要猜測澆水時機，拿起來輕就泡水、重就不管，科學化養綠植。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 限量加碼禮遇 -->
+    <section>
+      <div class="bonus-box">
+        <h3>🎁 立即填表報名，限時加碼解鎖 2 大獨家好禮</h3>
+        <p>1. 贈送《室內耐陰植物品種完全挑選指南》電子書（價值 $600）<br>
+           2. 享有直播限定「線上 Q&A 專屬解惑權」，現場幫你健檢植物狀況！</p>
+      </div>
+    </section>
+
+    <!-- 報名表單區塊 -->
+    <section id="register">
+      <div class="form-container">
+        <h3 style="text-align: center; margin-bottom: 22px; font-size: 1.6rem;">立即免費卡位線上微講座</h3>
+        
+        <form id="registrationForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="name">您的姓名 / 稱呼</label>
+            <input type="text" id="name" name="name" placeholder="例如：王小明" required>
+          </div>
+          <div class="form-group">
+            <label for="email">電子信箱 (收取 ZOOM 直播連結與好禮)</label>
+            <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">LINE ID 或 手機號碼 (發送課前提醒)</label>
+            <input type="tel" id="phone" name="phone" placeholder="0912345678" required>
+          </div>
+
+          <!-- 副本勾選框 -->
+          <div class="form-checkbox-group">
+            <input type="checkbox" id="sendCopy" name="sendCopy" checked>
+            <label for="sendCopy" style="margin: 0; font-weight: normal; cursor: pointer;">
+              同時傳送一份報名副本到指定信箱 (joyce0585@gmail.com)
+            </label>
+          </div>
+
+          <button type="submit" class="btn-cta" style="width: 100%; border-radius: 10px; font-size: 1.35rem;">確認免費報名，索取直播資格</button>
+        </form>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 底部 Sticky CTA 長條 -->
+  <div class="sticky-footer-cta">
+    <div class="sticky-text">
+      🔥 本場免費名額 <span>倒數中</span>
+    </div>
+    <a href="#register" class="sticky-btn">立即免費報名 👉</a>
+  </div>
+
+  <footer>
+    <p>© 2026 水苔球綠意生活手作. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // LINE 社群連結
+    const lineCommunityUrl = "https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
+
+    // 互動小測驗邏輯
+    function showQuizResult(type) {
+      const resultBox = document.getElementById('quizResult');
+      resultBox.style.display = 'block';
+      if(type === 1) {
+        resultBox.innerHTML = "🚨 診斷結果：這是典型的「土壤排水不良＋澆水過多」！水苔球的超強透氣結構能完美解決爛根問題。";
+      } else if(type === 2) {
+        resultBox.innerHTML = "🚨 診斷結果：傳統花盆的泥土容易隨澆水流失！水苔球「無土包裹」技術，乾淨俐落絕不掉土。";
+      } else if(type === 3) {
+        resultBox.innerHTML = "🚨 診斷結果：你錯過了植物「補水黃金期」！水苔球獨特的「浸泡式吸水」能讓水分鎖在球體內更持久。";
+      }
+    }
+
+    // 表單提交互動處理（含社群引流引導）
+    function handleSubmit(e) {
+      e.preventDefault();
+      const sendCopyChecked = document.getElementById('sendCopy').checked;
+      let msg = '🎉 恭喜報名成功！系統已將 ZOOM 直播連結發送到您的信箱。';
+      if (sendCopyChecked) {
+        msg += '\n\n📧 報名副本已同步發送至 joyce0585@gmail.com';
+      }
+      msg += '\n\n點擊「確定」後將引導您加入「商品 職訊 電商 分享」LINE 官方社群！';
+
+      alert(msg);
+      
+      // 自動跳轉至 LINE 社群連結
+      window.open(lineCommunityUrl, '_blank');
+      document.getElementById('registrationForm').reset();
+    }
+
+    // 倒數計時器邏輯
+    let hours = 5, minutes = 42, seconds = 19;
+    setInterval(() => {
+      seconds--;
+      if (seconds < 0) { seconds = 59; minutes--; }
+      if (minutes < 0) { minutes = 59; hours--; }
+      if (hours < 0) { hours = 0; minutes = 0; seconds = 0; }
+      
+      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+    }, 1000);
+  </script>
+</body>
+</html>
