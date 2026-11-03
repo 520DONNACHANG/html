@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>藝想天開植能香氛能量學苑｜療癒系水苔球手作體驗</title>
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f4f7f4',
+              100: '#e3ebe3',
+              500: '#4a6b4e',
+              600: '#3b573e',
+              800: '#263a29',
+            },
+            earth: '#d4a373',
+            sand: '#fefae0'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .hero-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55)), 
+                  url('https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    }
+  </style>
+</head>
+<body class="bg-brand-50 text-gray-800 font-sans antialiased">
+
+  <!-- 頂部限時優惠 Banner -->
+  <div class="bg-brand-800 text-white text-center py-2.5 px-4 text-sm font-medium sticky top-0 z-50 shadow-md">
+    ✨ 藝想天開植能香氛能量學苑｜探索真實自我與綠意療癒能量 ｜ 優惠倒數：
+    <span id="countdown" class="bg-earth text-white px-2 py-0.5 rounded font-bold ml-1">02:45:00</span>
+  </div>
+
+  <!-- 1. Hero 區塊 -->
+  <section class="hero-bg min-h-[85vh] flex items-center justify-center text-center text-white px-4 relative">
+    <div class="max-w-3xl mx-auto space-y-6">
+      <span class="inline-block bg-earth/90 text-white px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide uppercase">
+        🌿 藝想天開 ‧ 植能香氛能量
+      </span>
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight drop-shadow-md">
+        把森林抱在手心<br class="hidden sm:inline">揉捏專屬於你的真實植感能量
+      </h1>
+      <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">
+        結合植物生命力與香氛美學，在手作的呼吸間釋放壓力。零基礎也能親手打造兼具療癒與美學的微型森林。
+      </p>
+      <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#register" class="bg-earth hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-0.5 text-center">
+          👉 立即預約體驗（享首波優惠）
+        </a>
+        <a href="#features" class="bg-white/20 hover:bg-white/35 backdrop-blur-md text-white border border-white/40 font-semibold px-6 py-4 rounded-xl text-lg transition text-center">
+          探索課程亮點
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 核心理念 (Brand Philosophy) -->
+  <section id="features" class="py-16 px-4 max-w-6xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-3xl font-bold text-brand-800 mb-4">揉合植物與能量的五感體驗</h2>
+      <p class="text-gray-600">在忙碌的生活中，透過真實的雙手觸碰泥土與苔蘚，找回內心的純粹與安穩。</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-brand-100 hover:shadow-md transition">
+        <div class="w-14 h-14 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <h3 class="text-xl font-bold text-brand-800 mb-3">植能手作療癒</h3>
+        <p class="text-gray-600 leading-relaxed">從水苔塑形到綠植搭配，專注於當下的手作過程，釋放日常累積的隱形壓力。</p>
+      </div>
+
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-brand-100 hover:shadow-md transition">
+        <div class="w-14 h-14 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-spa"></i>
+        </div>
+        <h3 class="text-xl font-bold text-brand-800 mb-3">香氛能量共振</h3>
+        <p class="text-gray-600 leading-relaxed">融合植物香氣與手作能量，讓每一個水苔球不僅是綠意裝飾，更是一份空間的能量結界。</p>
+      </div>
+
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-brand-100 hover:shadow-md transition">
+        <div class="w-14 h-14 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center text-2xl mb-6">
+          <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <h3 class="text-xl font-bold text-brand-800 mb-3">真實美學生活</h3>
+        <p class="text-gray-600 leading-relaxed">擺脫過度修飾，呈現材質最純粹的美好，為桌面與居家空間注入大自然的呼吸感。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 互動式植物風格選擇器 -->
+  <section class="py-16 bg-brand-100/60 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-brand-800 mb-3">學員專屬 ‧ 水苔球款式預覽</h2>
+        <p class="text-gray-600">點擊下方選項，探索你在學苑中可以親手創作的能量植藝風格：</p>
+      </div>
+
+      <!-- Tab 按鈕 -->
+      <div class="flex justify-center gap-3 mb-8 flex-wrap">
+        <button onclick="switchTab('forest')" id="tab-forest" class="tab-btn active bg-brand-600 text-white px-5 py-2.5 rounded-full font-medium shadow-sm transition">
+          🌿 森林系觀葉水苔球
+        </button>
+        <button onclick="switchTab('aromatherapy')" id="tab-aromatherapy" class="tab-btn bg-white text-gray-700 hover:bg-brand-50 px-5 py-2.5 rounded-full font-medium shadow-sm transition">
+          🕯️ 香氛植癒能量球
+        </button>
+        <button onclick="switchTab('hanging')" id="tab-hanging" class="tab-btn bg-white text-gray-700 hover:bg-brand-50 px-5 py-2.5 rounded-full font-medium shadow-sm transition">
+          ✨ 懸掛式天空植栽
+        </button>
+      </div>
+
+      <!-- Tab 內容展視區 -->
+      <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md flex flex-col md:flex-row gap-8 items-center">
+        <div class="w-full md:w-1/2">
+          <img id="plant-img" src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80" alt="水苔球作品" class="rounded-2xl w-full h-72 object-cover shadow">
+        </div>
+        <div class="w-full md:w-1/2 space-y-4">
+          <span id="plant-tag" class="text-xs font-bold text-earth bg-amber-50 px-3 py-1 rounded-full border border-earth/30">人氣經典款</span>
+          <h3 id="plant-title" class="text-2xl font-bold text-brand-800">森林系觀葉水苔球</h3>
+          <p id="plant-desc" class="text-gray-600 leading-relaxed">
+            嚴選生命力強韌的質感觀葉植物，結合職人級水苔與天然麻繩手綁包覆，呈現大自然的真實生命力，極好照料。
+          </p>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>包含植物、精選水苔、專屬木質展示底座</li>
+            <li><i class="fa-solid fa-check text-brand-500 mr-2"></i>難易度：★☆☆☆☆（零基礎新手專屬）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 學員真實好評 (Social Proof) -->
+  <section class="py-16 px-4 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold text-brand-800 text-center mb-12">學員真實回饋 ‧ 感受植感能量</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+        <div class="flex text-amber-400 text-sm">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="text-gray-600 text-sm italic">「老師的引導非常溫柔且專業，動手捏水苔球的過程真的像回到大自然懷抱，放在工作室每天看心情都很好！」</p>
+        <div class="flex items-center gap-3 pt-2">
+          <div class="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center font-bold text-brand-600">雅婷</div>
+          <div>
+            <h4 class="text-sm font-bold text-gray-800">林雅婷</h4>
+            <p class="text-xs text-gray-400">品牌主理人 / 台北</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+        <div class="flex text-amber-400 text-sm">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="text-gray-600 text-sm italic">「課程氛圍超級放鬆，還學到了如何照顧植物的秘訣。回家一個多月依然翠綠茂盛，非常有成就感的大推！」</p>
+        <div class="flex items-center gap-3 pt-2">
+          <div class="w-10 h-10 bg-earth/20 rounded-full flex items-center justify-center font-bold text-earth">怡君</div>
+          <div>
+            <h4 class="text-sm font-bold text-gray-800">張怡君</h4>
+            <p class="text-xs text-gray-400">設計師 / 新店</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+        <div class="flex text-amber-400 text-sm">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="text-gray-600 text-sm italic">「不只是手作課，更像是一場心靈的溫柔充電。學苑準備的工具跟環境都好有質感，非常享受這段時光。」</p>
+        <div class="flex items-center gap-3 pt-2">
+          <div class="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center font-bold text-brand-600">彥廷</div>
+          <div>
+            <h4 class="text-sm font-bold text-gray-800">陳彥廷</h4>
+            <p class="text-xs text-gray-400">工程師 / 桃園</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 方案與報名表單區塊 -->
+  <section id="register" class="py-16 bg-brand-800 text-white px-4">
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      
+      <!-- 方案說明 -->
+      <div class="space-y-6">
+        <span class="bg-earth text-white text-xs font-bold px-3 py-1 rounded-md uppercase">藝想天開 ‧ 專屬體驗價</span>
+        <h2 class="text-3xl md:text-4xl font-bold leading-tight">開啟你的真實植感生活<br>預約一場綠意療癒旅程</h2>
+        <div class="space-y-2">
+          <div class="text-3xl font-extrabold text-earth">NT$ 1,280 <span class="text-lg text-gray-300 line-through font-normal">NT$ 1,600</span></div>
+          <p class="text-sm text-gray-300">雙人同行報名再享 9 折優惠！名額有限，額滿即止。</p>
+        </div>
+        <div class="border-t border-brand-600 pt-4 space-y-3">
+          <div class="flex items-center gap-3 text-sm">
+            <i class="fa-solid fa-circle-check text-earth"></i> 親手完成 1 組精緻水苔球植藝作品
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <i class="fa-solid fa-circle-check text-earth"></i> 贈送專屬木質展示底座與植物養護手冊
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <i class="fa-solid fa-circle-check text-earth"></i> 加入學苑專屬社群，享有終身植物養護諮詢
+          </div>
+        </div>
+      </div>
+
+      <!-- 報名表單 -->
+      <div class="bg-white text-gray-800 p-8 rounded-3xl shadow-xl">
+        <h3 class="text-2xl font-bold mb-6 text-brand-800 text-center">預約手作能量課程</h3>
+        <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">您的姓名 *</label>
+            <input type="text" required placeholder="例如：張秋霞" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">聯絡電話 *</label>
+            <input type="tel" required placeholder="0912-345-678" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">選擇體驗場次 *</label>
+            <select required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white">
+              <option value="">請選擇日期與時段</option>
+              <option value="sat-am">本週六 10:30 - 12:30 (森林系場次)</option>
+              <option value="sat-pm">本週六 14:30 - 16:30 (香氛能量場次)</option>
+              <option value="sun-am">本週日 10:30 - 12:30 (週末療癒場次)</option>
+            </select>
+          </div>
+          <button type="submit" class="w-full bg-earth hover:bg-amber-600 text-white font-bold py-4 rounded-xl shadow-md transition duration-300 text-lg">
+            確認送出預約
+          </button>
+          <p class="text-xs text-gray-400 text-center">🔒 您的資料僅用於課程確認與聯繫，嚴格保密。</p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. 常見問題 FAQ -->
+  <section class="py-16 px-4 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-brand-800 text-center mb-10">常見問題 FAQ</h2>
+    <div class="space-y-4">
+      <details class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <summary class="font-bold text-lg text-brand-800 cursor-pointer list-none flex justify-between items-center">
+          完全沒有園藝經驗或手作基礎可以參加嗎？
+          <i class="fa-solid fa-chevron-down text-brand-500 text-sm"></i>
+        </summary>
+        <p class="mt-4 text-gray-600 leading-relaxed">
+          當然可以！我們的課程專為零基礎學員設計。導師會從水苔的基礎介質調配、塑形手法到日常澆水照顧進行細緻的步驟帶領，讓每位學員都能安心上手。
+        </p>
+      </details>
+
+      <details class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <summary class="font-bold text-lg text-brand-800 cursor-pointer list-none flex justify-between items-center">
+          上課需要自己準備工具嗎？
+          <i class="fa-solid fa-chevron-down text-brand-500 text-sm"></i>
+        </summary>
+        <p class="mt-4 text-gray-600 leading-relaxed">
+          完全不需要！現場會準備好所有專業手作工具、植物、特選水苔、裝飾麻繩與專用提袋，您只需要帶著輕鬆愉快的心情前來即可。
+        </p>
+      </details>
+
+      <details class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <summary class="font-bold text-lg text-brand-800 cursor-pointer list-none flex justify-between items-center">
+          水苔球帶回家後要如何照顧呢？
+          <i class="fa-solid fa-chevron-down text-brand-500 text-sm"></i>
+        </summary>
+        <p class="mt-4 text-gray-600 leading-relaxed">
+          照顧非常簡單！當感覺水苔球整體變輕、表面微乾時，將整個球體浸泡於水中 5-10 分鐘吸飽水分即可。我們也會在課後提供專屬的圖文養護小卡。
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 頁尾 Footer -->
+  <footer class="bg-brand-800 text-gray-400 py-8 text-center text-sm border-t border-brand-600">
+    <div class="max-w-6xl mx-auto px-4 space-y-3">
+      <p class="font-semibold text-gray-200">藝想天開植能香氛能量學苑 ｜ 打造真實的植感生活</p>
+      <p>聯絡信箱：service@art-botanical.com ｜ 服務據點：台北・新店實體美学空間</p>
+      <p>© 2026 藝想天開植能香氛能量學苑 All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 互動腳本 JavaScript -->
+  <script>
+    // 植物風格切換邏輯
+    const plantData = {
+      forest: {
+        title: "森林系觀葉水苔球",
+        desc: "嚴選生命力強韌的質感觀葉植物，結合職人級水苔與天然麻繩手綁包覆，呈現大自然的真實生命力，極好照料。",
+        tag: "人氣經典款",
+        img: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80"
+      },
+      aromatherapy: {
+        title: "香氛植癒能量球",
+        desc: "結合療癒植栽與天然香氛精油元素，在綠意中融入嗅覺的深度放鬆，打造兼具視覺與芳香療癒的獨特能量作品。",
+        tag: "美學首選",
+        img: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80"
+      },
+      hanging: {
+        title: "懸掛式天空植栽",
+        desc: "運用日式吊繩編織技法，將水苔球懸掛於空中，營造如漂浮森林般的空間層次感，為居家點綴空靈美學。",
+        tag: "空間設計師最愛",
+        img: "https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=800&q=80"
+      }
+    };
+
+    function switchTab(type) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-600', 'text-white');
+        btn.classList.add('bg-white', 'text-gray-700');
+      });
+      
+      const activeBtn = document.getElementById(`tab-${type}`);
+      activeBtn.classList.remove('bg-white', 'text-gray-700');
+      activeBtn.classList.add('bg-brand-600', 'text-white');
+
+      const data = plantData[type];
+      document.getElementById('plant-title').innerText = data.title;
+      document.getElementById('plant-desc').innerText = data.desc;
+      document.getElementById('plant-tag').innerText = data.tag;
+      document.getElementById('plant-img').src = data.img;
+    }
+
+    // 倒數計時器
+    let duration = 2 * 3600 + 45 * 60;
+    const countdownEl = document.getElementById('countdown');
+    setInterval(() => {
+      const hours = Math.floor(duration / 3600);
+      const minutes = Math.floor((duration % 3600) / 60);
+      const seconds = duration % 60;
+      countdownEl.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (duration > 0) duration--;
+    }, 1000);
+
+    // 表單送出提示
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      alert('🎉 感謝您的預約！「藝想天開植能香氛能量學苑」客服顧問將於 24 小時內與您聯繫確認報名細節。');
+    }
+  </script>
+</body>
+</html>
