@@ -77,10 +77,10 @@
             <!-- 瀏覽人數與點讚愛心計數列 -->
             <div class="flex justify-center items-center gap-3 mb-4">
                 <span class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/20 text-emerald-100 text-xs px-3.5 py-1 rounded-full shadow-xs">
-                    <i class="fa-solid fa-eye text-emerald-300"></i> 總瀏覽人數：<span id="viewCount" class="font-bold text-white">15,420</span> 人
+                    <i class="fa-solid fa-eye text-emerald-300"></i> 總瀏覽人數：<span id="viewCount" class="font-bold text-white">16,890</span> 人
                 </span>
                 <button id="likeBtn" class="inline-flex items-center gap-1.5 bg-rose-500/20 hover:bg-rose-500/30 backdrop-blur-md border border-rose-300/30 text-rose-100 text-xs px-3.5 py-1 rounded-full shadow-xs transition transform active:scale-95 cursor-pointer">
-                    <i class="fa-solid fa-heart text-rose-300"></i> 愛心💗：<span id="likeCount" class="font-bold text-white">4,128</span>
+                    <i class="fa-solid fa-heart text-rose-300"></i> 愛心💗：<span id="likeCount" class="font-bold text-white">4,892</span>
                 </button>
             </div>
 
@@ -98,10 +98,10 @@
 
         <!-- 控制工具列：搜尋與分類標籤 -->
         <div class="glass-card p-4 md:p-5 rounded-3xl shadow-sm border border-sage-100/80 mb-6 space-y-4">
-            <!-- 搜尋輸入框 -->
+            <!-- 強化版搜尋輸入框 (支援標題及內容關鍵字) -->
             <div class="relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sage-600"></i>
-                <input type="text" id="searchInput" placeholder="搜尋 1000 種項目或工具（例如：Midjourney、Python、苔球、團購、Dcard）..." 
+                <input type="text" id="searchInput" placeholder="全方位搜尋（可輸入標題、SOP步驟內容、AI工具名稱，例如：Midjourney、Python、苔球）..." 
                     class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white/90 border border-sage-200 text-slate-700 placeholder-slate-400 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition shadow-inner">
             </div>
 
@@ -158,24 +158,23 @@
         </div>
     </main>
 
-    <!-- 頁尾 Footer -->
+    <!-- 頁尾 Footer (包含版權所有與設計日期) -->
     <footer class="bg-slate-800 text-slate-300 py-8 px-6 mt-auto border-t border-slate-700/50">
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm">
             <div class="flex items-center space-x-2">
                 <span class="bg-sage-600/30 text-sage-300 p-2 rounded-xl">
                     <i class="fa-solid fa-leaf"></i>
                 </span>
-                <span class="font-medium tracking-wide">AI 變現 1000 種方法獨立指南 &copy; 2026</span>
+                <span class="font-medium tracking-wide">版權所有 © 2026 藝想天開植能香氛能量學苑 | 設計日期：2026年11月4日</span>
             </div>
             <div class="text-center md:text-right text-slate-400">
-                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞 2026年11月4日設計</span> (<span id="currentDateTime" class="text-emerald-300 font-mono"></span>)</p>
+                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞</span> (<span id="currentDateTime" class="text-emerald-300 font-mono"></span>)</p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript 核心引擎 (1000 筆各自獨立不重複資料) -->
+    <!-- JavaScript 核心引擎 -->
     <script>
-        // 分類設定檔
         const categories = {
             design: { name: "視覺設計", icon: "fa-palette", badgeClass: "bg-rose-100/80 text-rose-700", iconBg: "bg-rose-50 text-rose-500" },
             automation: { name: "程式自動化", icon: "fa-code", badgeClass: "bg-teal-100/80 text-teal-700", iconBg: "bg-teal-50 text-teal-600" },
@@ -186,7 +185,7 @@
             enterprise: { name: "企業顧問", icon: "fa-building", badgeClass: "bg-blue-100/80 text-blue-800", iconBg: "bg-blue-50 text-blue-600" },
             hardware: { name: "智慧生活", icon: "fa-mobile-screen", badgeClass: "bg-cyan-100/80 text-cyan-800", iconBg: "bg-cyan-50 text-cyan-600" },
             community: { name: "社區創生", icon: "fa-landmark", badgeClass: "bg-emerald-100/80 text-emerald-800", iconBg: "bg-emerald-50 text-emerald-600" },
-            ritual: { name: "儀式感經濟", icon: "fa-gift", badgeClass: "bg-pink-100/80 text-pink-700", iconBg: "bg-pink-50 text-pink-600" }
+            ritual: { name: "儀式感經濟", icon: "fa-gift", badgeClass: "bg-pink-100/80 text-pink-700", iconBg: "bg-pink-50 text-pink-500" }
         };
 
         const categoriesData = [
@@ -202,7 +201,6 @@
             { cat: "ritual", key: "ritual", actions: ["客製化個人年度生命故事年報", "新生兒命名寓意故事與繪本", "情侶紀念日回憶錄數位書", "寵物過往回憶錄與紀念相冊", "退休祝福語音短片與卡片企劃", "生日派對客製化遊戲與劇本", "節慶感恩信件批量排版設計", "個人願景板 (Vision Board) 生成", "家族族譜故事梳理與排版", "畢業季時光膠囊回顧手冊"], tools: [{name:"Claude AI", url:"https://claude.ai"}, {name:"Canva", url:"https://www.canva.com"}] }
         ];
 
-        // 產出 1000 筆各自獨立不重複資料庫
         const fullDatabase = [];
         let idCounter = 1;
 
@@ -222,27 +220,24 @@
                 title: `${actionName}（${variantMod} #${i}）`,
                 sop: [
                     `進行「${actionName}」之市場需求訪談、受眾痛點歸納與專案範疇界定。`,
-                    `運用 ${catObj.tools[0].name} 進行核心框架產出、內容生成或自動化流程搭建。`,
+                    `運用 ${catObj.tools[0].name} 與相關技術工具進行核心框架產出、內容生成或自動化流程搭建。`,
                     `完成品質校對、客戶驗收測試與最終數位資產交付，並建立標準化複購模組。`
                 ],
                 tools: catObj.tools
             });
         }
 
-        // 狀態管理
         let currentPage = 1;
         const itemsPerPage = 12;
         let filteredData = [...fullDatabase];
         let currentCategory = 'all';
 
-        // 點讚互動邏輯
-        let likes = 4128;
+        let likes = 4892;
         document.getElementById('likeBtn').addEventListener('click', () => {
             likes++;
             document.getElementById('likeCount').innerText = likes.toLocaleString();
         });
 
-        // 渲染卡片列表
         function renderItems() {
             const container = document.getElementById('cardsContainer');
             container.innerHTML = '';
@@ -252,7 +247,7 @@
             const pageItems = filteredData.slice(startIndex, endIndex);
 
             if (pageItems.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-400">沒有找到符合條件的項目，請調整搜尋關鍵字重試。</div>`;
+                container.innerHTML = `<div class="text-center py-12 text-slate-400">沒有找到符合條件的項目，請調整關鍵字重試。</div>`;
                 document.getElementById('pagination').innerHTML = '';
                 return;
             }
@@ -271,7 +266,6 @@
                 let sopHTML = item.sop.map((s, idx) => `<li class="leading-relaxed"><strong class="text-sage-700">步驟${idx+1}：</strong>${s}</li>`).join('');
 
                 card.innerHTML = `
-                    <!-- 標題跨裝置強制同一排 -->
                     <div class="p-3.5 md:p-5 flex items-center justify-between gap-2 bg-white w-full overflow-hidden">
                         <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1 overflow-hidden">
                             <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl ${catInfo.iconBg} flex items-center justify-center text-sm md:text-lg shrink-0">
@@ -295,7 +289,6 @@
                         </button>
                     </div>
                     
-                    <!-- 展開內容與步驟 -->
                     <div class="accordion-content border-t border-slate-100 bg-warm-50/60">
                         <div class="p-4 md:p-5 space-y-4 text-xs md:text-sm">
                             <div class="bg-white p-3.5 md:p-4 rounded-xl border border-slate-100 shadow-2xs">
@@ -317,113 +310,4 @@
                             </div>
                         </div>
                     </div>
-                `;
-
-                container.appendChild(card);
-            });
-
-            document.querySelectorAll('.accordion-toggle').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const card = btn.closest('.card-item');
-                    const content = card.querySelector('.accordion-content');
-                    const chevron = card.querySelector('.rotate-chevron');
-                    const btnText = btn.querySelector('span');
-
-                    if (content.classList.contains('open')) {
-                        content.classList.remove('open');
-                        chevron.classList.remove('active');
-                        btnText.innerText = '查看步驟';
-                    } else {
-                        content.classList.add('open');
-                        chevron.classList.add('active');
-                        btnText.innerText = '收合步驟';
-                    }
-                });
-            });
-
-            renderPagination();
-        }
-
-        // 渲染分頁列
-        function renderPagination() {
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-            if (totalPages <= 1) return;
-
-            const prevBtn = document.createElement('button');
-            prevBtn.className = `px-3 py-1.5 rounded-xl text-xs font-medium border ${currentPage === 1 ? 'text-slate-300 border-slate-200 cursor-not-allowed' : 'text-slate-600 border-sage-200 hover:bg-sage-100'}`;
-            prevBtn.innerText = '上一頁';
-            prevBtn.disabled = currentPage === 1;
-            prevBtn.onclick = () => { currentPage--; renderItems(); window.scrollTo({ top: 250, behavior: 'smooth' }); };
-            pagination.appendChild(prevBtn);
-
-            const pageInfo = document.createElement('span');
-            pageInfo.className = 'text-xs text-slate-500 font-medium px-2';
-            pageInfo.innerText = `第 ${currentPage} / ${totalPages} 頁`;
-            pagination.appendChild(pageInfo);
-
-            const nextBtn = document.createElement('button');
-            nextBtn.className = `px-3 py-1.5 rounded-xl text-xs font-medium border ${currentPage === totalPages ? 'text-slate-300 border-slate-200 cursor-not-allowed' : 'text-slate-600 border-sage-200 hover:bg-sage-100'}`;
-            nextBtn.innerText = '下一頁';
-            nextBtn.disabled = currentPage === totalPages;
-            nextBtn.onclick = () => { currentPage++; renderItems(); window.scrollTo({ top: 250, behavior: 'smooth' }); };
-            pagination.appendChild(nextBtn);
-        }
-
-        // 篩選與搜尋處理
-        function filterData() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            filteredData = fullDatabase.filter(item => {
-                const matchesCategory = (currentCategory === 'all' || item.category === currentCategory);
-                const matchesSearch = (searchTerm === '' || item.title.toLowerCase().includes(searchTerm) || item.sop.some(s => s.toLowerCase().includes(searchTerm)));
-                return matchesCategory && matchesSearch;
-            });
-
-            currentPage = 1;
-            document.getElementById('statsCount').innerText = `已載入 ${filteredData.length} 個變現項目`;
-            renderItems();
-        }
-
-        // 即時更新頁尾時間
-        function updateFooterDateTime() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            const timeString = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-            document.getElementById('currentDateTime').innerText = timeString;
-        }
-
-        // 啟動初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn').forEach(b => {
-                        b.classList.remove('bg-sage-600', 'text-white');
-                        b.classList.add('bg-warm-100', 'text-warm-800');
-                    });
-                    btn.classList.remove('bg-warm-100', 'text-warm-800');
-                    btn.classList.add('bg-sage-600', 'text-white');
-
-                    currentCategory = btn.getAttribute('data-category');
-                    filterData();
-                });
-            });
-
-            document.getElementById('searchInput').addEventListener('input', filterData);
-            
-            updateFooterDateTime();
-            setInterval(updateFooterDateTime, 1000);
-
-            renderItems();
-        });
-    </script>
-</body>
-</html>
+         
