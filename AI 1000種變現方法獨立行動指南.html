@@ -101,7 +101,7 @@
             <!-- 強化版搜尋輸入框 (支援標題及內容關鍵字) -->
             <div class="relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sage-600"></i>
-                <input type="text" id="searchInput" placeholder="全方位搜尋（可輸入標題、SOP步驟內容、AI工具名稱，例如：Midjourney、Python、苔球）..." 
+                <input type="text" id="searchInput" placeholder="全方位搜尋（可輸入標題、SOP步驟內容、AI工具名稱，例如：Midjourney、Python、VI）..." 
                     class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white/90 border border-sage-200 text-slate-700 placeholder-slate-400 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition shadow-inner">
             </div>
 
@@ -158,7 +158,7 @@
         </div>
     </main>
 
-    <!-- 頁尾 Footer (包含版權所有與設計日期) -->
+    <!-- 頁尾 Footer -->
     <footer class="bg-slate-800 text-slate-300 py-8 px-6 mt-auto border-t border-slate-700/50">
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm">
             <div class="flex items-center space-x-2">
@@ -182,128 +182,4 @@
             content: { name: "內容心靈", icon: "fa-feather", badgeClass: "bg-purple-100/80 text-purple-700", iconBg: "bg-purple-50 text-purple-600" },
             ecommerce: { name: "在地電商", icon: "fa-basket-shopping", badgeClass: "bg-amber-100/80 text-amber-800", iconBg: "bg-amber-50 text-amber-600" },
             knowledge: { name: "知識培訓", icon: "fa-book-open", badgeClass: "bg-indigo-100/80 text-indigo-800", iconBg: "bg-indigo-50 text-indigo-600" },
-            enterprise: { name: "企業顧問", icon: "fa-building", badgeClass: "bg-blue-100/80 text-blue-800", iconBg: "bg-blue-50 text-blue-600" },
-            hardware: { name: "智慧生活", icon: "fa-mobile-screen", badgeClass: "bg-cyan-100/80 text-cyan-800", iconBg: "bg-cyan-50 text-cyan-600" },
-            community: { name: "社區創生", icon: "fa-landmark", badgeClass: "bg-emerald-100/80 text-emerald-800", iconBg: "bg-emerald-50 text-emerald-600" },
-            ritual: { name: "儀式感經濟", icon: "fa-gift", badgeClass: "bg-pink-100/80 text-pink-700", iconBg: "bg-pink-50 text-pink-500" }
-        };
-
-        const categoriesData = [
-            { 
-                cat: "design", key: "design", 
-                actions: [
-                    "品牌 VI 識別與風格化周邊設計", "老照片高清無損修復與藝術風格轉化", "室內設計 3D 空間佈局與裝修渲染", 
-                    "向量插畫與無縫圖樣生成服務", "電商主圖與高質感情境照合成", "動態網頁 UI/UX 原型視覺設計", 
-                    "字型排版與社群視覺系統建立", "藝術風格轉化與個人似顏繪創作", "展場佈置與背板視覺效果模擬", "沉浸式展演視覺概念企劃"
-                ], 
-                sopSteps: [
-                    ["透過 ChatGPT 梳理品牌定位、核心調性與 Moodboard（情緒板）色彩規範。", "運用 Midjourney 生成高質感的品牌識別標誌（Logo）與實體周邊應用預覽圖。", "使用 Vectorizer AI 與 Canva 進行向量化處理與排版，輸出完整的商業 VI 識別手冊。"],
-                    ["上傳歷史老照片至 AI 修復模型，進行無損放大、雜訊去除與黑白老照自動彩化。", "利用 Photoshop AI 進行局部細節修補與光影平衡調整。", "將修復後的圖像轉化為藝術繪本風格或客製化紀念畫冊，提供實體印刷交付。"],
-                    ["輸入房屋原始平面格局圖與業主風格喜好，透過 ChatGPT 轉化為精準的空間配置提示詞。", "利用 Midjourney / Stable Diffusion 生成日式極簡、北歐或現代輕奢等多元裝修渲染圖。", "製作高質感提案簡報與空間材質對照表，協助屋主與施工團隊進行精準溝通。"],
-                    ["定義圖樣主題（如植物花草、幾何禪意、節慶圖騰）與色彩系統。", "使用 Midjourney 指令生成具備無縫連接特性的高解析度紋理背景。", "匯入 Adobe Illustrator 進行向量路徑描圖與色票分離，供紡織、包裝紙或數位桌布商用授權。"],
-                    ["利用 Photoroom 自動去除商品原始背景，保留乾淨主體。", "透過 Midjourney 建立符合產品調性的自然光影與生活情境背景（如森林、簡約木質桌面）。", "在 Canva Pro 中進行光影融合、調色與銷售賣點排版，產出高點擊率的電商主圖。"],
-                    ["依據專案需求，使用 Figma AI 快速生成響應式網頁的介面骨架與資訊架構。", "套用設計系統（Design System）規範，精準定義按鈕、卡片、字級與 8pt 網格間距。", "產出高保真互動原型（Prototype），並匯出前端交付規格文件以降低溝通成本。"],
-                    ["分析各社群平台（如 Instagram、Dcard、Threads）的受眾閱讀習慣與視覺偏好。", "透過 ChatGPT 規劃系列貼文的標題文案矩陣與版面視覺層級。", "在 Canva 中建立可重複使用的版型樣板（Template System），確保多張貼文維持高度一致的品牌辨識度。"],
-                    ["收集客戶提供的真人或寵物照片，提取五官特徵與神情亮點。", "利用 AI 繪圖工具轉換為日系動漫、水彩手繪或紙雕藝術等特色風格。", "進行後製精修、去背與排版，製作成手機桌布、鑰匙圈或社群頭像等數位商品。"],
-                    ["確認展位尺寸、燈光條件與活動主題（如手作市集、品牌發表會）。", "使用 AI 快速模擬活動背板、立牌、導視系統的現場視覺搭配效果。", "輸出 3D 模擬預覽圖與大圖輸出完稿檔案，提供施工廠商進行打樣。"],
-                    ["運用 Claude AI 撰寫沉浸式展覽的故事腳本與空間概念導覽。", "透過 Midjourney 與 Runway 產出動態視覺概念短片與沈浸式光影氛圍圖。", "彙整成完整的商業提案企劃書，協助品牌爭取大型展演或空間標案。"]
-                ],
-                tools: [{name:"Midjourney", url:"https://www.midjourney.com"}, {name:"Canva", url:"https://www.canva.com"}] 
-            },
-            { cat: "automation", key: "automation", actions: ["No-Code 工作流自動化串接", "Python 定時競品爬蟲與比價", "Google Apps Script 微型 CRM", "Telegram 智慧機器人與推播", "GitHub Pages 靜態網站自動化部署", "Excel 批量資料清洗與正規化腳本", "API 串接與多平台數據同步整合", "網頁自動化表單填寫與監控", "自動備份與雲端檔案管理腳本", "SEO 網站健檢與自動修復工具"], tools: [{name:"Make.com", url:"https://www.make.com"}, {name:"Python", url:"https://www.python.org"}] },
-            { cat: "lifestyle", key: "lifestyle", actions: ["苔球與綠植空間效果圖模擬", "嚴格純素異國創意食譜研發", "冷製手工皂與水晶皂漸層配方", "陽台微型菜園智慧種植行事曆", "植栽芳療精油配方與故事包裝", "乾燥花藝與居家美學擺設指南", "茶道與花草茶風味搭配企劃", "園藝手作體驗工作坊教案設計", "綠意辦公室植栽軟裝配置規劃", "雨林植物養護知識庫與問答集"], tools: [{name:"ChatGPT", url:"https://chatgpt.com"}, {name:"Midjourney", url:"https://www.midjourney.com"}] },
-            { cat: "content", key: "content", actions: ["療癒系自媒體 IP 經營與短詩", "客製化心靈牌卡與情緒日誌", "原創品牌主題曲與心靈音樂", "Dcard/Threads 深度共鳴文章", "正念冥想導引語音腳本創作", "心靈成長電子報與自動發送", "情感諮商紀錄摘要與洞察報告", "塔羅占卜解讀模板與自動化", "自我覺察手帳本版型與文案", "療癒系圖文卡片批量產出"], tools: [{name:"Claude AI", url:"https://claude.ai"}, {name:"Suno AI", url:"https://suno.com"}] },
-            { cat: "ecommerce", key: "ecommerce", actions: ["社區團購熱銷商品情境推坑文", "小農蔬果箱產地直銷故事摺頁", "在地伴手禮與節慶禮盒企劃", "競品電商價格與視覺差異分析", "二手 3C 拍賣透明化信任文案", "電商 FAQ 客服速查資料庫", "手作體驗現場 SOP 與採買單", "VIP 客戶專屬感謝信與折扣碼", "團購直播腳本與亮點提煉", "退換貨處理流程與自動化範本"], tools: [{name:"1shop", url:"https://www.1shop.tw"}, {name:"Canva", url:"https://www.canva.com"}] },
-            { cat: "knowledge", key: "knowledge", actions: ["400小時課程精華閃卡庫製作", "ACI/DISC 職涯剖析報告", "長篇專業PDF書籍自動摘要", "線上課程測驗題庫批量生成", "英文商務對話情境模擬教材", "研討會逐字稿轉化知識手冊", "跨領域知識心智圖自動構建", "論文重點萃取與文獻回顧表", "數位筆記知識圖譜優化服務", "微型線上訓練營營運手冊"], tools: [{name:"NotebookLM", url:"https://notebooklm.google.com"}, {name:"Anki", url:"https://apps.ankiweb.net"}] },
-            { cat: "enterprise", key: "enterprise", actions: ["企業內部 RAG 知識庫與客服", "自動化財務報表比對與預警", "供應鏈存貨預測分析模型", "員工績效考核指標自動化評估", "市場競品動態情報雷達系統", "法務合約條款風險自動審查", "客戶滿意度調查語意情感分析", "專案管理進度自動追蹤看板", "跨國會議多語自動翻譯摘要", "企業內部資訊安全合規稽核"], tools: [{name:"Dify AI", url:"https://dify.ai"}, {name:"Python", url:"https://www.python.org"}] },
-            { cat: "hardware", key: "hardware", actions: ["旗艦手機創作者攝影參數手冊", "車載與智慧家庭捷徑腳本設計", "舊平板變身智慧相框說明書", "跨裝置資料同步備份 SOP", "個人數位資產安全加密指南", "藍牙設備連線疑難排解手冊", "智慧穿戴數據健康趨勢報告", "無線網路路由最佳化配置圖解", "行動電源與快充設備評比表", "語音助理語令自動化設定包"], tools: [{name:"ChatGPT", url:"https://chatgpt.com"}, {name:"Shortcuts", url:"https://support.apple.com"}] },
-            { cat: "community", key: "community", actions: ["社區公設隱患市府陳情公文", "地方創生故事與語音導覽包", "里民活動企劃書與宣傳圖卡", "老舊街區數位檔案數位化", "社區互助托育登記表單自動化", "公園綠美化居民共識調查表", "環保回收點分佈地圖與指南", "志工服務時數統計與證書生成", "在地小旅行路線規劃手冊", "社區防災演練 SOP 腳本"], tools: [{name:"ElevenLabs", url:"https://elevenlabs.io"}, {name:"Canva", url:"https://www.canva.com"}] },
-            { cat: "ritual", key: "ritual", actions: ["客製化個人年度生命故事年報", "新生兒命名寓意故事與繪本", "情侶紀念日回憶錄數位書", "寵物過往回憶錄與紀念相冊", "退休祝福語音短片與卡片企劃", "生日派對客製化遊戲與劇本", "節慶感恩信件批量排版設計", "個人願景板 (Vision Board) 生成", "家族族譜故事梳理與排版", "畢業季時光膠囊回顧手冊"], tools: [{name:"Claude AI", url:"https://claude.ai"}, {name:"Canva", url:"https://www.canva.com"}] }
-        ];
-
-        const fullDatabase = [];
-        let idCounter = 1;
-
-        for (let i = 1; i <= 1000; i++) {
-            const catObj = categoriesData[(i - 1) % categoriesData.length];
-            const actionIdx = Math.floor((i - 1) / categoriesData.length) % catObj.actions.length;
-            const actionName = catObj.actions[actionIdx];
-            
-            let currentSop = [];
-            if (catObj.sopSteps && catObj.sopSteps[actionIdx]) {
-                currentSop = catObj.sopSteps[actionIdx];
-            } else {
-                currentSop = [
-                    `進行「${actionName}」之市場需求訪談、受眾痛點歸納與專案範疇界定。`,
-                    `運用相關 AI 工具進行核心框架產出、內容生成或自動化流程搭建。`,
-                    `完成品質校對、客戶驗收測試與最終數位資產交付，並建立標準化複購模組。`
-                ];
-            }
-
-            const variantMod = [
-                "實務落地模組", "進階優化專案", "自動化整合方案", "高轉化商業提案", "標準 SOP 執行包",
-                "極致降本增效", "客製化模組", "全方位應用企劃", "雙向同步系統", "專家級解決方案"
-            ][(i - 1) % 10];
-
-            fullDatabase.push({
-                id: i,
-                category: catObj.key,
-                title: `${actionName}（${variantMod} #${i}）`,
-                sop: currentSop,
-                tools: catObj.tools
-            });
-        }
-
-        let currentPage = 1;
-        const itemsPerPage = 12;
-        let filteredData = [...fullDatabase];
-        let currentCategory = 'all';
-
-        let likes = 5310;
-        document.getElementById('likeBtn').addEventListener('click', () => {
-            likes++;
-            document.getElementById('likeCount').innerText = likes.toLocaleString();
-        });
-
-        function renderItems() {
-            const container = document.getElementById('cardsContainer');
-            container.innerHTML = '';
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageItems = filteredData.slice(startIndex, endIndex);
-
-            if (pageItems.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-400">沒有找到符合條件的項目，請調整關鍵字重試。</div>`;
-                document.getElementById('pagination').innerHTML = '';
-                return;
-            }
-
-            pageItems.forEach((item) => {
-                const catInfo = categories[item.category] || categories['design'];
-                const card = document.createElement('div');
-                card.className = "card-item bg-white rounded-2xl border border-sage-100/90 shadow-xs overflow-hidden hover:shadow-md transition";
-                
-                let toolsHTML = item.tools.map(t => 
-                    `<a href="${t.url}" target="_blank" class="inline-flex items-center gap-1.5 bg-white border border-sage-200 text-slate-700 px-3 py-1.5 rounded-xl hover:bg-sage-600 hover:text-white transition text-xs">
-                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i> ${t.name}
-                    </a>`
-                ).join('');
-
-                let sopHTML = item.sop.map((s, idx) => `<li class="leading-relaxed"><strong class="text-sage-700">步驟${idx+1}：</strong>${s}</li>`).join('');
-
-                card.innerHTML = `
-                    <div class="p-3.5 md:p-5 flex items-center justify-between gap-2 bg-white w-full overflow-hidden">
-                        <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1 overflow-hidden">
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl ${catInfo.iconBg} flex items-center justify-center text-sm md:text-lg shrink-0">
-                                <i class="fa-solid ${catInfo.icon}"></i>
-                            </div>
-                            
-                            <div class="flex items-center gap-1.5 md:gap-2 min-w-0 flex-1 overflow-hidden">
-                                <span class="${catInfo.badgeClass} text-[10px] md:text-[11px] px-2 py-0.5 rounded-full font-medium shrink-0">
-                                    ${catInfo.name}
-                                </span>
-                                <span class="text-[11px] md:text-xs font-semibold text-sage-700 shrink-0">#${item.id}</span>
-                                <h3 class="text-xs md:text-base font-bold text-slate-800 truncate whitespace-nowrap overflow-hidden text-ellipsis min-w-0">
-                                    ${item.title}
-                       
+            enterprise: { name: "企業顧問", icon: "fa-building", badgeClass: "bg-blue-100/80 text-blue-800",
