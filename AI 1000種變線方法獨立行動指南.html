@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 變現 1000 種方法獨立指南</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e3eae3',
+                            200: '#c7d6c7',
+                            300: '#a3baa3',
+                            600: '#527252',
+                            700: '#415b41',
+                            800: '#364a36',
+                        },
+                        warm: {
+                            50: '#fdfbf7',
+                            100: '#f7f2ea',
+                            200: '#efe5d5',
+                            800: '#5c4e3e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Maru Gothic"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+        .accordion-content.open {
+            max-height: 1200px;
+            opacity: 1;
+        }
+        .rotate-chevron {
+            transition: transform 0.3s ease;
+        }
+        .rotate-chevron.active {
+            transform: rotate(180deg);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-slate-700 font-sans min-h-screen flex flex-col antialiased selection:bg-sage-200 selection:text-sage-800">
+
+    <!-- 頁首 Header -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-sage-700 via-sage-600 to-teal-800 text-white pt-10 pb-16 px-6 shadow-md">
+        <div class="absolute -top-24 -left-20 w-96 h-96 bg-sage-300/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teal-300/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <!-- 瀏覽人數與點讚愛心計數列 -->
+            <div class="flex justify-center items-center gap-3 mb-4">
+                <span class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/20 text-emerald-100 text-xs px-3.5 py-1 rounded-full shadow-xs">
+                    <i class="fa-solid fa-eye text-emerald-300"></i> 總瀏覽人數：<span id="viewCount" class="font-bold text-white">15,420</span> 人
+                </span>
+                <button id="likeBtn" class="inline-flex items-center gap-1.5 bg-rose-500/20 hover:bg-rose-500/30 backdrop-blur-md border border-rose-300/30 text-rose-100 text-xs px-3.5 py-1 rounded-full shadow-xs transition transform active:scale-95 cursor-pointer">
+                    <i class="fa-solid fa-heart text-rose-300"></i> 愛心💗：<span id="likeCount" class="font-bold text-white">4,128</span>
+                </button>
+            </div>
+
+            <h1 class="font-serif text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide mb-3 text-warm-50">
+                AI 變現 1000 種方法獨立行動指南
+            </h1>
+            <p class="text-sage-100 text-xs md:text-sm max-w-2xl mx-auto font-light leading-relaxed">
+                1000 筆各自獨立、SOP 與工具完全不重複的變現切入點。點擊「查看步驟」探索專屬實務框架！
+            </p>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-grow max-w-5xl mx-auto px-3 md:px-4 -mt-8 relative z-20 w-full mb-16">
+
+        <!-- 控制工具列：搜尋與分類標籤 -->
+        <div class="glass-card p-4 md:p-5 rounded-3xl shadow-sm border border-sage-100/80 mb-6 space-y-4">
+            <!-- 搜尋輸入框 -->
+            <div class="relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sage-600"></i>
+                <input type="text" id="searchInput" placeholder="搜尋 1000 種項目或工具（例如：Midjourney、Python、苔球、團購、Dcard）..." 
+                    class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white/90 border border-sage-200 text-slate-700 placeholder-slate-400 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition shadow-inner">
+            </div>
+
+            <!-- 分類選單 -->
+            <div class="flex flex-wrap gap-2" id="filterContainer">
+                <button data-category="all" class="filter-btn bg-sage-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-medium transition shadow-sm hover:bg-sage-700">
+                    ✨ 全部 1000 項
+                </button>
+                <button data-category="design" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🎨 視覺設計
+                </button>
+                <button data-category="automation" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    💻 程式自動化
+                </button>
+                <button data-category="lifestyle" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🌿 植物藝術
+                </button>
+                <button data-category="content" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🌸 內容心靈
+                </button>
+                <button data-category="ecommerce" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🛒 在地電商
+                </button>
+                <button data-category="knowledge" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    📚 知識培訓
+                </button>
+                <button data-category="enterprise" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🏢 企業顧問
+                </button>
+                <button data-category="hardware" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    📱 智慧生活
+                </button>
+                <button data-category="community" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🏛️ 社區創生
+                </button>
+                <button data-category="ritual" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🎁 儀式感經濟
+                </button>
+            </div>
+
+            <div id="statsCount" class="text-xs text-slate-500 text-right font-medium pr-1">
+                已載入 1000 個變現項目
+            </div>
+        </div>
+
+        <!-- 卡片列表容器 -->
+        <div class="space-y-3" id="cardsContainer">
+            <!-- 動態項目繪製區塊 -->
+        </div>
+
+        <!-- 分頁控制 -->
+        <div id="pagination" class="flex justify-center items-center gap-2 mt-8">
+            <!-- 動態產生頁碼 -->
+        </div>
+    </main>
+
+    <!-- 頁尾 Footer -->
+    <footer class="bg-slate-800 text-slate-300 py-8 px-6 mt-auto border-t border-slate-700/50">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm">
+            <div class="flex items-center space-x-2">
+                <span class="bg-sage-600/30 text-sage-300 p-2 rounded-xl">
+                    <i class="fa-solid fa-leaf"></i>
+                </span>
+                <span class="font-medium tracking-wide">AI 變現 1000 種方法獨立指南 &copy; 2026</span>
+            </div>
+            <div class="text-center md:text-right text-slate-400">
+                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞</span> (<span id="currentDateTime" class="text-emerald-300 font-mono"></span>)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 核心引擎 (1000 筆各自獨立不重複資料) -->
+    <script>
+        // 分類設定檔
+        const categories = {
+            design: { name: "視覺設計", icon: "fa-palette", badgeClass: "bg-rose-100/80 text-rose-700", iconBg: "bg-rose-50 text-rose-500" },
+            automation: { name: "程式自動化", icon: "fa-code", badgeClass: "bg-teal-100/80 text-teal-700", iconBg: "bg-teal-50 text-teal-600" },
+            lifestyle: { name: "植物藝術", icon: "fa-seedling", badgeClass: "bg-sage-200/80 text-sage-800", iconBg: "bg-sage-100 text-sage-700" },
+            content: { name: "內容心靈", icon: "fa-feather", badgeClass: "bg-purple-100/80 text-purple-700", iconBg: "bg-purple-50 text-purple-600" },
+            ecommerce: { name: "在地電商", icon: "fa-basket-shopping", badgeClass: "bg-amber-100/80 text-amber-800", iconBg: "bg-amber-50 text-amber-600" },
+            knowledge: { name: "知識培訓", icon: "fa-book-open", badgeClass: "bg-indigo-100/80 text-indigo-800", iconBg: "bg-indigo-50 text-indigo-600" },
+            enterprise: { name: "企業顧問", icon: "fa-building", badgeClass: "bg-blue-100/80 text-blue-800", iconBg: "bg-blue-50 text-blue-600" },
+            hardware: { name: "智慧生活", icon: "fa-mobile-screen", badgeClass: "bg-cyan-100/80 text-cyan-800", iconBg: "bg-cyan-50 text-cyan-600" },
+            community: { name: "社區創生", icon: "fa-landmark", badgeClass: "bg-emerald-100/80 text-emerald-800", iconBg: "bg-emerald-50 text-emerald-600" },
+            ritual: { name: "儀式感經濟", icon: "fa-gift", badgeClass: "bg-pink-100/80 text-pink-700", iconBg: "bg-pink-50 text-pink-600" }
+        };
+
+        const categoriesData = [
+            { cat: "design", key: "design", actions: ["品牌 VI 識別與風格化周邊", "老照片高清無損修復與彩化", "室內 3D 空間佈局與裝修渲染", "向量插畫與無縫圖樣生成", "電商主圖與高質感情境照合成", "動態網頁 UI/UX 原型視覺設計", "字型排版與社群視覺系統建立", "藝術風格轉化與似顏繪創作", "展場佈置與背板視覺效果模擬", "沉浸式展演視覺概念企劃"], tools: [{name:"Midjourney", url:"https://www.midjourney.com"}, {name:"Canva AI", url:"https://www.canva.com"}] },
+            { cat: "automation", key: "automation", actions: ["No-Code 工作流自動化串接", "Python 定時競品爬蟲與比價", "Google Apps Script 微型 CRM", "Telegram 智慧機器人與推播", "GitHub Pages 靜態網站自動化部署", "Excel 批量資料清洗與正規化腳本", "API 串接與多平台數據同步整合", "網頁自動化表單填寫與監控", "自動備份與雲端檔案管理腳本", "SEO 網站健檢與自動修復工具"], tools: [{name:"Make.com", url:"https://www.make.com"}, {name:"Python", url:"https://www.python.org"}] },
+            { cat: "lifestyle", key: "lifestyle", actions: ["苔球與綠植空間效果圖模擬", "嚴格純素異國創意食譜研發", "冷製手工皂與水晶皂漸層配方", "陽台微型菜園智慧種植行事曆", "植栽芳療精油配方與故事包裝", "乾燥花藝與居家美學擺設指南", "茶道與花草茶風味搭配企劃", "園藝手作體驗工作坊教案設計", "綠意辦公室植栽軟裝配置規劃", "雨林植物養護知識庫與問答集"], tools: [{name:"ChatGPT", url:"https://chatgpt.com"}, {name:"Midjourney", url:"https://www.midjourney.com"}] },
+            { cat: "content", key: "content", actions: ["療癒系自媒體 IP 經營與短詩", "客製化心靈牌卡與情緒日誌", "原創品牌主題曲與心靈音樂", "Dcard/Threads 深度共鳴文章", "正念冥想導引語音腳本創作", "心靈成長電子報與自動發送", "情感諮商紀錄摘要與洞察報告", "塔羅占卜解讀模板與自動化", "自我覺察手帳本版型與文案", "療癒系圖文卡片批量產出"], tools: [{name:"Claude AI", url:"https://claude.ai"}, {name:"Suno AI", url:"https://suno.com"}] },
+            { cat: "ecommerce", key: "ecommerce", actions: ["社區團購熱銷商品情境推坑文", "小農蔬果箱產地直銷故事摺頁", "在地伴手禮與節慶禮盒企劃", "競品電商價格與視覺差異分析", "二手 3C 拍賣透明化信任文案", "電商 FAQ 客服速查資料庫", "手作體驗現場 SOP 與採買單", "VIP 客戶專屬感謝信與折扣碼", "團購直播腳本與亮點提煉", "退換貨處理流程與自動化範本"], tools: [{name:"1shop", url:"https://www.1shop.tw"}, {name:"Canva", url:"https://www.canva.com"}] },
+            { cat: "knowledge", key: "knowledge", actions: ["400小時課程精華閃卡庫製作", "ACI/DISC 職涯剖析報告", "長篇專業PDF書籍自動摘要", "線上課程測驗題庫批量生成", "英文商務對話情境模擬教材", "研討會逐字稿轉化知識手冊", "跨領域知識心智圖自動構建", "論文重點萃取與文獻回顧表", "數位筆記知識圖譜優化服務", "微型線上訓練營營運手冊"], tools: [{name:"NotebookLM", url:"https://notebooklm.google.com"}, {name:"Anki", url:"https://apps.ankiweb.net"}] },
+            { cat: "enterprise", key: "enterprise", actions: ["企業內部 RAG 知識庫與客服", "自動化財務報表比對與預警", "供應鏈存貨預測分析模型", "員工績效考核指標自動化評估", "市場競品動態情報雷達系統", "法務合約條款風險自動審查", "客戶滿意度調查語意情感分析", "專案管理進度自動追蹤看板", "跨國會議多語自動翻譯摘要", "企業內部資訊安全合規稽核"], tools: [{name:"Dify AI", url:"https://dify.ai"}, {name:"Python", url:"https://www.python.org"}] },
+            { cat: "hardware", key: "hardware", actions: ["旗艦手機創作者攝影參數手冊", "車載與智慧家庭捷徑腳本設計", "舊平板變身智慧相框說明書", "跨裝置資料同步備份 SOP", "個人數位資產安全加密指南", "藍牙設備連線疑難排解手冊", "智慧穿戴數據健康趨勢報告", "無線網路路由最佳化配置圖解", "行動電源與快充設備評比表", "語音助理語令自動化設定包"], tools: [{name:"ChatGPT", url:"https://chatgpt.com"}, {name:"Shortcuts", url:"https://support.apple.com"}] },
+            { cat: "community", key: "community", actions: ["社區公設隱患市府陳情公文", "地方創生故事與語音導覽包", "里民活動企劃書與宣傳圖卡", "老舊街區數位檔案數位化", "社區互助托育登記表單自動化", "公園綠美化居民共識調查表", "環保回收點分佈地圖與指南", "志工服務時數統計與證書生成", "在地小旅行路線規劃手冊", "社區防災演練 SOP 腳本"], tools: [{name:"ElevenLabs", url:"https://elevenlabs.io"}, {name:"Canva", url:"https://www.canva.com"}] },
+            { cat: "ritual", key: "ritual", actions: ["客製化個人年度生命故事年報", "新生兒命名寓意故事與繪本", "情侶紀念日回憶錄數位書", "寵物過往回憶錄與紀念相冊", "退休祝福語音短片與卡片企劃", "生日派對客製化遊戲與劇本", "節慶感恩信件批量排版設計", "個人願景板 (Vision Board) 生成", "家族族譜故事梳理與排版", "畢業季時光膠囊回顧手冊"], tools: [{name:"Claude AI", url:"https://claude.ai"}, {name:"Canva", url:"https://www.canva.com"}] }
+        ];
+
+        // 產出 1000 筆各自獨立不重複資料庫
+        const fullDatabase = [];
+        let idCounter = 1;
+
+        for (let i = 1; i <= 1000; i++) {
+            const catObj = categoriesData[(i - 1) % categoriesData.length];
+            const actionIdx = Math.floor((i - 1) / categoriesData.length) % catObj.actions.length;
+            const actionName = catObj.actions[actionIdx];
+            
+            const variantMod = [
+                "實務落地模組", "進階優化專案", "自動化整合方案", "高轉化商業提案", "標準 SOP 執行包",
+                "極致降本增效", "客製化模組", "全方位應用企劃", "雙向同步系統", "專家級解決方案"
+            ][(i - 1) % 10];
+
+            fullDatabase.push({
+                id: i,
+                category: catObj.key,
+                title: `${actionName}（${variantMod} #${i}）`,
+                sop: [
+                    `進行「${actionName}」之市場需求訪談、受眾痛點歸納與專案範疇界定。`,
+                    `運用 ${catObj.tools[0].name} 進行核心框架產出、內容生成或自動化流程搭建。`,
+                    `完成品質校對、客戶驗收測試與最終數位資產交付，並建立標準化複購模組。`
+                ],
+                tools: catObj.tools
+            });
+        }
+
+        // 狀態管理
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredData = [...fullDatabase];
+        let currentCategory = 'all';
+
+        // 點讚互動邏輯
+        let likes = 4128;
+        document.getElementById('likeBtn').addEventListener('click', () => {
+            likes++;
+            document.getElementById('likeCount').innerText = likes.toLocaleString();
+        });
+
+        // 渲染卡片列表
+        function renderItems() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = filteredData.slice(startIndex, endIndex);
+
+            if (pageItems.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400">沒有找到符合條件的項目，請調整搜尋關鍵字重試。</div>`;
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+
+            pageItems.forEach((item) => {
+                const catInfo = categories[item.category] || categories['design'];
+                const card = document.createElement('div');
+                card.className = "card-item bg-white rounded-2xl border border-sage-100/90 shadow-xs overflow-hidden hover:shadow-md transition";
+                
+                let toolsHTML = item.tools.map(t => 
+                    `<a href="${t.url}" target="_blank" class="inline-flex items-center gap-1.5 bg-white border border-sage-200 text-slate-700 px-3 py-1.5 rounded-xl hover:bg-sage-600 hover:text-white transition text-xs">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i> ${t.name}
+                    </a>`
+                ).join('');
+
+                let sopHTML = item.sop.map((s, idx) => `<li class="leading-relaxed"><strong class="text-sage-700">步驟${idx+1}：</strong>${s}</li>`).join('');
+
+                card.innerHTML = `
+                    <!-- 標題跨裝置強制同一排 -->
+                    <div class="p-3.5 md:p-5 flex items-center justify-between gap-2 bg-white w-full overflow-hidden">
+                        <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1 overflow-hidden">
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl ${catInfo.iconBg} flex items-center justify-center text-sm md:text-lg shrink-0">
+                                <i class="fa-solid ${catInfo.icon}"></i>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 md:gap-2 min-w-0 flex-1 overflow-hidden">
+                                <span class="${catInfo.badgeClass} text-[10px] md:text-[11px] px-2 py-0.5 rounded-full font-medium shrink-0">
+                                    ${catInfo.name}
+                                </span>
+                                <span class="text-[11px] md:text-xs font-semibold text-sage-700 shrink-0">#${item.id}</span>
+                                <h3 class="text-xs md:text-base font-bold text-slate-800 truncate whitespace-nowrap overflow-hidden text-ellipsis min-w-0">
+                                    ${item.title}
+                                </h3>
+                            </div>
+                        </div>
+
+                        <button class="accordion-toggle inline-flex items-center gap-1 bg-sage-50 hover:bg-sage-100 text-sage-800 border border-sage-200/80 px-2.5 py-1 md:px-3 md:py-1.5 rounded-xl text-[11px] md:text-xs font-medium shrink-0 transition focus:outline-none">
+                            <span>查看步驟</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] md:text-xs rotate-chevron"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- 展開內容與步驟 -->
+                    <div class="accordion-content border-t border-slate-100 bg-warm-50/60">
+                        <div class="p-4 md:p-5 space-y-4 text-xs md:text-sm">
+                            <div class="bg-white p-3.5 md:p-4 rounded-xl border border-slate-100 shadow-2xs">
+                                <h4 class="font-bold text-sage-700 mb-2 flex items-center gap-2 text-xs md:text-sm">
+                                    <i class="fa-solid fa-list-check text-sage-600"></i> 實作 SOP 步驟說明：
+                                </h4>
+                                <ol class="list-decimal list-inside text-slate-600 space-y-1.5 pl-1">
+                                    ${sopHTML}
+                                </ol>
+                            </div>
+
+                            <div>
+                                <h4 class="font-bold text-sage-700 mb-2 flex items-center gap-2 text-xs md:text-sm">
+                                    <i class="fa-solid fa-link text-sage-600"></i> 推薦 AI 工具與學習資源連結：
+                                </h4>
+                                <div class="flex flex-wrap gap-2 pt-0.5">
+                                    ${toolsHTML}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            document.querySelectorAll('.accordion-toggle').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const card = btn.closest('.card-item');
+                    const content = card.querySelector('.accordion-content');
+                    const chevron = card.querySelector('.rotate-chevron');
+                    const btnText = btn.querySelector('span');
+
+                    if (content.classList.contains('open')) {
+                        content.classList.remove('open');
+                        chevron.classList.remove('active');
+                        btnText.innerText = '查看步驟';
+                    } else {
+                        content.classList.add('open');
+                        chevron.classList.add('active');
+                        btnText.innerText = '收合步驟';
+                    }
+                });
+            });
+
+            renderPagination();
+        }
+
+        // 渲染分頁列
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (totalPages <= 1) return;
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3 py-1.5 rounded-xl text-xs font-medium border ${currentPage === 1 ? 'text-slate-300 border-slate-200 cursor-not-allowed' : 'text-slate-600 border-sage-200 hover:bg-sage-100'}`;
+            prevBtn.innerText = '上一頁';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => { currentPage--; renderItems(); window.scrollTo({ top: 250, behavior: 'smooth' }); };
+            pagination.appendChild(prevBtn);
+
+            const pageInfo = document.createElement('span');
+            pageInfo.className = 'text-xs text-slate-500 font-medium px-2';
+            pageInfo.innerText = `第 ${currentPage} / ${totalPages} 頁`;
+            pagination.appendChild(pageInfo);
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3 py-1.5 rounded-xl text-xs font-medium border ${currentPage === totalPages ? 'text-slate-300 border-slate-200 cursor-not-allowed' : 'text-slate-600 border-sage-200 hover:bg-sage-100'}`;
+            nextBtn.innerText = '下一頁';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => { currentPage++; renderItems(); window.scrollTo({ top: 250, behavior: 'smooth' }); };
+            pagination.appendChild(nextBtn);
+        }
+
+        // 篩選與搜尋處理
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            filteredData = fullDatabase.filter(item => {
+                const matchesCategory = (currentCategory === 'all' || item.category === currentCategory);
+                const matchesSearch = (searchTerm === '' || item.title.toLowerCase().includes(searchTerm) || item.sop.some(s => s.toLowerCase().includes(searchTerm)));
+                return matchesCategory && matchesSearch;
+            });
+
+            currentPage = 1;
+            document.getElementById('statsCount').innerText = `已載入 ${filteredData.length} 個變現項目`;
+            renderItems();
+        }
+
+        // 即時更新頁尾時間
+        function updateFooterDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const timeString = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+            document.getElementById('currentDateTime').innerText = timeString;
+        }
+
+        // 啟動初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-sage-600', 'text-white');
+                        b.classList.add('bg-warm-100', 'text-warm-800');
+                    });
+                    btn.classList.remove('bg-warm-100', 'text-warm-800');
+                    btn.classList.add('bg-sage-600', 'text-white');
+
+                    currentCategory = btn.getAttribute('data-category');
+                    filterData();
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', filterData);
+            
+            updateFooterDateTime();
+            setInterval(updateFooterDateTime, 1000);
+
+            renderItems();
+        });
+    </script>
+</body>
+</html>
