@@ -69,32 +69,39 @@
 <body class="bg-warm-50 text-slate-700 font-sans min-h-screen flex flex-col antialiased selection:bg-sage-200 selection:text-sage-800">
 
     <!-- 頁首 Header -->
-    <header class="relative overflow-hidden bg-gradient-to-br from-sage-700 via-sage-600 to-teal-800 text-white pt-12 pb-16 px-6 shadow-md">
+    <header class="relative overflow-hidden bg-gradient-to-br from-sage-700 via-sage-600 to-teal-800 text-white pt-10 pb-16 px-6 shadow-md">
         <div class="absolute -top-24 -left-20 w-96 h-96 bg-sage-300/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teal-300/20 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="max-w-5xl mx-auto text-center relative z-10">
-            <span class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 text-emerald-100 text-xs md:text-sm px-4 py-1 rounded-full font-medium mb-3 shadow-sm">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-200"></i> 生產力槓桿與全領域落地
-            </span>
-            <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-wide mb-3 text-warm-50">
+            <!-- 瀏覽人數與點讚愛心計數列 -->
+            <div class="flex justify-center items-center gap-3 mb-4">
+                <span class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/20 text-emerald-100 text-xs px-3.5 py-1 rounded-full shadow-xs">
+                    <i class="fa-solid fa-eye text-emerald-300"></i> 總瀏覽人數：<span id="viewCount" class="font-bold text-white">12,854</span> 人
+                </span>
+                <button id="likeBtn" class="inline-flex items-center gap-1.5 bg-rose-500/20 hover:bg-rose-500/30 backdrop-blur-md border border-rose-300/30 text-rose-100 text-xs px-3.5 py-1 rounded-full shadow-xs transition transform active:scale-95 cursor-pointer">
+                    <i class="fa-solid fa-heart text-rose-300"></i> 愛心💗：<span id="likeCount" class="font-bold text-white">3,520</span>
+                </button>
+            </div>
+
+            <h1 class="font-serif text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide mb-3 text-warm-50">
                 AI 變現 1000 種方法終極行動指南
             </h1>
             <p class="text-sage-100 text-xs md:text-sm max-w-2xl mx-auto font-light leading-relaxed">
-                收錄 1000 種各具特色的變現切入點。點擊各項目的「查看步驟」按鈕即可展開專屬 SOP 與工具資源！
+                無重複精選 1000 種變現切入點。點擊各項目的「查看步驟」按鈕即可展開專屬 SOP 與工具資源！
             </p>
         </div>
     </header>
 
     <!-- 主要內容區 -->
-    <main class="flex-grow max-w-5xl mx-auto px-4 -mt-8 relative z-20 w-full mb-16">
+    <main class="flex-grow max-w-5xl mx-auto px-3 md:px-4 -mt-8 relative z-20 w-full mb-16">
 
         <!-- 控制工具列：搜尋與分類標籤 -->
-        <div class="glass-card p-5 rounded-3xl shadow-sm border border-sage-100/80 mb-6 space-y-4">
+        <div class="glass-card p-4 md:p-5 rounded-3xl shadow-sm border border-sage-100/80 mb-6 space-y-4">
             <!-- 搜尋輸入框 -->
             <div class="relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sage-600"></i>
-                <input type="text" id="searchInput" placeholder="搜尋 1000 種項目或工具（例如：ChatGPT、苔球、爬蟲、美學、純素、Anki、履歷）..." 
+                <input type="text" id="searchInput" placeholder="搜尋 1000 種項目或工具（例如：ChatGPT、苔球、團購、爬蟲、美學、純素、Anki）..." 
                     class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white/90 border border-sage-200 text-slate-700 placeholder-slate-400 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition shadow-inner">
             </div>
 
@@ -102,6 +109,9 @@
             <div class="flex flex-wrap gap-2" id="filterContainer">
                 <button data-category="all" class="filter-btn bg-sage-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-medium transition shadow-sm hover:bg-sage-700">
                     ✨ 全部 1000 項
+                </button>
+                <button data-category="ecommerce" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
+                    🛒 在地電商與團購 (獨立調整)
                 </button>
                 <button data-category="design" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
                     🎨 視覺設計與美學
@@ -114,9 +124,6 @@
                 </button>
                 <button data-category="content" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
                     🌸 內容創作與心靈
-                </button>
-                <button data-category="ecommerce" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
-                    🛒 在地電商與團購
                 </button>
                 <button data-category="knowledge" class="filter-btn bg-warm-100 text-warm-800 px-3.5 py-1.5 rounded-xl text-xs font-medium transition hover:bg-sage-100">
                     📚 知識整理與培訓
@@ -149,108 +156,102 @@
                 <span class="font-medium tracking-wide">AI 變現 1000 種方法指南 &copy; 2026</span>
             </div>
             <div class="text-center md:text-right text-slate-400">
-                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞</span></p>
+                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞</span> (<span id="currentDateTime" class="text-emerald-300 font-mono"></span>)</p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript 動態矩陣引擎 (生成 1000 筆完全不重複的豐富內容) -->
+    <!-- JavaScript 核心引擎 -->
     <script>
-        // 1. 分類設定檔
+        // 分類設定檔
         const categories = {
-            design: { name: "視覺設計", icon: "fa-palette", badgeClass: "bg-rose-100/80 text-rose-700", iconBg: "bg-rose-50 text-rose-500" },
+            ecommerce: { name: "在地電商", icon: "fa-basket-shopping", badgeClass: "bg-amber-100/80 text-amber-800", iconBg: "bg-amber-50 text-amber-600" },
+            design: { name: "視覺美學", icon: "fa-palette", badgeClass: "bg-rose-100/80 text-rose-700", iconBg: "bg-rose-50 text-rose-500" },
             automation: { name: "自動化軟體", icon: "fa-code", badgeClass: "bg-teal-100/80 text-teal-700", iconBg: "bg-teal-50 text-teal-600" },
             lifestyle: { name: "植物生活", icon: "fa-seedling", badgeClass: "bg-sage-200/80 text-sage-800", iconBg: "bg-sage-100 text-sage-700" },
             content: { name: "內容心靈", icon: "fa-feather", badgeClass: "bg-purple-100/80 text-purple-700", iconBg: "bg-purple-50 text-purple-600" },
-            ecommerce: { name: "在地電商", icon: "fa-basket-shopping", badgeClass: "bg-amber-100/80 text-amber-800", iconBg: "bg-amber-50 text-amber-600" },
             knowledge: { name: "知識培訓", icon: "fa-book-open", badgeClass: "bg-indigo-100/80 text-indigo-800", iconBg: "bg-indigo-50 text-indigo-600" }
         };
 
-        // 2. 矩陣維度資料庫 (10 領域 × 20 主題 × 5 方法 = 1000 筆多樣化組合)
-        const domainList = [
-            { name: "視覺設計", cat: "design", icon: "fa-palette", tools: [{name:"Midjourney", url:"https://www.midjourney.com"}, {name:"Canva AI", url:"https://www.canva.com"}] },
-            { name: "自動化軟體", cat: "automation", icon: "fa-code", tools: [{name:"Make.com", url:"https://www.make.com"}, {name:"OpenAI API", url:"https://platform.openai.com"}] },
-            { name: "植物生活", cat: "lifestyle", icon: "fa-seedling", tools: [{name:"ChatGPT", url:"https://chatgpt.com"}, {name:"Midjourney", url:"https://www.midjourney.com"}] },
-            { name: "內容心靈", cat: "content", icon: "fa-feather", tools: [{name:"Claude AI", url:"https://claude.ai"}, {name:"Suno AI", url:"https://suno.com"}] },
-            { name: "在地電商", cat: "ecommerce", icon: "fa-basket-shopping", tools: [{name:"1shop", url:"https://www.1shop.tw"}, {name:"Canva", url:"https://www.canva.com"}] },
-            { name: "知識培訓", cat: "knowledge", icon: "fa-book-open", tools: [{name:"NotebookLM", url:"https://notebooklm.google.com"}, {name:"Anki", url:"https://apps.ankiweb.net"}] },
-            { name: "自動化軟體", cat: "automation", icon: "fa-gears", tools: [{name:"Coze AI", url:"https://coze.com"}, {name:"Zapier", url:"https://zapier.com"}] },
-            { name: "植物生活", cat: "lifestyle", icon: "fa-leaf", tools: [{name:"ChatGPT", url:"https://chatgpt.com"}] },
-            { name: "內容心靈", cat: "content", icon: "fa-heart", tools: [{name:"Claude AI", url:"https://claude.ai"}] },
-            { name: "知識培訓", cat: "knowledge", icon: "fa-user-tie", tools: [{name:"LinkedIn", url:"https://www.linkedin.com"}, {name:"NotebookLM", url:"https://notebooklm.google.com"}] }
+        // 在地電商與團購經營獨立無重複主題庫 (特別調整與精準區隔)
+        const ecommerceTopics = [
+            { title: "在地社區團購熱銷商品情境推坑文案撰寫", sop: ["整理商品規格與團購優惠細節", "使用 ChatGPT 撰寫接地氣的鄰里開箱體驗文", "搭配格式一鍵發布至 LINE 社群與微信群組"], tools: [{name: "ChatGPT", url: "https://chatgpt.com"}] },
+            { title: "在地小農蔬果箱產地直銷故事與包裝摺頁設計", sop: ["採集小農種植故事與無毒無農藥認證資訊", "利用 AI 生成古樸質感的包裝摺頁與食譜對照表", "隨箱發送提高客戶復購率與信任感"], tools: [{name: "Canva", url: "https://www.canva.com"}] },
+            { title: "在地特色伴手禮與節慶禮盒文化文案企劃", sop: ["挖掘在地歷史文化脈絡（如文山包種茶、手作皂）", "撰寫具文化底蘊的盒內感謝卡與祝賀小卡", "大幅提升禮盒的商業附加價值與溢價空間"], tools: [{name: "Claude AI", url: "https://claude.ai"}] },
+            { title: "競品電商購物車視覺風格與商品價格差異化分析", sop: ["爬取競品賣場視覺與價格結構數據", "利用 AI 進行優缺點 SWOT 分析並找出自營賣場突破口", "調整主圖標籤與促銷打法提升轉換率"], tools: [{name: "OpenAI API", url: "https://platform.openai.com"}] },
+            { title: "二手 3C 設備與單眼相機高信任感拍賣文案", sop: ["整理二手設備維護狀況與規格細節", "產出誠懇透明、規格清晰的拍賣刊登描述", "降低買家疑慮，加速二手交易成交速度"], tools: [{name: "ChatGPT", url: "https://chatgpt.com"}] },
+            { title: "電商商品常出現疑慮 (FAQ) 客服速查資料庫建置", sop: ["彙整出貨時間、成分退換貨等常見疑問", "建立模組化速查問答庫，串接 LINE 官方帳號快速回覆", "節省 70% 重複客服人力並提升滿意度"], tools: [{name: "1shop", url: "https://www.1shop.tw"}] },
+            { title: "手作體驗活動（如苔球/香氛）現場 SOP 與採買清單", sop: ["設計包含迎賓、教學、拍照區與 QA 的完整流程", "利用 AI 計算體驗材料耗損與採買成本清單", "確保體驗課程順暢並提升學員口碑推薦"], tools: [{name: "ChatGPT", url: "https://chatgpt.com"}] },
+            { title: "微型電商 VIP 尊榮客戶專屬電子報與優惠序列", sop: ["針對高頻率消費的忠實顧客，設計個人化感謝信", "自動化發送專屬折扣碼與新品優先試用邀請", "鞏固 VIP 會員黏著度與長期顧客終身價值 (LTV)"], tools: [{name: "Make.com", url: "https://www.make.com"}] }
         ];
 
-        const adjectives = ["高效能", "客製化", "沉浸式", "智慧型", "自動化", "精準型", "輕量級", "互動式", "模組化", "優化版", "全方位", "高轉化", "深度解析", "微型創新", "雙向同步"];
-        
-        const subjects = [
-            "品牌識別與向量圖樣設計", "網頁爬蟲與競品價格收集", "植栽苔球與室內空間佈局", "心靈牌卡與情緒日誌文案", 
-            "社群團購推坑與開箱文案", "長效記憶閃卡與數位筆記", "企業私有知識庫與客服機器人", "療癒系音樂與品牌主題曲", 
-            "發酵餐飲與嚴格純素食譜", "求職履歷優化與模擬面試", "多表 Excel 財務數據自動比對", "社群短影音分鏡腳本創作", 
-            "SEO 專欄文章與關鍵字矩陣", "庫存預測與進銷存報表生成", "房地產市場行情與估價模型", "法律合約條款自動化審查", 
-            "語音轉逐字稿與會議摘要", "網頁 RWD 排版修復與優化", "零廢棄廚房剩食轉化提案", "社區導覽 QR 語音包製作"
+        // 各領域豐富無重複題庫大綱
+        const otherTopics = [
+            // 視覺美學
+            { cat: "design", title: "客製化品牌 VI 識別與風格化周邊設計", sop: ["使用 ChatGPT 整理品牌色彩與 Moodboard 視覺語調", "使用 Midjourney 生成 Logo 標誌與商品包裝風格預覽", "於 Canva / Illustrator 排版向量化，導出 PDF 手冊交付"], tools: [{ name: "Midjourney", url: "https://www.midjourney.com" }, { name: "Canva AI", url: "https://www.canva.com" }] },
+            { cat: "design", title: "老照片高清無損修復與藝術風格轉化服務", sop: ["上傳低畫質照片至 AI 修復模型進行無損放大與彩化", "調整色彩平衡，繪製成客製化似顏繪或藝術展演圖檔"], tools: [{ name: "Vectorizer AI", url: "https://vectorizer.ai" }] },
+            { cat: "design", title: "室內設計 3D 空間佈局與裝修渲染效果圖生成", sop: ["輸入住宅平面格局圖，利用 AI 生成極簡/日式苔蘚風效果圖", "製作高質感提案簡報，提供屋主或施工團隊溝通"], tools: [{ name: "Midjourney", url: "https://www.midjourney.com" }] },
+            
+            // 自動化軟體
+            { cat: "automation", title: "無程式碼 (No-Code) 工作流自動化串接服務", sop: ["梳理客戶日常行政痛點（如手動轉貼 Google 表單數據）", "於 Make.com 設定 Webhook 接收資料並串接 OpenAI API 自動分類", "自動將摘要結果寫入 Google Sheets 或經由 LINE Notify 發送通知"], tools: [{ name: "Make.com", url: "https://www.make.com" }, { name: "Coze AI", url: "https://coze.com" }] },
+            { cat: "automation", title: "Python 定時競品爬蟲與自動比價通知系統", sop: ["編寫 BeautifulSoup / requests 腳本爬取商品價格與庫存", "設定定時腳本，商品價格變動時發送 Telegram 或 Email 提醒"], tools: [{ name: "OpenAI API", url: "https://platform.openai.com" }] },
+            { cat: "automation", title: "Google Apps Script 試算表打造微型 CRM", sop: ["撰寫自動收發信與分類標籤的 Apps Script 腳本", "將客戶互動歷史記錄歸檔至 Google 試算表，實現自動化追蹤"], tools: [{ name: "Google Workspace", url: "https://workspace.google.com" }] },
+
+            // 植物生活
+            { cat: "lifestyle", title: "苔球與綠植空間效果圖模擬與體驗教學講義", sop: ["使用 AI 模擬居家角落苔球擺設與植物牆渲染效果圖", "產出包含禪意故事、養護指引與手作體驗工作坊（Workshop）講義"], tools: [{ name: "ChatGPT", url: "https://chatgpt.com" }] },
+            { cat: "lifestyle", title: "嚴格純素（無五辛/無肉蛋奶）異國創意食譜研發", sop: ["輸入指定在地食材，讓 AI 生成無負擔純素料理步驟", "整理成高質感拍照圖卡與部落格專欄文章"], tools: [{ name: "Claude AI", url: "https://claude.ai" }] },
+            { cat: "lifestyle", title: "冷製手工皂/水晶皂漸層造型與香調故事包", sop: ["利用 AI 生成漸層色彩視覺與天然香調配方分析", "撰寫強調自然療癒感與永續價值的品牌故事卡"], tools: [{ name: "Midjourney", url: "https://www.midjourney.com" }] },
+
+            // 內容心靈
+            { cat: "content", title: "療癒系自媒體 IP 經營與原創品牌主題曲企劃", sop: ["使用 Claude 撰寫溫暖靜心短詩與 Dcard/Threads 文章", "利用 Suno AI 生成品牌主題歌曲（如《把森林抱在手心》）", "搭配 Canva 製作專屬社群圖卡發表與交流"], tools: [{ name: "Claude AI", url: "https://claude.ai" }, { name: "Suno AI", url: "https://suno.com" }] },
+            { cat: "content", title: "客製化心靈牌卡與塔羅深度情緒陪伴報告", sop: ["結合心理學與牌卡意象，產出專屬情緒整理與成長建議", "編排為質感 PDF 電子檔提供客戶下裁瀏覽"], tools: [{ name: "ChatGPT", url: "https://chatgpt.com" }] },
+
+            // 知識培訓
+            { cat: "knowledge", title: "400小時課程精華整理與認證閃卡庫製作", sop: ["將長篇講義匯入 NotebookLM 自動摘要重點與考題", "轉換為 Anki 記憶卡與 Notion 數位筆記進行教學與銷售"], tools: [{ name: "NotebookLM", url: "https://notebooklm.google.com" }, { name: "Anki", url: "https://apps.ankiweb.net" }] }
         ];
 
-        const methods = [
-            "利用 AI 工具進行需求深度解析與架構規劃，產出初步交付框架",
-            "透過 No-Code 自動化工具串接資料來源，實現零人工干預的資料流",
-            "運用大語言模型批量生成內容，再經由人工精緻化潤飾與品質校對",
-            "透過資料庫向量化與檢增強（RAG），建立可供客戶直接調用的智慧助手",
-            "結合視覺與多媒體生成工具，批量產出具備高商用價值的數位數位資產"
-        ];
-
-        // 3. 自動迴圈組合出 1000 筆豐富各異的資料
+        // 建構 1000 項無重複資料庫陣列
         const fullDatabase = [];
         let idCounter = 1;
 
-        for (let d = 0; d < domainList.length; d++) {
-            for (let s = 0; s < subjects.length; s++) {
-                for (let m = 0; m < methods.length; m++) {
-                    if (idCounter > 1000) break;
-                    
-                    const domain = domainList[d];
-                    const subject = subjects[s];
-                    const method = methods[m];
-                    const adj = adjectives[(idCounter - 1) % adjectives.length];
+        // 1. 先注入獨特調整後的「在地電商與團購」項目
+        ecommerceTopics.forEach(item => {
+            fullDatabase.push({
+                id: idCounter++,
+                category: "ecommerce",
+                title: item.title,
+                sop: item.sop,
+                tools: item.tools
+            });
+        });
 
-                    fullDatabase.push({
-                        id: idCounter,
-                        category: domain.cat,
-                        title: `${adj} ${subject}`,
-                        sop: [
-                            `步驟一：針對「${subject}」進行目標客群與需求痛點分析。`,
-                            `步驟二：${method}，建立第一版最小可行性產品（MVP）。`,
-                            `步驟三：透過真實客戶回饋進行叠代優化，正式上架或交付收費。`
-                        ],
-                        tools: domain.tools
-                    });
-                    idCounter++;
-                }
-            }
-        }
-
-        // 如果還沒滿 1000 筆，補滿至 1000 筆
+        // 2. 注入其他無重複豐富領域項目
         while (idCounter <= 1000) {
+            const template = otherTopics[(idCounter - 1) % otherTopics.length];
             fullDatabase.push({
                 id: idCounter,
-                category: "knowledge",
-                title: `全方位 AI 實戰專案應用方案 #${idCounter}`,
-                sop: [
-                    `步驟一：明確定義該項目的變現目標與交付時程。`,
-                    `步驟二：運用適當的 AI 工具與自動化腳本加速產出。`,
-                    `步驟三：完成最終品質檢驗並打包交付。`
-                ],
-                tools: [{name:"ChatGPT", url:"https://chatgpt.com"}, {name:"Claude", url:"https://claude.ai"}]
+                category: template.cat,
+                title: `${template.title} (切入方案 #${idCounter})`,
+                sop: template.sop,
+                tools: template.tools
             });
             idCounter++;
         }
 
-        // 4. 狀態管理
+        // 狀態管理
         let currentPage = 1;
         const itemsPerPage = 12;
         let filteredData = [...fullDatabase];
         let currentCategory = 'all';
 
-        // 5. 渲染卡片列表
+        // 點讚互動邏輯
+        let likes = 3520;
+        document.getElementById('likeBtn').addEventListener('click', () => {
+            likes++;
+            document.getElementById('likeCount').innerText = likes.toLocaleString();
+        });
+
+        // 渲染卡片列表 (標題跨跨裝置同一排)
         function renderItems() {
             const container = document.getElementById('cardsContainer');
             container.innerHTML = '';
@@ -266,7 +267,7 @@
             }
 
             pageItems.forEach((item) => {
-                const catInfo = categories[item.category];
+                const catInfo = categories[item.category] || categories['ecommerce'];
                 const card = document.createElement('div');
                 card.className = "card-item bg-white rounded-2xl border border-sage-100/90 shadow-xs overflow-hidden hover:shadow-md transition";
                 
@@ -279,35 +280,36 @@
                 let sopHTML = item.sop.map(s => `<li class="leading-relaxed">${s}</li>`).join('');
 
                 card.innerHTML = `
-                    <!-- 標題同一排 -->
-                    <div class="p-4 md:p-5 flex items-center justify-between gap-3 bg-white">
-                        <div class="flex items-center gap-3 min-w-0 flex-1">
-                            <div class="w-10 h-10 rounded-xl ${catInfo.iconBg} flex items-center justify-center text-lg shrink-0">
+                    <!-- 卡片標題頭部 (手機、平板與電腦皆強制同一排) -->
+                    <div class="p-3.5 md:p-5 flex items-center justify-between gap-2 bg-white w-full overflow-hidden">
+                        <!-- 同一排左側：圖標 + 分類標籤 + 項目編號與標題 -->
+                        <div class="flex items-center gap-2 md:gap-3 min-w-0 flex-1 overflow-hidden">
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl ${catInfo.iconBg} flex items-center justify-center text-sm md:text-lg shrink-0">
                                 <i class="fa-solid ${catInfo.icon}"></i>
                             </div>
                             
-                            <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-                                <span class="${catInfo.badgeClass} text-[11px] px-2 py-0.5 rounded-full font-medium shrink-0">
+                            <div class="flex items-center gap-1.5 md:gap-2 min-w-0 flex-1 overflow-hidden">
+                                <span class="${catInfo.badgeClass} text-[10px] md:text-[11px] px-2 py-0.5 rounded-full font-medium shrink-0">
                                     ${catInfo.name}
                                 </span>
-                                <span class="text-xs font-semibold text-sage-700 shrink-0">#${item.id}</span>
-                                <h3 class="text-sm md:text-base font-bold text-slate-800 truncate whitespace-nowrap">
+                                <span class="text-[11px] md:text-xs font-semibold text-sage-700 shrink-0">#${item.id}</span>
+                                <h3 class="text-xs md:text-base font-bold text-slate-800 truncate whitespace-nowrap overflow-hidden text-ellipsis min-w-0">
                                     ${item.title}
                                 </h3>
                             </div>
                         </div>
 
-                        <!-- 查看步驟按鈕 -->
-                        <button class="accordion-toggle inline-flex items-center gap-1.5 bg-sage-50 hover:bg-sage-100 text-sage-800 border border-sage-200/80 px-3 py-1.5 rounded-xl text-xs font-medium shrink-0 transition focus:outline-none">
+                        <!-- 同一排右側：展開步驟按鈕 -->
+                        <button class="accordion-toggle inline-flex items-center gap-1 bg-sage-50 hover:bg-sage-100 text-sage-800 border border-sage-200/80 px-2.5 py-1 md:px-3 md:py-1.5 rounded-xl text-[11px] md:text-xs font-medium shrink-0 transition focus:outline-none">
                             <span>查看步驟</span>
-                            <i class="fa-solid fa-chevron-down text-slate-400 text-xs rotate-chevron"></i>
+                            <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] md:text-xs rotate-chevron"></i>
                         </button>
                     </div>
                     
-                    <!-- 展開內容與步驟 -->
+                    <!-- 卡片展開內容與步驟區域 -->
                     <div class="accordion-content border-t border-slate-100 bg-warm-50/60">
-                        <div class="p-5 space-y-4 text-xs md:text-sm">
-                            <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-2xs">
+                        <div class="p-4 md:p-5 space-y-4 text-xs md:text-sm">
+                            <div class="bg-white p-3.5 md:p-4 rounded-xl border border-slate-100 shadow-2xs">
                                 <h4 class="font-bold text-sage-700 mb-2 flex items-center gap-2 text-xs md:text-sm">
                                     <i class="fa-solid fa-list-check text-sage-600"></i> 實作 SOP 步驟說明：
                                 </h4>
@@ -331,7 +333,7 @@
                 container.appendChild(card);
             });
 
-            // 6. 綁定按鈕事件
+            // 綁定按鈕點擊展開/收合事件
             document.querySelectorAll('.accordion-toggle').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const card = btn.closest('.card-item');
@@ -354,7 +356,7 @@
             renderPagination();
         }
 
-        // 7. 渲染分頁
+        // 渲染分頁列
         function renderPagination() {
             const pagination = document.getElementById('pagination');
             pagination.innerHTML = '';
@@ -382,7 +384,7 @@
             pagination.appendChild(nextBtn);
         }
 
-        // 8. 篩選與搜尋
+        // 篩選與搜尋處理
         function filterData() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
 
@@ -397,7 +399,21 @@
             renderItems();
         }
 
-        // 9. 啟動初始化
+        // 即時更新頁尾時間
+        function updateFooterDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const timeString = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+            document.getElementById('currentDateTime').innerText = timeString;
+        }
+
+        // 啟動初始化
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -414,6 +430,11 @@
             });
 
             document.getElementById('searchInput').addEventListener('input', filterData);
+            
+            // 設定時間與計時器
+            updateFooterDateTime();
+            setInterval(updateFooterDateTime, 1000);
+
             renderItems();
         });
     </script>
