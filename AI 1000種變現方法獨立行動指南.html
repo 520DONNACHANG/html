@@ -170,6 +170,63 @@
                         🔒 <strong>電子信箱保密不外流</strong>，表單送出後將直接安全傳送至設計師專屬信箱。
                     </p>
                 </div>
+                <!-- JavaScript 互動功能與 EmailJS 發送邏輯 -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    // 1. 初始化 EmailJS（已帶入您的 Public Key）
+    (function(){
+        emailjs.init("oYklYs7dndg_UFEaQ");
+    })();
+
+    // 2. 瀏覽計數器邏輯
+    let views = parseInt(localStorage.getItem('page_views') || 1280);
+    views += 1;
+    localStorage.setItem('page_views', views);
+    document.getElementById('viewCount').innerText = views.toLocaleString();
+
+    // 3. 按讚功能邏輯
+    let likes = parseInt(localStorage.getItem('page_likes') || 352);
+    document.getElementById('likeCount').innerText = likes;
+
+    function addLike() {
+        likes += 1;
+        localStorage.setItem('page_likes', likes);
+        document.getElementById('likeCount').innerText = likes;
+    }
+
+    // 4. EmailJS 留言寄信邏輯
+    function sendMail(event) {
+        event.preventDefault(); // 防止頁面刷新/跳轉
+
+        const submitBtn = document.getElementById('submit-btn');
+        const statusDiv = document.getElementById('form-status');
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "正在傳送中...";
+        statusDiv.style.color = "#555";
+        statusDiv.innerText = "傳送中，請稍候...";
+
+        // ⚠️ 請在 EmailJS 後台取得 Service ID 與 Template ID 後填入單引號內
+        const SERVICE_ID = 'service_xxxxxxx';   // 填入您的 Service ID (例如 service_a1b2c3d)
+        const TEMPLATE_ID = 'template_xxxxxxx'; // 填入您的 Template ID (例如 template_x9y8z7)
+
+        emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, '#contact-form')
+            .then(function() {
+                statusDiv.style.color = "#2d5a3f";
+                statusDiv.innerText = "✅ 訊息已成功傳送至 joyce0585@gmail.com！我們會盡快回覆您。";
+                document.getElementById('contact-form').reset();
+                submitBtn.disabled = false;
+                submitBtn.innerText = "傳送訊息至專屬信箱";
+            }, function(error) {
+                console.error('EmailJS 傳送失敗:', error);
+                statusDiv.style.color = "#e63946";
+                statusDiv.innerText = "❌ 傳送失敗，請確認 Service/Template ID 或直接 Email 聯絡 joyce0585@gmail.com";
+                submitBtn.disabled = false;
+                submitBtn.innerText = "重新傳送";
+            });
+    }
+</script>
+
 
                 <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
