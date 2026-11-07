@@ -3,7 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 變現 1000 種方法獨立指南 - 藝想天開植能香氛能量學苑</title>
+    <title>AI 變現 1000 種方法獨立行動指南 - 藝想天開植能香氛能量學苑</title>
+    <meta name="description" content="藝想天開植能香氛能量學苑 - 提供手作苔球植物、天然精油香氛能量學、AI變現實務指南與在地電商分享。">
+    
+    <!-- AEO 結構化資料 (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "藝想天開植能香氛能量學苑",
+      "description": "提供手作苔球植物、天然精油香氛能量學與 AI 變現實務體驗課程",
+      "url": "https://520donnachang.github.io",
+      "founder": {
+        "@type": "Person",
+        "name": "張秋霞"
+      }
+    }
+    </script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons CDN -->
@@ -12,7 +29,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- EmailJS SDK -->
+    
+    <!-- EmailJS SDK (全 JavaScript 無跳頁安全寄信) -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <script>
@@ -46,6 +64,9 @@
     </script>
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -53,7 +74,7 @@
             opacity: 0;
         }
         .accordion-content.open {
-            max-height: 1200px;
+            max-height: 1400px;
             opacity: 1;
         }
         .rotate-chevron {
@@ -63,12 +84,28 @@
             transform: rotate(180deg);
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
         }
     </style>
 </head>
-<body class="bg-warm-50 text-slate-700 font-sans min-h-screen flex flex-col antialiased selection:bg-sage-200 selection:text-sage-800">
+<body class="bg-warm-50 text-slate-700 font-sans min-h-screen flex flex-col antialiased selection:bg-sage-200 selection:text-sage-800 relative">
+
+    <!-- 頂部導覽列（左上角縮小 Logo 與品牌） -->
+    <nav class="bg-white/90 backdrop-blur-md border-b border-sage-100 sticky top-0 z-50 px-4 py-2.5 shadow-xs">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="1000064189.jpg" alt="藝想天開 Logo" class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover shadow-sm border border-sage-200">
+                <div>
+                    <span class="font-serif font-bold text-sage-800 text-sm md:text-base tracking-wide block leading-tight">藝想天開植能香氛能量學苑</span>
+                    <span class="text-[10px] md:text-xs text-sage-600 font-medium">網頁設計師：張秋霞</span>
+                </div>
+            </div>
+            <a href="https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 bg-[#06C755] hover:bg-[#05b34c] text-white text-xs px-3.5 py-1.5 rounded-full font-bold shadow-xs transition transform hover:scale-105">
+                <i class="fa-brands fa-line text-sm"></i> 加入 LINE 社群
+            </a>
+        </div>
+    </nav>
 
     <!-- 頁首 Header -->
     <header class="relative overflow-hidden bg-gradient-to-br from-sage-700 via-sage-600 to-teal-800 text-white pt-10 pb-16 px-6 shadow-md">
@@ -77,7 +114,7 @@
 
         <div class="max-w-5xl mx-auto text-center relative z-10">
             <!-- 瀏覽人數與點讚愛心計數列 -->
-            <div class="flex justify-center items-center gap-3 mb-4">
+            <div class="flex justify-center items-center gap-3 mb-4 flex-wrap">
                 <span class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/20 text-emerald-100 text-xs px-3.5 py-1 rounded-full shadow-xs">
                     <i class="fa-solid fa-eye text-emerald-300"></i> 總瀏覽人數：<span id="viewCount" class="font-bold text-white">19,450</span> 人
                 </span>
@@ -90,7 +127,7 @@
                 AI 變現 1000 種方法獨立行動指南
             </h1>
             <p class="text-sage-100 text-xs md:text-sm max-w-2xl mx-auto font-light leading-relaxed">
-                1000 筆各自獨立、SOP 與工具完全不重複的變現切入點。點擊「查看步驟」探索專屬實務框架！
+                🌿 結合自然植藝美學與現代 AI 科技，1000 筆獨立 SOP 與工具鏈。點擊「查看步驟」輕鬆展開瀏覽！
             </p>
         </div>
     </header>
@@ -103,7 +140,7 @@
             <!-- 全方位搜尋輸入框 -->
             <div class="relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sage-600"></i>
-                <input type="text" id="searchInput" placeholder="全方位搜尋（可輸入標題、SOP步驟內容、AI工具名稱，例如：Midjourney、Python、VI）..." 
+                <input type="text" id="searchInput" placeholder="全方位搜尋（輸入標題、SOP步驟內容、AI工具名稱，如：Midjourney、Python、苔球）..." 
                     class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-white/90 border border-sage-200 text-slate-700 placeholder-slate-400 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-sage-600 focus:border-transparent transition shadow-inner">
             </div>
 
@@ -151,7 +188,7 @@
 
         <!-- 卡片列表容器 -->
         <div class="space-y-3" id="cardsContainer">
-            <!-- 動態項目繪製區塊 -->
+            <!-- 動態繪製區塊 -->
         </div>
 
         <!-- 分頁控制 -->
@@ -159,21 +196,45 @@
             <!-- 動態產生頁碼 -->
         </div>
 
+        <!-- 柔性情境圖片與品牌精神卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+            <div class="bg-white p-5 rounded-3xl border border-sage-100 shadow-sm flex items-center gap-4">
+                <div class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-sage-200">
+                    <img src="1000064189.jpg" alt="藝想天開植物工坊" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-sage-600 bg-sage-50 px-2.5 py-1 rounded-full">植物美學學苑</span>
+                    <h4 class="font-bold text-sage-800 text-sm md:text-base mt-1">手作苔球與植能香氛</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">將植物能量融合生活美學，打造洗滌心靈的療癒空間與自然綠意作品。</p>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-3xl border border-sage-100 shadow-sm flex items-center gap-4">
+                <div class="w-24 h-24 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-3xl shrink-0 border border-teal-100">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full">AI 創新實務</span>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base mt-1">電商與自動化賦能</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">透過 AI 技術簡化流程、設計高轉化視覺，輔導學員輕鬆實現品牌轉型。</p>
+                </div>
+            </div>
+        </div>
+
         <!-- LINE 社群號召 CTA 區塊 -->
         <div class="bg-white border-2 border-dashed border-emerald-400 rounded-3xl p-6 text-center my-8 shadow-sm">
             <h3 class="text-lg font-bold text-emerald-900 mb-2">📢 邀請加入「藝想天開 商品 職訊 電商 分享」！</h3>
-            <p class="text-xs text-slate-600 mb-4">請點選以下連結加入社群，獲取最新電商資訊與 AI 實務交流：</p>
+            <p class="text-xs text-slate-600 mb-4">請點選以下連結加入社群，即時掌握優質商品、職場資訊、電商經營與植物美學動態：</p>
             <a href="https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="inline-block bg-[#06C755] hover:bg-[#05b34c] text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition transform hover:scale-105">
-                👉 點此加入 LINE 社群
+                👉 點選此連結加入「藝想天開 商品 職訊 電商 分享」社群
             </a>
         </div>
 
-        <!-- 訪客留言與設計師聯繫表單區塊 -->
+        <!-- 訪客留言與 Messenger 諮詢區塊 -->
         <section id="contactSection" class="mt-12 w-full">
             <div id="contactCard" class="bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
                 <div class="text-center space-y-2">
                     <span class="inline-block px-3.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold border border-emerald-300">
-                        <i class="fa-solid fa-envelope-open-text mr-1"></i> 網頁設計與意見交流
+                        <i class="fa-solid fa-envelope-open-text mr-1"></i> 線上留言與 Messenger 諮詢
                     </span>
                     <h3 class="text-2xl sm:text-3xl font-black text-emerald-950">與設計師聯繫 / 訪客留言</h3>
                     <p class="text-xs sm:text-sm text-slate-600">如需網頁設計服務或有任何指教，歡迎填寫下方表單傳送訊息給我！</p>
@@ -182,35 +243,61 @@
                     </p>
                 </div>
 
-                <form id="contactForm" onsubmit="sendMail(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-xs text-slate-700 font-bold">您的姓名 / 稱呼 *</label>
-                            <input type="text" name="user_name" id="senderName" required placeholder="例如：林先生 / 王小姐" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <!-- 左側表單 -->
+                    <form id="contactForm" onsubmit="sendMail(event)" class="space-y-4 lg:col-span-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs text-slate-700 font-bold">您的姓名 / 稱呼 *</label>
+                                <input type="text" name="user_name" id="senderName" required placeholder="例如：林先生 / 王小姐" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs text-slate-700 font-bold">您的電子信箱 (絕對保密) *</label>
+                                <input type="email" name="user_email" id="senderEmail" required placeholder="name@example.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
+                            </div>
                         </div>
                         <div class="space-y-1">
-                            <label class="text-xs text-slate-700 font-bold">您的電子信箱 (絕對保密) *</label>
-                            <input type="email" name="user_email" id="senderEmail" required placeholder="name@example.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
+                            <label class="text-xs text-slate-700 font-bold">留言內容 / 網頁設計需求 *</label>
+                            <textarea name="message" id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white resize-none"></textarea>
                         </div>
+                        <div class="text-center pt-2">
+                            <button type="submit" id="submit-btn" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto cursor-pointer">
+                                <i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱
+                            </button>
+                            <div id="form-status" class="mt-3 font-bold text-xs"></div>
+                        </div>
+                    </form>
+
+                    <!-- 右側 Messenger QR Code 諮詢 -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center flex flex-col items-center justify-center h-full space-y-3">
+                        <strong class="text-emerald-900 text-sm">Facebook Messenger</strong>
+                        <p class="text-xs text-slate-500">掃描下方 QR Code 快速互動諮詢：</p>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://m.me/61595804228122" alt="Messenger QR Code" class="w-32 h-32 border border-slate-200 rounded-xl shadow-xs">
+                        <a href="https://m.me/61595804228122" target="_blank" class="text-xs text-emerald-700 hover:text-emerald-900 font-bold underline">
+                            👉 點此直接開啟 Messenger 對話
+                        </a>
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-xs text-slate-700 font-bold">留言內容 / 網頁設計需求 *</label>
-                        <textarea name="message" id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white resize-none"></textarea>
-                    </div>
-                    <div class="text-center pt-2">
-                        <button type="submit" id="submit-btn" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto cursor-pointer">
-                            <i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱
-                        </button>
-                        <div id="form-status" class="mt-3 font-bold text-xs"></div>
-                    </div>
-                </form>
+                </div>
             </div>
         </section>
 
     </main>
 
+    <!-- 右下角固定懸浮導航按鈕 (返回頁首、頁尾、加入 LINE) -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-2 z-50">
+        <button onclick="scrollToTop()" title="回到頁首" class="w-11 h-11 bg-white border border-sage-200 text-sage-800 rounded-full shadow-lg flex items-center justify-center hover:bg-sage-100 transition transform hover:scale-110 cursor-pointer">
+            <i class="fa-solid fa-arrow-up text-sm"></i>
+        </button>
+        <a href="https://line.me/ti/g2/h_4udsbkv9K7xaMoZQgrLJ4zDjwi0qZgbzRApg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" title="加入 LINE 社群" class="w-11 h-11 bg-[#06C755] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#05b34c] transition transform hover:scale-110">
+            <i class="fa-brands fa-line text-lg"></i>
+        </a>
+        <button onclick="scrollToBottom()" title="前往頁尾" class="w-11 h-11 bg-white border border-sage-200 text-sage-800 rounded-full shadow-lg flex items-center justify-center hover:bg-sage-100 transition transform hover:scale-110 cursor-pointer">
+            <i class="fa-solid fa-arrow-down text-sm"></i>
+        </button>
+    </div>
+
     <!-- 頁尾 Footer -->
-    <footer class="bg-slate-800 text-slate-300 py-8 px-6 mt-auto border-t border-slate-700/50">
+    <footer id="footerSection" class="bg-slate-800 text-slate-300 py-8 px-6 mt-auto border-t border-slate-700/50">
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm">
             <div class="flex items-center space-x-2">
                 <span class="bg-sage-600/30 text-sage-300 p-2 rounded-xl">
@@ -219,7 +306,7 @@
                 <span class="font-medium tracking-wide">藝想天開植能香氛能量學苑 版權所有 All Rights Reserved.</span>
             </div>
             <div class="text-center md:text-right text-slate-400">
-                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞 (Donna Chang)</span> | 設計日期：<span id="currentDateTime" class="text-emerald-300 font-mono"></span></p>
+                <p>網頁設計師：<span class="text-warm-100 font-semibold tracking-wide">張秋霞</span> | 設計日期：<span id="currentDateTime" class="text-emerald-300 font-mono"></span></p>
             </div>
         </div>
     </footer>
@@ -231,7 +318,15 @@
             emailjs.init("oYklYs7dndg_UFEaQ");
         })();
 
-        // 2. 瀏覽計數器與按讚
+        // 2. 頁面滾動平滑導航
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function scrollToBottom() {
+            document.getElementById('footerSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 3. 瀏覽計數器與按讚
         let views = parseInt(localStorage.getItem('page_views') || 19450);
         views += 1;
         localStorage.setItem('page_views', views);
@@ -246,7 +341,7 @@
             document.getElementById('likeCount').innerText = likes.toLocaleString();
         });
 
-        // 3. EmailJS 留言寄信邏輯
+        // 4. EmailJS 無跳頁寄信發送邏輯
         function sendMail(event) {
             event.preventDefault(); 
 
@@ -265,7 +360,7 @@
             emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, '#contactForm')
                 .then(function() {
                     statusDiv.style.color = "#2d5a3f";
-                    statusDiv.innerText = "✅ 訊息已成功傳送至 joyce0585@gmail.com！我們會盡快回覆您。";
+                    statusDiv.innerText = "✅ 訊息已成功傳送至張秋霞設計師信箱！我們會盡快回覆您。";
                     document.getElementById('contactForm').reset();
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱`;
@@ -278,7 +373,7 @@
                 });
         }
 
-        // 4. 資料庫與 1000 項生成引擎
+        // 5. 資料庫與 1000 項動態生成引擎
         const categories = {
             design: { name: "視覺設計", icon: "fa-palette", badgeClass: "bg-rose-100/80 text-rose-700", iconBg: "bg-rose-50 text-rose-500" },
             automation: { name: "程式自動化", icon: "fa-code", badgeClass: "bg-teal-100/80 text-teal-700", iconBg: "bg-teal-50 text-teal-600" },
