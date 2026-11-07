@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -170,83 +172,27 @@
                         🔒 <strong>電子信箱保密不外流</strong>，表單送出後將直接安全傳送至設計師專屬信箱。
                     </p>
                 </div>
-                <!-- JavaScript 互動功能與 EmailJS 發送邏輯 -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-    // 1. 初始化 EmailJS（已帶入您的 Public Key）
-    (function(){
-        emailjs.init("oYklYs7dndg_UFEaQ");
-    })();
 
-    // 2. 瀏覽計數器邏輯
-    let views = parseInt(localStorage.getItem('page_views') || 1280);
-    views += 1;
-    localStorage.setItem('page_views', views);
-    document.getElementById('viewCount').innerText = views.toLocaleString();
-
-    // 3. 按讚功能邏輯
-    let likes = parseInt(localStorage.getItem('page_likes') || 352);
-    document.getElementById('likeCount').innerText = likes;
-
-    function addLike() {
-        likes += 1;
-        localStorage.setItem('page_likes', likes);
-        document.getElementById('likeCount').innerText = likes;
-    }
-
-    // 4. EmailJS 留言寄信邏輯
-    function sendMail(event) {
-        event.preventDefault(); // 防止頁面刷新/跳轉
-
-        const submitBtn = document.getElementById('submit-btn');
-        const statusDiv = document.getElementById('form-status');
-
-        submitBtn.disabled = true;
-        submitBtn.innerText = "正在傳送中...";
-        statusDiv.style.color = "#555";
-        statusDiv.innerText = "傳送中，請稍候...";
-
-        // ⚠️ 請在 EmailJS 後台取得 Service ID 與 Template ID 後填入單引號內
-        const SERVICE_ID = 'service_xxxxxxx';   // 填入您的 Service ID (例如 service_a1b2c3d)
-        const TEMPLATE_ID = 'template_xxxxxxx'; // 填入您的 Template ID (例如 template_x9y8z7)
-
-        emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, '#contact-form')
-            .then(function() {
-                statusDiv.style.color = "#2d5a3f";
-                statusDiv.innerText = "✅ 訊息已成功傳送至 joyce0585@gmail.com！我們會盡快回覆您。";
-                document.getElementById('contact-form').reset();
-                submitBtn.disabled = false;
-                submitBtn.innerText = "傳送訊息至專屬信箱";
-            }, function(error) {
-                console.error('EmailJS 傳送失敗:', error);
-                statusDiv.style.color = "#e63946";
-                statusDiv.innerText = "❌ 傳送失敗，請確認 Service/Template ID 或直接 Email 聯絡 joyce0585@gmail.com";
-                submitBtn.disabled = false;
-                submitBtn.innerText = "重新傳送";
-            });
-    }
-</script>
-
-
-                <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
+                <form id="contactForm" onsubmit="sendMail(event)" class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="space-y-1">
                             <label id="lblSenderName" class="text-xs text-slate-700 font-bold">您的姓名 / 稱呼 *</label>
-                            <input type="text" id="senderName" required placeholder="例如：林先生 / 王小姐" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
+                            <input type="text" name="user_name" id="senderName" required placeholder="例如：林先生 / 王小姐" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
                         </div>
                         <div class="space-y-1">
                             <label id="lblSenderEmail" class="text-xs text-slate-700 font-bold">您的電子信箱 (絕對保密) *</label>
-                            <input type="email" id="senderEmail" required placeholder="name@example.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
+                            <input type="email" name="user_email" id="senderEmail" required placeholder="name@example.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white">
                         </div>
                     </div>
                     <div class="space-y-1">
                         <label id="lblSenderMsg" class="text-xs text-slate-700 font-bold">留言內容 / 網頁設計需求 *</label>
-                        <textarea id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white resize-none"></textarea>
+                        <textarea name="message" id="senderMessage" rows="4" required placeholder="請在此輸入您的需求或建議..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:bg-white resize-none"></textarea>
                     </div>
                     <div class="text-center pt-2">
-                        <button type="submit" id="submitBtn" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto cursor-pointer">
-                            <i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱
+                        <button type="submit" id="submit-btn" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black px-8 py-3.5 rounded-2xl shadow-lg transition transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 mx-auto cursor-pointer">
+                            <i class="fa-solid fa-paper-plane"></i> 傳送訊息至專屬信箱
                         </button>
+                        <div id="form-status" class="mt-3 font-bold text-xs"></div>
                     </div>
                 </form>
             </div>
@@ -269,8 +215,13 @@
         </div>
     </footer>
 
-    <!-- JavaScript 核心引擎 -->
+    <!-- JavaScript 核心引擎與 EmailJS 整合 -->
     <script>
+        // 1. 初始化 EmailJS（已帶入您的 Public Key）
+        (function(){
+            emailjs.init("oYklYs7dndg_UFEaQ");
+        })();
+
         const categories = {
             design: { name: "視覺設計", icon: "fa-palette", badgeClass: "bg-rose-100/80 text-rose-700", iconBg: "bg-rose-50 text-rose-500" },
             automation: { name: "程式自動化", icon: "fa-code", badgeClass: "bg-teal-100/80 text-teal-700", iconBg: "bg-teal-50 text-teal-600" },
@@ -306,7 +257,7 @@
                     ["輸入房屋原始平面格局圖與業主風格喜好，透過 ChatGPT 轉化為精準的空間配置提示詞。", "利用 Midjourney / Stable Diffusion 生成日式極簡、北歐或現代輕奢等多元裝修渲染圖。", "製作高質感提案簡報與空間材質對照表，協助屋主與施工團隊進行精準溝通。"],
                     ["定義圖樣主題（如植物花草、幾何禪意、節慶圖騰）與色彩系統。", "使用 Midjourney 指令生成具備無縫連接特性的高解析度紋理背景。", "匯入 Adobe Illustrator 進行向量路徑描圖與色票分離，供紡織或數位桌布商用授權。"],
                     ["利用 Photoroom 自動去除商品原始背景，保留乾淨主體。", "透過 Midjourney 建立符合產品調性的自然光影與生活情境背景。", "在 Canva Pro 中進行光影融合、調色與銷售賣點排版，產出高點擊率的電商主圖。"],
-                    ["依據專案需求，使用 Figma AI 快速生成響應式網頁的介面骨架與資訊架構。", "套用設計系統 (Design System) 規範，精準定義按鈕、卡片、字級與網格間距。", "產出高保真互動原型 (Prototype)，並匯出前端交付規格文件以降低溝通成本。"],
+                    ["依據專案需求，使用 Figma AI 快速生成響應式網頁的介面骨架與資訊架構。", "套用設計系統 (Design System) 規範，精準定義按鈕, 卡片、字級與網格間距。", "產出高保真互動原型 (Prototype)，並匯出前端交付規格文件以降低溝通成本。"],
                     ["分析各社群平台（如 Instagram、Dcard、Threads）的受眾閱讀習慣與視覺偏好。", "透過 ChatGPT 規劃系列貼文的標題文案矩陣與版面視覺層級。", "在 Canva 中建立可重複使用的版型樣板 (Template System)，確保多張貼文維持高度一致性。"],
                     ["收集客戶提供的真人或寵物照片，提取五官特徵與神情亮點。", "利用 AI 繪圖工具轉換為日系動漫、水彩手繪或紙雕藝術等特色風格。", "進行後製精修、去背與排版，製作成手機桌布、鑰匙圈或社群頭像等數位商品。"],
                     ["確認展位尺寸、燈光條件與活動主題（如手作市集、品牌發表會）。", "使用 AI 快速模擬活動背板、立牌、導視系統的現場視覺搭配效果。", "輸出 3D 模擬預覽圖與大圖輸出完稿檔案，提供施工廠商進行打樣。"],
@@ -326,8 +277,6 @@
         ];
 
         const fullDatabase = [];
-        let idCounter = 1;
-
         for (let i = 1; i <= 1000; i++) {
             const catObj = categoriesData[(i - 1) % categoriesData.length];
             const actionIdx = Math.floor((i - 1) / categoriesData.length) % catObj.actions.length;
@@ -369,44 +318,43 @@
             document.getElementById('likeCount').innerText = likes.toLocaleString();
         });
 
-        // 聯絡表單送出處理 (串接 FormSubmit 服務，無須後端伺服器)
-        function submitContactForm(event) {
-            event.preventDefault();
-            const name = document.getElementById('senderName').value;
-            const email = document.getElementById('senderEmail').value;
-            const message = document.getElementById('senderMessage').value;
-            const submitBtn = document.getElementById('submitBtn');
+        // 瀏覽計數器邏輯
+        let views = parseInt(localStorage.getItem('page_views') || 19450);
+        views += 1;
+        localStorage.setItem('page_views', views);
+        document.getElementById('viewCount').innerText = views.toLocaleString();
+
+        // 3. EmailJS 留言寄信邏輯
+        function sendMail(event) {
+            event.preventDefault(); // 防止頁面刷新/跳轉
+
+            const submitBtn = document.getElementById('submit-btn');
+            const statusDiv = document.getElementById('form-status');
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 正在傳送郵件...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 正在傳送中...`;
+            statusDiv.style.color = "#555";
+            statusDiv.innerText = "傳送中，請稍候...";
 
-            // 使用 fetch 發送郵件至指定信箱 (請將下方 donna520chang@gmail.com 替換為您的實際收信信箱)
-            fetch("https://formsubmit.co/ajax/donna520chang@gmail.com", {
-                method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    message: message,
-                    _subject: `【AI變現指南】來自 ${name} 的網站訪客留言與設計需求`
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert("🎉 留言已成功傳送至張秋霞設計師信箱！感謝您的寶貴意見與指教。");
-                document.getElementById('contactForm').reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("❌ 傳送發生一點小狀況，您可以直接透過 Email 與我聯繫。");
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 傳送郵件至張秋霞設計師信箱`;
-            });
+            // ⚠️ 已經成功帶入您的 Public Key：oYklYs7dndg_UFEaQ
+            // 請在 EmailJS 後台建立 Service 及 Template 後，將對應 ID 填入下方
+            const SERVICE_ID = 'service_xxxxxxx';   // 填入您的 Service ID (例如 service_a1b2c3d)
+            const TEMPLATE_ID = 'template_xxxxxxx'; // 填入您的 Template ID (例如 template_x9y8z7)
+
+            emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, '#contactForm')
+                .then(function() {
+                    statusDiv.style.color = "#2d5a3f";
+                    statusDiv.innerText = "✅ 訊息已成功傳送至 joyce0585@gmail.com！我們會盡快回覆您。";
+                    document.getElementById('contactForm').reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 傳送訊息至專屬信箱`;
+                }, function(error) {
+                    console.error('EmailJS 傳送失敗:', error);
+                    statusDiv.style.color = "#e63946";
+                    statusDiv.innerText = "❌ 傳送失敗，請確認 Service/Template ID 或直接 Email 聯絡 joyce0585@gmail.com";
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 傳送訊息至專屬信箱`;
+                });
         }
 
         function renderItems() {
