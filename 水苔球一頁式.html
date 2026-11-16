@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>藝想天開植能香氛能量學苑｜把圓滿與芬芳揉進掌心</title>
+<style>
+  :root {
+    --forest-green: #2E4F3E;
+    --sage-green: #5B7E6B;
+    --soft-mint: #E8F0EB;
+    --amber-gold: #C88A3B;
+    --cta-terracotta: #D95D39;
+    --cta-hover: #B84726;
+    --bg-cream: #F9F7F2;
+    --bg-sand: #EFECE4;
+    --text-dark: #2C332E;
+    --text-muted: #5F6862;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; scroll-behavior: smooth; }
+  body { background-color: var(--bg-cream); color: var(--text-dark); line-height: 1.65; }
+  a { text-decoration: none; }
+  
+  /* 頂部公告與倒數橫幅 */
+  .top-notice { background: var(--forest-green); color: #fff; text-align: center; padding: 8px 15px; font-size: 0.9rem; letter-spacing: 0.5px; }
+  .urgency-bar { background: linear-gradient(90deg, #C88A3B, #D95D39); color: #fff; padding: 10px 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; font-weight: bold; position: sticky; top: 0; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+  .timer-box { background: #fff; color: var(--cta-terracotta); padding: 3px 12px; border-radius: 6px; font-family: monospace; font-size: 1.1rem; }
+
+  /* 通用容器與標題 */
+  .container { max-width: 960px; margin: 0 auto; padding: 50px 20px; }
+  .section-alt { background-color: var(--bg-sand); }
+  .section-title { text-align: center; font-size: 2rem; color: var(--forest-green); margin-bottom: 10px; font-weight: 700; }
+  .section-subtitle { text-align: center; color: var(--text-muted); font-size: 1.05rem; margin-bottom: 35px; }
+
+  /* 1. 首屏吸睛區 Hero */
+  .hero { background: linear-gradient(135deg, #E8F0EB 0%, #F9F7F2 100%); padding: 50px 20px; text-align: center; border-bottom: 1px solid #DCE5DF; }
+  .brand-tag { display: inline-block; background: var(--forest-green); color: #fff; padding: 5px 16px; border-radius: 50px; font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 1px; }
+  .hero h1 { font-size: 2.5rem; color: var(--forest-green); margin-bottom: 12px; line-height: 1.3; }
+  .hero p.lead { font-size: 1.2rem; color: var(--text-dark); max-width: 680px; margin: 0 auto 25px; }
+  .hero-img-box { max-width: 760px; margin: 0 auto 25px; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(46,79,62,0.15); background: #fff; }
+  .hero-img-box img { width: 100%; height: auto; display: block; }
+  .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 760px; margin: 0 auto 30px; }
+  .badge-item { background: #fff; border: 1px solid #D5E0D9; padding: 12px 8px; border-radius: 12px; font-weight: bold; color: var(--forest-green); font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+  .badge-item span { display: block; font-size: 1.5rem; margin-bottom: 4px; }
+
+  /* 按鈕樣式 */
+  .btn-cta { display: inline-block; background: var(--cta-terracotta); color: #fff; font-size: 1.2rem; font-weight: bold; padding: 15px 40px; border-radius: 50px; box-shadow: 0 6px 20px rgba(217,93,57,0.35); transition: 0.3s; }
+  .btn-cta:hover { background: var(--cta-hover); transform: translateY(-2px); }
+
+  /* 2. 四感手作步驟圖解 */
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .step-card { background: #fff; padding: 25px 18px; border-radius: 14px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.04); border-top: 4px solid var(--sage-green); }
+  .step-num { width: 36px; height: 36px; background: var(--soft-mint); color: var(--forest-green); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 12px; }
+  .step-card h3 { font-size: 1.15rem; color: var(--forest-green); margin-bottom: 8px; }
+  .step-card p { font-size: 0.92rem; color: var(--text-muted); }
+
+  /* 3. 情緒能量速查字典 */
+  .symptom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .symptom-card { background: #fff; border-radius: 12px; padding: 20px; border-left: 5px solid var(--amber-gold); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  .symptom-title { font-size: 1.15rem; font-weight: bold; color: var(--text-dark); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .symptom-rx { background: var(--soft-mint); color: var(--forest-green); padding: 6px 10px; border-radius: 6px; font-size: 0.9rem; font-weight: bold; margin-top: 8px; display: inline-block; }
+
+  /* 4. 開箱清單透明化 */
+  .box-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 6px 20px rgba(0,0,0,0.05); }
+  .box-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px; border-bottom: 1px dashed #E0E6E2; }
+  .box-icon { font-size: 1.6rem; }
+
+  /* 5. C 雙軌價格方案區 */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+  .price-card { background: #fff; border-radius: 16px; padding: 30px 22px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.06); border: 2px solid transparent; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .price-card.featured { border-color: var(--cta-terracotta); transform: scale(1.03); }
+  .ribbon { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--cta-terracotta); color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; white-space: nowrap; }
+  .price-card h3 { font-size: 1.3rem; color: var(--forest-green); margin-bottom: 10px; }
+  .old-price { text-decoration: line-through; color: #999; font-size: 0.95rem; }
+  .new-price { font-size: 2.2rem; font-weight: 800; color: var(--cta-terracotta); margin: 5px 0 15px; }
+  .price-features { list-style: none; text-align: left; margin-bottom: 25px; font-size: 0.95rem; }
+  .price-features li { padding: 7px 0; border-bottom: 1px solid #F0F2F0; }
+  .price-features li::before { content: "✔ "; color: var(--sage-green); font-weight: bold; }
+  .btn-card { display: block; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; color: #fff; background: var(--forest-green); transition: 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+  .price-card.featured .btn-card { background: var(--cta-terracotta); }
+  .btn-card:hover { opacity: 0.9; }
+
+  /* 團體折扣橫幅 */
+  .group-banner { margin-top: 30px; background: linear-gradient(135deg, #2E4F3E, #466E59); color: #fff; padding: 25px; border-radius: 14px; text-align: center; }
+  .group-tiers { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+  .tier-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); padding: 8px 18px; border-radius: 8px; font-size: 1rem; }
+
+  /* 6. 線上訂購與預約表單區 (郵件 / Google表單串接) */
+  .form-wrapper { max-width: 680px; margin: 0 auto; background: #fff; padding: 35px 30px; border-radius: 18px; box-shadow: 0 10px 30px rgba(46,79,62,0.08); border-top: 6px solid var(--forest-green); }
+  .tab-buttons { display: flex; gap: 10px; margin-bottom: 25px; background: var(--bg-sand); padding: 6px; border-radius: 10px; }
+  .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: transparent; color: var(--text-muted); transition: 0.2s; font-size: 0.95rem; }
+  .tab-btn.active { background: var(--forest-green); color: #fff; }
+  .form-group { margin-bottom: 18px; text-align: left; }
+  .form-group label { display: block; font-weight: bold; color: var(--forest-green); margin-bottom: 6px; font-size: 0.95rem; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 1px solid #CBD5CF; border-radius: 8px; font-size: 1rem; background: #FAFAFA; transition: 0.2s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--forest-green); background: #fff; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .btn-submit { width: 100%; background: var(--cta-terracotta); color: #fff; font-size: 1.15rem; font-weight: bold; padding: 15px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 6px 18px rgba(217,93,57,0.3); transition: 0.3s; margin-top: 10px; }
+  .btn-submit:hover { background: var(--cta-hover); }
+  .form-note { font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 12px; }
+
+  /* 7. 信任背書與保障 */
+  .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; text-align: center; }
+  .trust-box { background: #fff; padding: 22px; border-radius: 12px; }
+  .trust-box h4 { color: var(--forest-green); margin: 8px 0; }
+
+  /* 浮動 LINE 按鈕 */
+  .floating-line { position: fixed; bottom: 22px; right: 22px; background: #06C755; color: #fff; padding: 12px 20px; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 15px rgba(6,199,85,0.4); z-index: 1000; display: flex; align-items: center; gap: 8px; }
+
+  @media (max-width: 768px) {
+    .badges-grid, .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .symptom-grid, .pricing-grid, .box-list, .trust-grid, .form-row { grid-template-columns: 1fr; }
+    .price-card.featured { transform: none; }
+    .hero h1 { font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- 頂部公告與倒數 -->
+  <div class="top-notice">🌿 藝想天開植能香氛能量學苑 │ 全館滿 NT$1,500 免運・月底前下單加贈植物養護噴霧瓶</div>
+  <div class="urgency-bar">
+    <span>🔥 早鳥體驗與精裝禮盒限時優惠倒數中！</span>
+    <span class="timer-box" id="countdown">01 : 59 : 48</span>
+  </div>
+
+  <!-- 1. 首屏吸睛區 -->
+  <header class="hero">
+    <div class="brand-tag">藝想天開植能香氛能量學苑</div>
+    <h1>把圓滿與芬芳，揉進你的掌心</h1>
+    <p class="lead">結合植物生機與天然香氛，為高壓現代人打造兼具視覺美學與身心療癒的「桌面氣味避難所」</p>
+    
+    <div class="hero-img-box">
+      <!-- 請在 WordPress 中替換為您的水苔球與精油實拍主圖 URL -->
+      <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=1000&q=80" alt="手作能量水苔球與天然香氛精油">
+    </div>
+
+    <div class="badges-grid">
+      <div class="badge-item"><span>🌱</span>活體觀葉植栽</div>
+      <div class="badge-item"><span>💧</span>天然植物精油</div>
+      <div class="badge-item"><span>🤲</span>零門檻手作體驗</div>
+      <div class="badge-item"><span>🪨</span>質感擴香石盤</div>
+    </div>
+
+    <a href="#pricing" class="btn-cta">立即選擇療癒方案 ➔</a>
+  </header>
+
+  <!-- 2. 四感儀式感圖解 -->
+  <section class="container">
+    <h2 class="section-title">15 分鐘開啟五感靜心儀式</h2>
+    <p class="section-subtitle">不需要園藝經驗，跟著四步驟打造專屬你的微型森林能量場</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>嗅覺開場・滴油定心</h3>
+        <p>滴入特調純天然植物精油，在深呼吸之間切換忙碌思緒。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>觸覺接地・捏塑圓滿</h3>
+        <p>雙手輕柔包裹濕潤水苔，感受泥土與植物的溫潤生命力。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>視覺剪裁・植藝美學</h3>
+        <p>修剪出獨一無二的植栽姿態，放上質感石盤成為空間焦點。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>心靈祝福・日常陪伴</h3>
+        <p>寫下專屬能量祝福卡，讓會呼吸的綠意陪伴每個工作日常。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 情緒能量速查字典 -->
+  <section class="section-alt">
+    <div class="container">
+      <h2 class="section-title">現代人情緒能量速查表</h2>
+      <p class="section-subtitle">比滑手機更解壓！對照你此刻的狀態，挑選專屬植能與香氛處方</p>
+      <div class="symptom-grid">
+        <div class="symptom-card">
+          <div class="symptom-title">💻 高壓緊繃・思緒混亂</div>
+          <p>長期面對螢幕與專案截止日，急需穩定心神與提升專注力。</p>
+          <div class="symptom-rx">➔ 推薦：迷迭香精油 × 翠綠蕨類苔球</div>
+        </div>
+        <div class="symptom-card">
+          <div class="symptom-title">🌙 淺眠難入睡・身心疲乏</div>
+          <p>下班後腦袋仍停不下來，渴望溫柔安定的睡前放鬆儀式。</p>
+          <div class="symptom-rx">➔ 推薦：真正薰衣草 × 絨葉小鳳梨苔球</div>
+        </div>
+        <div class="symptom-card">
+          <div class="symptom-title">😮‍💨 情緒低落・缺乏靈感</div>
+          <p>需要陽光般的溫暖能量，為書房與客廳注入清新活力。</p>
+          <div class="symptom-rx">➔ 推薦：甜橙佛手柑 × 圓葉椒草苔球</div>
+        </div>
+        <div class="symptom-card">
+          <div class="symptom-title">🏢 辦公室空氣悶濁沉重</div>
+          <p>冷氣房久坐容易昏沉，需要會呼吸的自然綠意淨化空間。</p>
+          <div class="symptom-rx">➔ 推薦：雪松尤加利 × 空氣淨化苔球</div>
+        </div>
+        <div class="symptom-card">
+          <div class="symptom-title">🎁 喬遷開幕・質感送禮</div>
+          <p>不想送容易凋謝的花籃，想送上象徵「圓滿生機」的祝福。</p>
+          <div class="symptom-rx">➔ 推薦：1688 活體植栽＋質感石盤禮盒</div>
+        </div>
+        <div class="symptom-card">
+          <div class="symptom-title">🤝 企業團隊壓力大・缺凝聚</div>
+          <p>企業福委與 HR 尋找兼具 ESG 永續與員工紓壓的質感活動。</p>
+          <div class="symptom-rx">➔ 推薦：企業包班工作坊（最高 8.5 折）</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 開箱透明化 -->
+  <section class="container">
+    <h2 class="section-title">精裝禮盒開箱：把整座微型森林帶回家</h2>
+    <p class="section-subtitle">嚴選 FSC 環保無塑包裝，每一件資材都為美學與永續而生</p>
+    <div class="box-list">
+      <div class="box-item"><span class="box-icon">🌿</span><div><strong>精選活體觀葉／蕨類植物 × 1</strong><br><small>花市新鮮嚴選，耐陰好照顧，新手也能輕鬆養得翠綠。</small></div></div>
+      <div class="box-item"><span class="box-icon">🧪</span><div><strong>特調天然植物滴管精油 × 1</strong><br><small>純天然複方調香，滴於水苔或石盤即可自然擴香。</small></div></div>
+      <div class="box-item"><span class="box-icon">🪨</span><div><strong>專屬質感擴香石盤底座 × 1</strong><br><small>兼具吸水養護與空間陳列美學，擺上桌面立即升級質感。</small></div></div>
+      <div class="box-item"><span class="box-icon">📜</span><div><strong>圖文養護與靜心指南卡 × 1</strong><br><small>清楚標示澆水頻率與靜心引導語，附 LINE 專屬養護諮詢。</small></div></div>
+    </div>
+  </section>
+
+  <!-- 5. C 雙軌方案價格表 -->
+  <section id="pricing" class="section-alt">
+    <div class="container">
+      <h2 class="section-title">選擇您的專屬療癒方案</h2>
+      <p class="section-subtitle">點擊下方方案按鈕，系統將自動為您帶入訂購表單</p>
+      
+      <div class="pricing-grid">
+        <!-- 方案 1：實體體驗課 -->
+        <div class="price-card">
+          <div>
+            <h3>【早鳥體驗】午後植能手作課</h3>
+            <div class="old-price">原價 NT$ 880</div>
+            <div class="new-price">NT$ 599</div>
+            <ul class="price-features">
+              <li>含完整手作材料（價值 NT$168）</li>
+              <li>專業講師面對面場地教學</li>
+              <li>現場體驗多款天然植物精油調香</li>
+              <li>帶回親手捏製的專屬能量水苔球</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-card" onclick="selectPlan('【早鳥體驗】午後植能手作課 (NT$ 599)')">立即預約早鳥名額</button>
+        </div>
+
+        <!-- 方案 2：主力商品禮盒 -->
+        <div class="price-card featured">
+          <div class="ribbon">🔥 最受歡迎・送禮自用首選</div>
+          <div>
+            <h3>【精裝禮盒】活體植栽＋石盤組</h3>
+            <div class="old-price">原價 NT$ 1,980</div>
+            <div class="new-price">NT$ 1,688</div>
+            <ul class="price-features">
+              <li><strong>享全館滿 NT$1,500 免運優惠</strong></li>
+              <li>內含鮮活觀葉植栽＋質感擴香石盤</li>
+              <li>附贈特調天然精油與養護指南卡</li>
+              <li><strong>限時加贈：植物專用養護噴霧瓶乙支</strong></li>
+            </ul>
+          </div>
+          <button type="button" class="btn-card" onclick="selectPlan('【精裝禮盒】活體植栽＋石盤組 (NT$ 1,688 免運)')">立即搶購精裝禮盒</button>
+        </div>
+
+        <!-- 方案 3：雙人/雙入優惠 -->
+        <div class="price-card">
+          <div>
+            <h3>【圓滿雙享】禮盒＋體驗雙重奏</h3>
+            <div class="old-price">原價 NT$ 2,860</div>
+            <div class="new-price">NT$ 2,180</div>
+            <ul class="price-features">
+              <li>精裝商品組合（活體＋石盤）× 1 組</li>
+              <li>早鳥場地手作體驗課名額 × 1 位</li>
+              <li>一組放辦公室、一組帶回家療癒</li>
+              <li>同享免運與專屬養護噴霧瓶贈品</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-card" onclick="selectPlan('【圓滿雙享】禮盒＋體驗雙重奏 (NT$ 2,180 免運)')">立即入手雙重優惠</button>
+        </div>
+      </div>
+
+      <!-- 團體與企業包班階梯折扣 -->
+      <div class="group-banner">
+        <h3>🏢 企業 ESG 紓壓工作坊 ／ 團體手作包班專屬優惠</h3>
+        <p>適合企業福委會、部門團建、社區發展協會與同好聚會，可客製化主題與到府授課</p>
+        <div class="group-tiers">
+          <div class="tier-badge">👥 10 人以上 ➔ <strong>享 9.5 折</strong></div>
+          <div class="tier-badge">👥 20 人以上 ➔ <strong>享 9 折</strong></div>
+          <div class="tier-badge">👥 30 人以上 ➔ <strong>享 8.5 折</strong></div>
+        </div>
+        <div style="margin-top: 15px;">
+          <button type="button" class="btn-cta" style="font-size:1rem; padding:10px 28px;" onclick="selectPlan('【企業／團體包班】10人以上團報諮詢')">索取企業／團體包班報價 ➔</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 線上訂購與預約表單區 (郵件 / Google表單雙模式串接) -->
+  <section id="order-form" class="container">
+    <h2 class="section-title">立即預約與線上訂購</h2>
+    <p class="section-subtitle">填寫下方資料送出，專人將於 24 小時內透過 Email 或 LINE 與您確認訂單與付款細節</p>
+
+    <div class="form-wrapper">
+      <!-- 模式切換標籤：您可保留郵件直接送出，或切換為 Google 表單嵌入 -->
+      <div class="tab-buttons">
+        <button type="button" class="tab-btn active" id="btn-email-mode" onclick="switchMode('email')">✉️ 快速預約訂購（直達信箱）</button>
+        <button type="button" class="tab-btn" id="btn-google-mode" onclick="switchMode('google')">📋 Google 表單填寫</button>
+      </div>
+
+      <!-- 模式 A：直達電子郵件表單 (請將下方 YOUR_EMAIL@gmail.com 改為您的收件信箱) -->
+      <form id="email-form-box" action="https://formsubmit.co/YOUR_EMAIL@gmail.com" method="POST">
+        <!-- FormSubmit 隱藏設定：信件主旨與防垃圾信 -->
+        <input type="hidden" name="_subject" value="【藝想天開】新訂單／課程預約通知！">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="form-group">
+          <label for="plan-select">選擇方案或課程項目 *</label>
+          <select id="plan-select" name="選擇方案" required>
+            <option value="【精裝禮盒】活體植栽＋石盤組 (NT$ 1,688 免運)">🔥 【精裝禮盒】活體植栽＋石盤組 (NT$ 1,688 免運)</option>
+            <option value="【早鳥體驗】午後植能手作課 (NT$ 599)">🌱 【早鳥體驗】午後植能手作課 (NT$ 599)</option>
+            <option value="【圓滿雙享】禮盒＋體驗雙重奏 (NT$ 2,180 免運)">💎 【圓滿雙享】禮盒＋體驗雙重奏 (NT$ 2,180 免運)</option>
+            <option value="【企業／團體包班】10人以上團報諮詢">🏢 【企業／團體包班】10人以上團報諮詢</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="customer-name">訂購人／聯絡人姓名 *</label>
+            <input type="text" id="customer-name" name="訂購人姓名" placeholder="請輸入您的姓名" required>
+          </div>
+          <div class="form-group">
+            <label for="customer-phone">聯絡電話 / LINE ID *</label>
+            <input type="text" id="customer-phone" name="聯絡電話或LINE" placeholder="方便聯繫核對訂單" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="customer-email">電子郵件 (接收訂單確認信) *</label>
+            <input type="email" id="customer-email" name="email" placeholder="example@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="quantity">數量 ／ 報名人數 *</label>
+            <input type="number" id="quantity" name="數量或人數" value="1" min="1" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="scent-pref">偏好香氛能量主題（可複選或備註）</label>
+          <select id="scent-pref" name="偏好香氛主題">
+            <option value="專注舒壓（迷迭香 × 翠綠蕨類）">💻 專注舒壓（迷迭香 × 翠綠蕨類）</option>
+            <option value="溫柔助眠（真正薰衣草 × 絨葉小鳳梨）">🌙 溫柔助眠（真正薰衣草 × 絨葉小鳳梨）</option>
+            <option value="陽光提振（甜橙佛手柑 × 圓葉椒草）">☀️ 陽光提振（甜橙佛手柑 × 圓葉椒草）</option>
+            <option value="森林淨化（雪松尤加利 × 淨化植栽）">🌲 森林淨化（雪松尤加利 × 淨化植栽）</option>
+            <option value="送禮／現場再挑選">🎁 企業團報／現場再挑選</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="address-note">寄送地址（超商門市或宅配地址）／ 希望預約時段備註</label>
+          <textarea id="address-note" name="地址與備註" rows="3" placeholder="若購買禮盒請填寫收件地址或7-11店號；若報名課程或包班請填寫希望日期與人數"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">確認送出訂單／預約 ➔</button>
+        <p class="form-note">🔒 您的資料僅供本次訂單聯繫與寄送使用，絕不外洩。</p>
+      </form>
+
+      <!-- 模式 B：Google 表單嵌入區 (請將 src 替換為您的 Google 表單嵌入網址) -->
+      <div id="google-form-box" style="display:none; text-align:center;">
+        <p style="margin-bottom:15px; color:var(--text-muted); font-size:0.95rem;">
+          ※ 提示：若您已建立 Google 表單，請將下方 <code>iframe</code> 的 <code>src</code> 換成您的 Google 表單嵌入連結，填寫後資料將自動存入 Google 試算表。
+        </p>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf_REPLACE_WITH_YOUR_FORM_ID/viewform?embedded=true" width="100%" height="680" frameborder="0" marginheight="0" marginwidth="0">載入 Google 表單中…</iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 信任與售後保障 -->
+  <section class="section-alt">
+    <div class="container">
+      <h2 class="section-title">安心購買與售後陪伴保障</h2>
+      <div class="trust-grid">
+        <div class="trust-box">
+          <div style="font-size:2rem;">📦</div>
+          <h4>活體植栽防撞透氣包裝</h4>
+          <p>專屬固定結構保護枝葉，若運送途中嚴重受損，拍照回傳無條件補寄。</p>
+        </div>
+        <div class="trust-box">
+          <div style="font-size:2rem;">💳</div>
+          <h4>多元安全支付與退換保障</h4>
+          <p>支援信用卡、LINE Pay、ATM 轉帳，資材類商品享有 7 天鑑賞期保障。</p>
+        </div>
+        <div class="trust-box">
+          <div style="font-size:2rem;">💬</div>
+          <h4>專屬 LINE 植栽養護顧問</h4>
+          <p>購買後隨時可拍照傳訊詢問照顧問題，陪你一起把植物養得健康翠綠。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 常駐 LINE 諮詢按鈕 -->
+  <a href="https://line.me/" target="_blank" class="floating-line">💬 LINE 專人諮詢 / 團報洽詢</a>
+
+  <script>
+    // 1. 簡易動態倒數計時器
+    let totalSeconds = 7188;
+    setInterval(() => {
+      if (totalSeconds <= 0) totalSeconds = 7200;
+      totalSeconds--;
+      const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      const s = String(totalSeconds % 60).padStart(2, '0');
+      document.getElementById('countdown').textContent = `${h} : ${m} : ${s}`;
+    }, 1000);
+
+    // 2. 點擊價格卡片自動帶入表單方案並平滑滾動
+    function selectPlan(planValue) {
+      switchMode('email');
+      const selectEl = document.getElementById('plan-select');
+      for (let i = 0; i < selectEl.options.length; i++) {
+        if (selectEl.options[i].value === planValue) {
+          selectEl.selectedIndex = i;
+          break;
+        }
+      }
+      document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 3. 切換 Email 表單與 Google 表單顯示
+    function switchMode(mode) {
+      const emailBox = document.getElementById('email-form-box');
+      const googleBox = document.getElementById('google-form-box');
+      const btnEmail = document.getElementById('btn-email-mode');
+      const btnGoogle = document.getElementById('btn-google-mode');
+
+      if (mode === 'email') {
+        emailBox.style.display = 'block';
+        googleBox.style.display = 'none';
+        btnEmail.classList.add('active');
+        btnGoogle.classList.remove('active');
+      } else {
+        emailBox.style.display = 'none';
+        googleBox.style.display = 'block';
+        btnGoogle.classList.add('active');
+        btnEmail.classList.remove('active');
+      }
+    }
+  </script>
+</body>
+</html>
